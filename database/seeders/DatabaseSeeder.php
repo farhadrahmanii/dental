@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Seeders\DevUserSeeder;
 use Database\Seeders\PatientSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,7 +23,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
+            DevUserSeeder::class,
             PatientSeeder::class,
+            ServiceSeeder::class,
         ]);
     }
 }

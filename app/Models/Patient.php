@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Patient extends Model
 {
@@ -28,6 +29,32 @@ class Patient extends Model
         'images' => 'array',
         'age' => 'integer',
     ];
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class, 'patient_id', 'register_id');
+    }
+
+    public function getTotalSpentAttribute()
+    {
+        return $this->payments()->sum('amount');
+    }
+
+    public function getOutstandingBalanceAttribute()
+    {
+        return $this->invoices()->where('status', '!=', 'paid')->sum('total_amount') - 
+               $this->payments()->sum('amount');
+    }
 }
 
 

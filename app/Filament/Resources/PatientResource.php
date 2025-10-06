@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Patient;
+use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -17,16 +19,13 @@ class PatientResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user';
 
-    public static function getNavigationGroup(): string|UnitEnum|null
-    {
-        return 'Clinic';
-    }
+   
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Forms\Components\Section::make('Patient Information')
+                Section::make('Patient Information')
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('name')
@@ -50,7 +49,7 @@ class PatientResource extends Resource
                             ->maxValue(120),
                     ]),
 
-                Forms\Components\Section::make('Case Details')
+                Section::make('Case Details')
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('x_ray_id')
@@ -112,6 +111,15 @@ class PatientResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('doctor_name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('total_spent')
+                    ->label('Total Spent')
+                    ->money('USD')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('outstanding_balance')
+                    ->label('Outstanding Balance')
+                    ->money('USD')
+                    ->color(fn ($state) => $state > 0 ? 'danger' : 'success')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->since()
@@ -120,20 +128,23 @@ class PatientResource extends Resource
             ->filters([
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            \App\Filament\Resources\PatientResource\RelationManagers\InvoicesRelationManager::class,
+            \App\Filament\Resources\PatientResource\RelationManagers\PaymentsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

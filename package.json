@@ -4,14 +4,24 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "workbox": "workbox generateSW workbox-config.js"
+    },
+    "dependencies": {
+        "vue": "^3.4.0",
+        "dexie": "^3.2.4",
+        "workbox-window": "^7.0.0",
+        "pinia": "^2.1.7"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
+        "@vitejs/plugin-vue": "^5.2.4",
         "axios": "^1.11.0",
         "concurrently": "^9.0.1",
-        "laravel-vite-plugin": "^2.0.0",
+        "laravel-vite-plugin": "^1.0.0",
         "tailwindcss": "^4.0.0",
-        "vite": "^7.0.7"
+        "vite": "^5.4.0",
+        "vite-plugin-pwa": "^0.20.0",
+        "workbox-cli": "^7.0.0"
     }
 }
