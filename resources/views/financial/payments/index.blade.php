@@ -75,7 +75,8 @@
                                 <tr>
                                     <th>Date</th>
                                     <th>Patient</th>
-                                    <th>Invoice</th>
+                                    <!-- Invoice column hidden for later implementation -->
+                                    <!-- <th>Invoice</th> -->
                                     <th>Amount</th>
                                     <th>Method</th>
                                     <th>Reference</th>
@@ -87,7 +88,8 @@
                                 <tr>
                                     <td>{{ $payment->payment_date->format('M d, Y') }}</td>
                                     <td>{{ $payment->patient->name }}</td>
-                                    <td>{{ $payment->invoice->invoice_number }}</td>
+                                    <!-- Invoice data hidden for later implementation -->
+                                    <!-- <td>{{ $payment->invoice->invoice_number }}</td> -->
                                     <td class="text-success">${{ number_format($payment->amount, 2) }}</td>
                                     <td>
                                         <span class="badge bg-{{ $payment->payment_method === 'cash' ? 'success' : 'primary' }}">

@@ -230,4 +230,98 @@ return [
     'emergency_24_7' => 'اورژانس: 24/7',
     'follow_us_social' => 'ما را دنبال کنید',
     'stay_connected_desc' => 'در رسانه‌های اجتماعی با ما در ارتباط باشید تا از به‌روزرسانی‌ها و نکات سلامت دندان مطلع شوید.',
+    
+    // Services Preview Section
+    'comprehensive_dental_services' => 'خدمات جامع دندانپزشکی',
+    'services_preview_subtitle' => 'از معاینات روتین تا روش‌های پیشرفته، ما مراقبت کامل دندانپزشکی ارائه می‌دهیم',
+    'general_dentistry_desc' => 'مراقبت جامع سلامت دهان شامل تمیز کردن، پر کردن و درمان‌های پیشگیرانه.',
+    'cosmetic_dentistry_desc' => 'لبخند خود را با سفید کردن، ونیرها و روش‌های پیشرفته زیبایی تغییر دهید.',
+    'implant_dentistry' => 'کاشت دندان',
+    'implant_dentistry_desc' => 'جایگزینی دندان‌های از دست رفته با ایمپلنت‌های دندان طبیعی و بادوام.',
+    'learn_more' => 'بیشتر بدانید',
+    'view_all_services' => 'مشاهده همه خدمات',
+    
+    // Patient Database Section
+    'advanced_patient_management' => 'مدیریت پیشرفته بیماران',
+    'patient_management_subtitle' => 'سیستم جامع پایگاه داده بیماران ما ارائه مراقبت کارآمد را تضمین می‌کند',
+    'patient_records' => 'سوابق بیماران',
+    'patient_records_desc' => 'پروفایل‌های دیجیتال کامل بیماران',
+    'medical_history_tracking' => 'ردیابی تاریخچه پزشکی',
+    'treatment_plan_management' => 'مدیریت برنامه درمان',
+    'progress_monitoring' => 'نظارت بر پیشرفت',
+    'digital_imaging_desc' => 'مدیریت پیشرفته X-ray',
+    'digital_xray_storage' => 'ذخیره دیجیتال X-ray',
+    'unique_identification_system' => 'سیستم شناسایی منحصر به فرد',
+    'easy_retrieval_system' => 'سیستم بازیابی آسان',
+    'explore_patient_database' => 'کاوش در پایگاه داده بیماران',
+    
+    // Testimonials Section
+    'testimonials_subtitle' => 'تجربیات واقعی از بیماران راضی ما',
+    'testimonial_1' => 'DentalCare Pro لبخند من را کاملاً تغییر داد. پرسنل حرفه‌ای، فناوری شگفت‌انگیز، و نتایج فراتر از انتظارات من بود.',
+    'testimonial_2' => 'روش کاشت دندان بدون درد و روان بود. تخصص تیم و تجهیزات مدرن همه تفاوت را ایجاد کرد.',
+    'testimonial_3' => 'از تمیز کردن روتین تا روش‌های زیبایی، DentalCare Pro کلینیک دندانپزشکی مورد علاقه من بوده است. پرسنل دوستانه و حرفه‌ای هستند.',
+    'sarah_johnson' => 'سارا جانسون',
+    'business_owner' => 'صاحب کسب و کار',
+    'michael_chen' => 'مایکل چن',
+    'engineer' => 'مهندس',
+    'emily_rodriguez' => 'امیلی رودریگز',
+    'teacher' => 'معلم',
+    
+    // Call to Action Section
+    'ready_transform_smile' => 'آماده تغییر لبخند خود هستید؟',
+    'cta_subtitle' => 'امروز مشاوره خود را رزرو کنید و اجازه دهید تیم با تجربه ما بهترین برنامه درمانی را برای نیازهای دندانپزشکی شما ایجاد کند.',
+    'book_appointment' => 'رزرو نوبت',
+    'contact_us' => 'تماس با ما',
+    
+    // Services Page - Cosmetic Dentistry
+    'cosmetic_dentistry_desc_full' => 'لبخند خود را با روش‌های پیشرفته زیبایی شامل سفید کردن، ونیرها و تغییر لبخند تغییر دهید.',
+    'teeth_whitening' => 'سفید کردن دندان',
+    'porcelain_veneers' => 'ونیرهای چینی',
+    'smile_makeover' => 'تغییر لبخند',
+    'bonding' => 'باندینگ',
+    
+    // Services Page - Implant Dentistry
+    'implant_dentistry_desc_full' => 'جایگزینی دندان‌های از دست رفته با ایمپلنت‌های دندان بادوام و طبیعی که هم عملکرد و هم زیبایی را بازگردانند.',
+    'single_implants' => 'ایمپلنت‌های تکی',
+    'multiple_implants' => 'ایمپلنت‌های متعدد',
+    'full_mouth_restoration' => 'بازسازی کامل دهان',
+    'implant_crowns' => 'تاج‌های ایمپلنت',
+    
+    // Services Page - Orthodontic Treatment
+    'orthodontic_treatment' => 'درمان ارتودنسی',
+    'orthodontic_desc' => 'صاف کردن دندان‌ها و اصلاح مشکلات گاز گرفتن با بریس‌های سنتی، الاینرهای شفاف و راه‌حل‌های مدرن ارتودنسی.',
+    'traditional_braces' => 'بریس‌های سنتی',
+    'clear_aligners' => 'الاینرهای شفاف',
+    'invisalign' => 'اینویزیلاین',
+    'retainers' => 'ریتینرها',
+    
+    // Services Page - Emergency Care
+    'emergency_care_desc' => 'مراقبت اورژانسی دندانپزشکی 24/7 برای موقعیت‌های اضطراری شامل درد شدید، دندان‌های شکسته و تروماهای دندانپزشکی.',
+    'tooth_pain_relief' => 'تسکین درد دندان',
+    'broken_tooth_repair' => 'ترمیم دندان شکسته',
+    'lost_filling_crown' => 'پرکردگی/تاج از دست رفته',
+    'dental_trauma' => 'تروماهای دندانپزشکی',
+    
+    // Services Page - Digital Imaging
+    'digital_imaging_desc_full' => 'تصویربرداری دیجیتال پیشرفته X-ray و تصویربرداری 3D برای تشخیص دقیق و برنامه‌ریزی درمان با حداقل قرارگیری در معرض اشعه.',
+    'digital_xrays' => 'X-Ray های دیجیتال',
+    '3d_imaging' => 'تصویربرداری 3D',
+    'panoramic_views' => 'نمای پانوراما',
+    'low_radiation' => 'کمترین اشعه',
+    
+    // Services Page - Technology Section
+    'state_of_art_equipment' => 'تجهیزات مدرن',
+    'technology_desc' => 'ما در جدیدترین فناوری دندانپزشکی سرمایه‌گذاری می‌کنیم تا دقیق‌ترین تشخیص‌ها و مؤثرترین درمان‌ها را ارائه دهیم.',
+    'digital_xray_units' => 'واحدهای X-Ray دیجیتال',
+    'laser_systems' => 'سیستم‌های لیزر',
+    
+    // Services Page - Process Section
+    'how_we_care' => 'چگونه از شما مراقبت می‌کنیم',
+    'process_desc' => 'فرآیند جامع ما تضمین می‌کند که بهترین مراقبت دندانپزشکی ممکن را از مشاوره تا پیگیری دریافت کنید.',
+    'initial_consultation' => 'مشاوره و معاینه اولیه',
+    'digital_imaging_diagnosis' => 'تصویربرداری دیجیتال و تشخیص',
+    'customized_treatment_plan' => 'برنامه درمان سفارشی',
+    'professional_treatment_delivery' => 'ارائه درمان حرفه‌ای',
+    'follow_up_care' => 'مراقبت و نگهداری پیگیری',
+    'book_consultation' => 'رزرو مشاوره',
 ];

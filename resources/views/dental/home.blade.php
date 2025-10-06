@@ -157,9 +157,9 @@
 <section class="section-apple" style="background: var(--surface);">
     <div class="container-apple">
         <div class="text-center mb-6">
-            <h2 class="headline-large mb-3">Comprehensive Dental Services</h2>
+            <h2 class="headline-large mb-3">{{ __('dental.comprehensive_dental_services') }}</h2>
             <p class="body-large" style="color: var(--text-secondary);">
-                From routine checkups to advanced procedures, we provide complete dental care
+                {{ __('dental.services_preview_subtitle') }}
             </p>
         </div>
         
@@ -170,11 +170,11 @@
                         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
-                <h3 class="title-large mb-3">General Dentistry</h3>
+                <h3 class="title-large mb-3">{{ __('dental.general_dentistry') }}</h3>
                 <p class="body-medium" style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
-                    Comprehensive oral health care including cleanings, fillings, and preventive treatments.
+                    {{ __('dental.general_dentistry_desc') }}
                 </p>
-                <a href="{{ route('services') }}" class="btn-apple-outline">Learn More</a>
+                <a href="{{ route('services') }}" class="btn-apple-outline">{{ __('dental.learn_more') }}</a>
             </div>
             
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
@@ -183,11 +183,11 @@
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                     </svg>
                 </div>
-                <h3 class="title-large mb-3">Cosmetic Dentistry</h3>
+                <h3 class="title-large mb-3">{{ __('dental.cosmetic_dentistry') }}</h3>
                 <p class="body-medium" style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
-                    Transform your smile with whitening, veneers, and advanced cosmetic procedures.
+                    {{ __('dental.cosmetic_dentistry_desc') }}
                 </p>
-                <a href="{{ route('services') }}" class="btn-apple-outline">Learn More</a>
+                <a href="{{ route('services') }}" class="btn-apple-outline">{{ __('dental.learn_more') }}</a>
             </div>
             
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">

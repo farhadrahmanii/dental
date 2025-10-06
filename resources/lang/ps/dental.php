@@ -230,4 +230,98 @@ return [
     'emergency_24_7' => 'اورګاندی: 24/7',
     'follow_us_social' => 'موږ تعقیب کړئ',
     'stay_connected_desc' => 'د تازه کولو او د ډینټل روغتیا لارښودونو لپاره په ټولنیزو رسنیو کې موږ سره اړیکه وساتئ.',
+    
+    // Services Preview Section
+    'comprehensive_dental_services' => 'پوره د غاښونو خدمتونه',
+    'services_preview_subtitle' => 'د عادي معاینه څخه تر پرمختللو پروسیجرونو پورې، موږ بشپړ د غاښونو پاملرنه وړاندې کوو',
+    'general_dentistry_desc' => 'پوره د خولې روغتیا پاملرنه چې پاکول، ډکول، او د مخنیوي درملنې پکې شاملې دي.',
+    'cosmetic_dentistry_desc' => 'د سپینولو، veneers، او پرمختللو کاسمیټیک پروسیجرونو سره خپل خندا بدله کړئ.',
+    'implant_dentistry' => 'د غاښونو امپلانټ',
+    'implant_dentistry_desc' => 'د غړو غاښونو ځای د کلک، طبیعي ښکاري د غاښونو امپلانټونو سره ډک کړئ.',
+    'learn_more' => 'نور زده کړئ',
+    'view_all_services' => 'ټول خدمتونه وګورئ',
+    
+    // Patient Database Section
+    'advanced_patient_management' => 'پرمختللی د ناروغانو مدیریت',
+    'patient_management_subtitle' => 'زموږ پوره د ناروغانو ډیټابیس سیسټم د اغیزمن پاملرنې وړاندې کولو ډاډ ورکوي',
+    'patient_records' => 'د ناروغانو ریکارډونه',
+    'patient_records_desc' => 'پوره ډیجیټل د ناروغانو پروفایلونه',
+    'medical_history_tracking' => 'د طبي تاریخ تعقیب',
+    'treatment_plan_management' => 'د درملنې پلان مدیریت',
+    'progress_monitoring' => 'د پرمختګ تعقیب',
+    'digital_imaging_desc' => 'پرمختللی X-ray مدیریت',
+    'digital_xray_storage' => 'ډیجیټل X-ray ذخیره',
+    'unique_identification_system' => 'ځانګړی پیژندنه سیسټم',
+    'easy_retrieval_system' => 'اسانه بیرته راګرځولو سیسټم',
+    'explore_patient_database' => 'د ناروغانو ډیټابیس وپلټئ',
+    
+    // Testimonials Section
+    'testimonials_subtitle' => 'زموږ د خوښه ناروغانو څخه ریښتیني تجربې',
+    'testimonial_1' => 'DentalCare Pro زما خندا بشپړه بدله کړه. کارمندان مسلکي دي، ټیکنالوژي حیرانونکې ده، او پایلې زما د تمې څخه زیاتې وې.',
+    'testimonial_2' => 'د غاښونو امپلانټ پروسیجر بې درد او اسانه و. د ټیم تخصص او عصري تجهیزاتو ټول توپیر رامنځته کړ.',
+    'testimonial_3' => 'د عادي پاکولو څخه تر کاسمیټیک پروسیجرونو پورې، DentalCare Pro زما د غاښونو کلینیک دی. کارمندان ملګري او مسلکي دي.',
+    'sarah_johnson' => 'ساره جانسن',
+    'business_owner' => 'د سوداګرۍ خاوند',
+    'michael_chen' => 'مایکل چین',
+    'engineer' => 'انجنیر',
+    'emily_rodriguez' => 'امیلی رودریګز',
+    'teacher' => 'ښوونکی',
+    
+    // Call to Action Section
+    'ready_transform_smile' => 'خپله خندا بدلولو ته چمتو یاست؟',
+    'cta_subtitle' => 'نن خپله مشاوره وټاکئ او زموږ د تجربې ټیم ته اجازه ورکړئ چې ستاسو د غاښونو اړتیاوو لپاره د درملنې غوره پلان جوړ کړي.',
+    'book_appointment' => 'نشتون وټاکئ',
+    'contact_us' => 'موږ سره اړیکه ونیسئ',
+    
+    // Services Page - Cosmetic Dentistry
+    'cosmetic_dentistry_desc_full' => 'د سپینولو، veneers، او د خندا بدلولو سره خپله خندا بدله کړئ.',
+    'teeth_whitening' => 'د غاښونو سپینول',
+    'porcelain_veneers' => 'د چیني veneers',
+    'smile_makeover' => 'د خندا بدلول',
+    'bonding' => 'تړل',
+    
+    // Services Page - Implant Dentistry
+    'implant_dentistry_desc_full' => 'د غړو غاښونو ځای د کلک، طبیعي ښکاري د غاښونو امپلانټونو سره ډک کړئ چې دواړه دندې او ښکلا بیرته راګرځوي.',
+    'single_implants' => 'یوازې امپلانټونه',
+    'multiple_implants' => 'ډیر امپلانټونه',
+    'full_mouth_restoration' => 'د خولې بشپړ بیرته راګرځول',
+    'implant_crowns' => 'د امپلانټ تاجونه',
+    
+    // Services Page - Orthodontic Treatment
+    'orthodontic_treatment' => 'د غاښونو سمولو درملنه',
+    'orthodontic_desc' => 'د غاښونو سمول او د خولې د ستونزو سمول د دودیزو braces، روښانه aligners، او عصري orthodontic حلونو سره.',
+    'traditional_braces' => 'دودیز braces',
+    'clear_aligners' => 'روښانه aligners',
+    'invisalign' => 'Invisalign',
+    'retainers' => 'retainers',
+    
+    // Services Page - Emergency Care
+    'emergency_care_desc' => 'د 24/7 عاجل د غاښونو پاملرنه د عاجلي حالاتو لپاره چې شدید درد، مات غاښونه، او د غاښونو ټراما پکې شاملې دي.',
+    'tooth_pain_relief' => 'د غاښ درد درملنه',
+    'broken_tooth_repair' => 'د مات غاښ درملنه',
+    'lost_filling_crown' => 'له لاسه ورکړل شوی ډکول/تاج',
+    'dental_trauma' => 'د غاښونو ټراما',
+    
+    // Services Page - Digital Imaging
+    'digital_imaging_desc_full' => 'پرمختللي ډیجیټل X-rays او 3D انځورونه د دقیق تشخیص او د درملنې پلان جوړولو لپاره د لږ تشعشع سره.',
+    'digital_xrays' => 'ډیجیټل X-Rays',
+    '3d_imaging' => '3D انځورونه',
+    'panoramic_views' => 'پانورامیک لیدونه',
+    'low_radiation' => 'لږ تشعشع',
+    
+    // Services Page - Technology Section
+    'state_of_art_equipment' => 'د عصري ټیکنالوژۍ تجهیزات',
+    'technology_desc' => 'موږ د وروستۍ د غاښونو ټیکنالوژۍ پانګونه کوو ترڅو تاسو ته د ترټولو دقیق تشخیصونو او اغیزمنو درملنو وړاندې کولو وړاندې کړو.',
+    'digital_xray_units' => 'ډیجیټل X-Ray واحدونه',
+    'laser_systems' => 'لیزر سیسټمونه',
+    
+    // Services Page - Process Section
+    'how_we_care' => 'موږ څنګه ستاسو پاملرنه کوو',
+    'process_desc' => 'زموږ پوره پروسه ډاډ ورکوي چې تاسو د مشاورې څخه تر تعقیب پورې د غاښونو ترټولو غوره پاملرنه ترلاسه کړئ.',
+    'initial_consultation' => 'لومړنۍ مشاوره او معاینه',
+    'digital_imaging_diagnosis' => 'ډیجیټل انځورونه او تشخیص',
+    'customized_treatment_plan' => 'دودیز د درملنې پلان',
+    'professional_treatment_delivery' => 'مسلکي د درملنې وړاندې کول',
+    'follow_up_care' => 'تعقیب پاملرنه او ساتنه',
+    'book_consultation' => 'مشاوره وټاکئ',
 ];

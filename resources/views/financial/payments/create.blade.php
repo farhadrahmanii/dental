@@ -42,6 +42,8 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <!-- Invoice selection hidden for later implementation -->
+                                <!--
                                 <div class="mb-3">
                                     <label for="invoice_id" class="form-label">Invoice <span class="text-danger">*</span></label>
                                     <select name="invoice_id" id="invoice_id" class="form-select @error('invoice_id') is-invalid @enderror" required>
@@ -56,7 +58,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
+                                -->
                         </div>
                         
                         <div class="row">
@@ -117,7 +119,8 @@
             </div>
 
             <div class="col-md-4">
-                <!-- Invoice Summary -->
+                <!-- Invoice Summary - Hidden for later implementation -->
+                <!--
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Invoice Summary</h5>
@@ -141,6 +144,7 @@
                         </div>
                     </div>
                 </div>
+                -->
 
                 <!-- Actions -->
                 <div class="card mt-4">
@@ -159,6 +163,8 @@
 </div>
 
 <script>
+// Invoice-related JavaScript hidden for later implementation
+/*
 document.addEventListener('DOMContentLoaded', function() {
     const patientSelect = document.getElementById('patient_id');
     const invoiceSelect = document.getElementById('invoice_id');
@@ -213,5 +219,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+*/
 </script>
 @endsection
