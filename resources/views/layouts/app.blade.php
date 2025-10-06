@@ -1198,7 +1198,7 @@
                         DentalCare Pro
                     </a>
                     <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: var(--space-lg); line-height: 1.6;">
-                        Providing exceptional dental care with modern technology and experienced professionals.
+                        {{ __('dental.providing_exceptional_care') }}
                     </p>
                     <div style="display: flex; gap: var(--space-md);">
                         <a href="#" style="color: rgba(255, 255, 255, 0.7); text-decoration: none; transition: color 0.2s ease;">
@@ -1243,18 +1243,18 @@
 
                 <!-- Contact Info -->
                 <div>
-                    <h6 style="color: var(--apple-white); font-weight: 600; margin-bottom: var(--space-lg);">Contact</h6>
+                    <h6 style="color: var(--apple-white); font-weight: 600; margin-bottom: var(--space-lg);">{{ __('dental.contact_info') }}</h6>
                     <div style="display: flex; flex-direction: column; gap: var(--space-sm); color: rgba(255, 255, 255, 0.7);">
-                        <div>📞 +1 (555) 123-4567</div>
-                        <div>✉️ info@dentalcarepro.com</div>
-                        <div>📍 123 Dental Street<br>Health City, HC 12345</div>
+                        <div>📞 {{ __('dental.phone_main') }}</div>
+                        <div>✉️ {{ __('dental.email_main') }}</div>
+                        <div>📍 {{ __('dental.address_line') }}<br>{{ __('dental.city_country') }}</div>
                     </div>
                 </div>
             </div>
 
             <!-- Copyright -->
             <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: var(--space-lg); text-align: center; color: rgba(255, 255, 255, 0.5);">
-                <p>&copy; {{ date('Y') }} DentalCare Pro. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} {{ __('dental.app_name') }}. {{ __('dental.all_rights_reserved') }}</p>
             </div>
         </div>
     </footer>

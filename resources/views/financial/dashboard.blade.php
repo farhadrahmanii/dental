@@ -109,7 +109,7 @@
                             </svg>
                         </div>
                         <div style="text-align: right;">
-                            <div class="stat-number" style="font-size: 1.5rem; color: #FF9500;">${{ number_format($outstandingInvoices, 2) }}</div>
+                            <div class="stat-number" style="font-size: 1.5rem; color: #FF9500;">${{ number_format($outstandingInvoicesTotal, 2) }}</div>
                             <div class="stat-label">{{ __('financial.outstanding') }}</div>
                         </div>
                     </div>
@@ -184,7 +184,7 @@
                                                 {{ strtoupper(substr($payment->patient->name ?? 'N/A', 0, 2)) }}
                                             </div>
                                             <div>
-                                                <div style="font-weight: 500; color: var(--text-primary);">{{ $payment->patient->name ?? 'N/A' }}</div>
+                                                <div style="font-weight: 500; color: var(--text-primary);">{{ $payment->patient->name ?? 'Unknown Patient' }}</div>
                                                 <div style="font-size: 0.75rem; color: var(--text-tertiary);">ID: {{ $payment->patient->register_id ?? 'N/A' }}</div>
                                             </div>
                                         </div>
@@ -255,11 +255,11 @@
                         @forelse($topServices as $service)
                         <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-md) 0; border-bottom: 1px solid var(--border-light);">
                             <div>
-                                <div style="font-weight: 500; color: var(--text-primary);">{{ $service->name }}</div>
-                                <div style="font-size: 0.75rem; color: var(--text-tertiary);">{{ $service->appointments_count }} appointments</div>
+                                <div style="font-weight: 500; color: var(--text-primary);">{{ $service->name ?? 'Unknown Service' }}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-tertiary);">{{ $service->total_quantity ?? 0 }} items</div>
                             </div>
                             <div style="text-align: right;">
-                                <div style="font-weight: 600; color: var(--primary);">${{ number_format($service->total_revenue, 2) }}</div>
+                                <div style="font-weight: 600; color: var(--primary);">${{ number_format($service->total_revenue ?? 0, 2) }}</div>
                             </div>
                         </div>
                         @empty

@@ -52,5 +52,5 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::patch('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
 });
 
-// PWA Routes
-Route::get('/pwa', [PwaController::class, 'index'])->name('pwa');
+// PWA Routes (commented out - controller not implemented)
+// Route::get('/pwa', [PwaController::class, 'index'])->name('pwa');

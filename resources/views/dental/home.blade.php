@@ -30,9 +30,9 @@
 <section id="appointment" class="section-apple" style="background: var(--surface);">
     <div class="container-apple-sm">
         <div class="text-center mb-6">
-            <h2 class="headline-large mb-3">Book Your Appointment</h2>
+            <h2 class="headline-large mb-3">{{ __('dental.book_your_appointment') }}</h2>
             <p class="body-large" style="color: var(--text-secondary);">
-                Schedule your consultation with our experienced dental team
+                {{ __('dental.schedule_consultation') }}
             </p>
         </div>
         
@@ -42,54 +42,54 @@
                     @csrf
                     <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
                         <div class="form-group-apple">
-                            <label class="form-label-apple">Full Name</label>
-                            <input type="text" name="name" id="patient_name" class="form-input-apple" placeholder="Enter your full name" required>
+                            <label class="form-label-apple">{{ __('dental.full_name') }}</label>
+                            <input type="text" name="name" id="patient_name" class="form-input-apple" placeholder="{{ __('dental.enter_full_name') }}" required>
                         </div>
                         <div class="form-group-apple">
-                            <label class="form-label-apple">Phone Number</label>
-                            <input type="tel" name="phone" id="patient_phone" class="form-input-apple" placeholder="Enter your phone number" required>
+                            <label class="form-label-apple">{{ __('dental.phone_number') }}</label>
+                            <input type="tel" name="phone" id="patient_phone" class="form-input-apple" placeholder="{{ __('dental.enter_phone_number') }}" required>
                         </div>
                     </div>
                     
                     <div class="form-group-apple">
-                        <label class="form-label-apple">Email Address</label>
-                        <input type="email" name="email" id="patient_email" class="form-input-apple" placeholder="Enter your email address" required>
+                        <label class="form-label-apple">{{ __('dental.email_address') }}</label>
+                        <input type="email" name="email" id="patient_email" class="form-input-apple" placeholder="{{ __('dental.enter_email_address') }}" required>
                     </div>
                     
                     <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
                         <div class="form-group-apple">
-                            <label class="form-label-apple">Service</label>
+                            <label class="form-label-apple">{{ __('dental.service_selection') }}</label>
                             <select name="service" id="service_select" class="form-select-apple" required>
-                                <option value="">Select a service</option>
+                                <option value="">{{ __('dental.select_service') }}</option>
                                 <!-- Services will be loaded dynamically -->
                             </select>
                         </div>
                         <div class="form-group-apple">
-                            <label class="form-label-apple">Preferred Date</label>
+                            <label class="form-label-apple">{{ __('dental.preferred_date') }}</label>
                             <input type="date" name="appointment_date" id="appointment_date" class="form-input-apple" required>
                         </div>
                     </div>
                     
                     <div class="form-group-apple">
-                        <label class="form-label-apple">Time Slot</label>
+                        <label class="form-label-apple">{{ __('dental.time_slot') }}</label>
                         <select name="appointment_time" id="appointment_time" class="form-select-apple" required disabled>
-                            <option value="">Select a date first</option>
+                            <option value="">{{ __('dental.select_date_first') }}</option>
                         </select>
                         <div id="time_slots_loading" style="display: none; margin-top: var(--space-sm);">
                             <div style="display: flex; align-items: center; gap: var(--space-sm); color: var(--text-secondary);">
                                 <div style="width: 16px; height: 16px; border: 2px solid var(--primary); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                                <span class="body-small">Loading available time slots...</span>
+                                <span class="body-small">{{ __('dental.loading_time_slots') }}</span>
                             </div>
                         </div>
                     </div>
                     
                     <div class="form-group-apple">
-                        <label class="form-label-apple">Additional Message</label>
-                        <textarea name="message" id="appointment_message" class="form-textarea-apple" placeholder="Tell us about your dental needs or any specific concerns..."></textarea>
+                        <label class="form-label-apple">{{ __('dental.additional_message') }}</label>
+                        <textarea name="message" id="appointment_message" class="form-textarea-apple" placeholder="{{ __('dental.tell_us_needs') }}"></textarea>
                     </div>
                     
                     <button type="submit" id="submit_btn" class="btn-apple" style="width: 100%; padding: var(--space-md); font-size: 1rem;">
-                        <span id="submit_text">Book Appointment</span>
+                        <span id="submit_text">{{ __('dental.book_appointment_btn') }}</span>
                         <div id="submit_loading" style="display: none;">
                             <div style="width: 20px; height: 20px; border: 2px solid var(--apple-white); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
                         </div>
@@ -126,28 +126,28 @@
 <section class="section-apple">
     <div class="container-apple">
         <div class="text-center mb-6">
-            <h2 class="headline-large mb-3">Trusted by Thousands</h2>
+            <h2 class="headline-large mb-3">{{ __('dental.our_achievements') }}</h2>
             <p class="body-large" style="color: var(--text-secondary);">
-                Our commitment to excellence has made us the preferred choice for dental care
+                {{ __('dental.why_choose_description') }}
             </p>
         </div>
         
         <div class="grid-apple grid-apple-4">
             <div class="stat-apple">
                 <div class="stat-number">{{ $totalPatients ?? 2500 }}+</div>
-                <div class="stat-label">Happy Patients</div>
+                <div class="stat-label">{{ __('dental.happy_patients') }}</div>
             </div>
             <div class="stat-apple">
                 <div class="stat-number">15+</div>
-                <div class="stat-label">Years Experience</div>
+                <div class="stat-label">{{ __('dental.years_experience') }}</div>
             </div>
             <div class="stat-apple">
                 <div class="stat-number">50+</div>
-                <div class="stat-label">Services Offered</div>
+                <div class="stat-label">{{ __('dental.successful_treatments') }}</div>
             </div>
             <div class="stat-apple">
                 <div class="stat-number">100%</div>
-                <div class="stat-label">Patient Satisfaction</div>
+                <div class="stat-label">{{ __('dental.awards_certifications') }}</div>
             </div>
         </div>
     </div>
