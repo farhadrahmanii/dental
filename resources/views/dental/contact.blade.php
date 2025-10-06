@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Us - DentalCare Pro')
-@section('description', 'Get in touch with DentalCare Pro. Contact us for appointments, questions, or emergency dental care.')
+@section('title', __('dental.contact_us_title') . ' - ' . __('dental.app_name'))
+@section('description', __('dental.get_in_touch_description'))
 
 @section('content')
 <!-- Apple-style Page Header -->
 <section class="section-apple-sm" style="background: var(--surface);">
     <div class="container-apple">
         <div class="text-center">
-            <h1 class="display-medium mb-3">Contact Us</h1>
+            <h1 class="display-medium mb-3">{{ __('dental.contact_us_title') }}</h1>
             <p class="body-large" style="color: var(--text-secondary); max-width: 600px; margin-left: auto; margin-right: auto;">
-                Get in touch with our dental care team. We're here to help with all your dental needs.
+                {{ __('dental.get_in_touch_description') }}
             </p>
         </div>
     </div>

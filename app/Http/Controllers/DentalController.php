@@ -42,3 +42,4 @@ class DentalController extends Controller
         return view('dental.patient-detail', compact('patient'));
     }
 }
+

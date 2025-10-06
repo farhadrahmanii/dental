@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'About Us - DentalCare Pro')
-@section('description', 'Learn about DentalCare Pro - our mission, experienced team, and commitment to providing exceptional dental care.')
+@section('title', __('dental.about_dentalcare_pro') . ' - ' . __('dental.app_name'))
+@section('description', __('dental.dedicated_exceptional_care'))
 
 @section('content')
 <!-- Apple-style Page Header -->
 <section class="section-apple-sm" style="background: var(--surface);">
     <div class="container-apple">
         <div class="text-center">
-            <h1 class="display-medium mb-3">About DentalCare Pro</h1>
+            <h1 class="display-medium mb-3">{{ __('dental.about_dentalcare_pro') }}</h1>
             <p class="body-large" style="color: var(--text-secondary); max-width: 600px; margin-left: auto; margin-right: auto;">
-                Dedicated to providing exceptional dental care with modern technology and compassionate service
+                {{ __('dental.dedicated_exceptional_care') }}
             </p>
         </div>
     </div>

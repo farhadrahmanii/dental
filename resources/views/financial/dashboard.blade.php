@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Financial Dashboard - DentalCare Pro')
-@section('description', 'Comprehensive financial dashboard with revenue analytics, payment tracking, and business insights.')
+@section('title', __('financial.dashboard') . ' - ' . __('dental.app_name'))
+@section('description', __('financial.comprehensive_overview'))
 
 @section('content')
 <!-- Apple-style Page Header -->

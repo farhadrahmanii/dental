@@ -32,12 +32,12 @@ class Patient extends Model
 
     public function invoices(): HasMany
     {
-        return $this->hasMany(Invoice::class);
+        return $this->hasMany(Invoice::class, 'patient_id', 'register_id');
     }
 
     public function payments(): HasMany
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Payment::class, 'patient_id', 'register_id');
     }
 
     public function appointments(): HasMany

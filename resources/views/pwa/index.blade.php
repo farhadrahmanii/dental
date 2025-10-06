@@ -6,3 +6,4 @@
 @section('content')
 <!-- This will be replaced by Vue.js -->
 @endsection
+
