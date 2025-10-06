@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'DentalCare Pro - Professional Dental Services')
-@section('description', 'Professional dental care with modern technology and experienced doctors. Book your appointment today.')
+@section('title', __('dental.app_name') . ' - ' . __('dental.app_description'))
+@section('description', __('dental.app_description'))
 
 @section('content')
 <!-- Apple-style Hero Section -->
@@ -9,19 +9,17 @@
     <div class="container-apple">
         <div class="hero-content">
             <h1 class="display-large mb-4 animate-fade-in-up">
-                Creating The Healthy Smile<br>
-                <span style="color: var(--primary);">You Want</span>
+                {{ __('dental.hero_title') }}
             </h1>
             <p class="body-large mb-6 animate-fade-in-up" style="color: var(--text-secondary); max-width: 600px; margin-left: auto; margin-right: auto;">
-                Experience exceptional dental care with our state-of-the-art technology and highly skilled professionals. 
-                We're committed to providing you with the best dental services in a comfortable and modern environment.
+                {{ __('dental.hero_subtitle') }}
             </p>
             <div class="animate-fade-in-up" style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
                 <a href="#appointment" class="btn-apple">
-                    Book Appointment
+                    {{ __('dental.book_appointment') }}
                 </a>
                 <a href="{{ route('services') }}" class="btn-apple-outline">
-                    View Services
+                    {{ __('dental.view_services') }}
                 </a>
             </div>
         </div>

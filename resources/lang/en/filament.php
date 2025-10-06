@@ -1,0 +1,122 @@
+<?php
+
+return [
+    // Filament Navigation
+    'dashboard' => 'Dashboard',
+    'patients' => 'Patients',
+    'invoices' => 'Invoices',
+    'payments' => 'Payments',
+    'services' => 'Services',
+    'appointments' => 'Appointments',
+    'reports' => 'Reports',
+    'settings' => 'Settings',
+    
+    // Filament Actions
+    'create' => 'Create',
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+    'view' => 'View',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'submit' => 'Submit',
+    'back' => 'Back',
+    'next' => 'Next',
+    'previous' => 'Previous',
+    'close' => 'Close',
+    'open' => 'Open',
+    'search' => 'Search',
+    'filter' => 'Filter',
+    'export' => 'Export',
+    'import' => 'Import',
+    'print' => 'Print',
+    'download' => 'Download',
+    'upload' => 'Upload',
+    
+    // Filament Status
+    'active' => 'Active',
+    'inactive' => 'Inactive',
+    'pending' => 'Pending',
+    'completed' => 'Completed',
+    'cancelled' => 'Cancelled',
+    'paid' => 'Paid',
+    'unpaid' => 'Unpaid',
+    'overdue' => 'Overdue',
+    
+    // Filament Messages
+    'success' => 'Success',
+    'error' => 'Error',
+    'warning' => 'Warning',
+    'info' => 'Information',
+    'loading' => 'Loading...',
+    'no_data' => 'No data available',
+    'no_results' => 'No results found',
+    'please_wait' => 'Please wait...',
+    
+    // Filament Forms
+    'name' => 'Name',
+    'email' => 'Email',
+    'phone' => 'Phone',
+    'address' => 'Address',
+    'date' => 'Date',
+    'time' => 'Time',
+    'amount' => 'Amount',
+    'description' => 'Description',
+    'notes' => 'Notes',
+    'status' => 'Status',
+    'type' => 'Type',
+    'category' => 'Category',
+    'price' => 'Price',
+    'quantity' => 'Quantity',
+    'total' => 'Total',
+    'subtotal' => 'Subtotal',
+    'tax' => 'Tax',
+    'discount' => 'Discount',
+    
+    // Filament Validation
+    'required' => 'This field is required',
+    'invalid_email' => 'Please enter a valid email address',
+    'invalid_phone' => 'Please enter a valid phone number',
+    'min_length' => 'This field must be at least :min characters',
+    'max_length' => 'This field must not exceed :max characters',
+    'numeric' => 'This field must be numeric',
+    'unique' => 'This value already exists',
+    
+    // Filament Tables
+    'actions' => 'Actions',
+    'created_at' => 'Created At',
+    'updated_at' => 'Updated At',
+    'id' => 'ID',
+    'no_records' => 'No records found',
+    'showing' => 'Showing',
+    'to' => 'to',
+    'of' => 'of',
+    'results' => 'results',
+    'per_page' => 'Per page',
+    'all' => 'All',
+    
+    // Filament Resources
+    'patient' => 'Patient',
+    'invoice' => 'Invoice',
+    'payment' => 'Payment',
+    'service' => 'Service',
+    'appointment' => 'Appointment',
+    'user' => 'User',
+    
+    // Filament Pages
+    'list' => 'List',
+    'create_new' => 'Create New',
+    'edit_record' => 'Edit Record',
+    'view_record' => 'View Record',
+    'delete_record' => 'Delete Record',
+    'bulk_actions' => 'Bulk Actions',
+    'select_all' => 'Select All',
+    'deselect_all' => 'Deselect All',
+    
+    // Filament Widgets
+    'overview' => 'Overview',
+    'statistics' => 'Statistics',
+    'chart' => 'Chart',
+    'table' => 'Table',
+    'recent_activity' => 'Recent Activity',
+    'quick_actions' => 'Quick Actions',
+];

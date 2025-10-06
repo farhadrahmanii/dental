@@ -1117,27 +1117,56 @@
                 <!-- Desktop Navigation -->
                 <div style="display: flex; align-items: center; gap: var(--space-sm);">
                     <a href="{{ route('home') }}" class="nav-link-apple {{ request()->routeIs('home') ? 'active' : '' }}">
-                        Home
+                        {{ __('common.home') }}
                     </a>
                     <a href="{{ route('about') }}" class="nav-link-apple {{ request()->routeIs('about') ? 'active' : '' }}">
-                        About
+                        {{ __('common.about') }}
                     </a>
                     <a href="{{ route('services') }}" class="nav-link-apple {{ request()->routeIs('services') ? 'active' : '' }}">
-                        Services
+                        {{ __('common.services') }}
                     </a>
                     <a href="{{ route('patients') }}" class="nav-link-apple {{ request()->routeIs('patients') ? 'active' : '' }}">
-                        Patients
+                        {{ __('common.patients') }}
                     </a>
                     <a href="{{ route('contact') }}" class="nav-link-apple {{ request()->routeIs('contact') ? 'active' : '' }}">
-                        Contact
+                        {{ __('common.contact') }}
                     </a>
+                    
+                    <!-- Language Switcher -->
+                    <div class="language-switcher" style="margin-left: var(--space-md);">
+                        <div class="dropdown" style="position: relative;">
+                            <button class="btn-apple-outline" style="padding: var(--space-sm) var(--space-md); font-size: 0.875rem;" onclick="toggleDropdown(this)">
+                                @if(app()->getLocale() == 'en')
+                                    🇺🇸 EN
+                                @elseif(app()->getLocale() == 'ps')
+                                    🇦🇫 پښتو
+                                @elseif(app()->getLocale() == 'fa')
+                                    🇦🇫 دری
+                                @endif
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: var(--space-xs);">
+                                    <polyline points="6,9 12,15 18,9"></polyline>
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu" style="position: absolute; top: 100%; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 120px; z-index: 1000; display: none;">
+                                <a href="{{ route('lang.switch', 'en') }}" class="dropdown-item" style="display: block; padding: var(--space-sm) var(--space-md); color: var(--text-primary); text-decoration: none; border-radius: var(--radius-sm);">
+                                    🇺🇸 English
+                                </a>
+                                <a href="{{ route('lang.switch', 'ps') }}" class="dropdown-item" style="display: block; padding: var(--space-sm) var(--space-md); color: var(--text-primary); text-decoration: none; border-radius: var(--radius-sm);">
+                                    🇦🇫 پښتو
+                                </a>
+                                <a href="{{ route('lang.switch', 'fa') }}" class="dropdown-item" style="display: block; padding: var(--space-sm) var(--space-md); color: var(--text-primary); text-decoration: none; border-radius: var(--radius-sm);">
+                                    🇦🇫 دری
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div style="margin-left: var(--space-lg); padding-left: var(--space-lg); border-left: 1px solid var(--border-light);">
                         <a href="/admin" class="btn-apple">
-                            Admin
+                            {{ __('common.dashboard') }}
                         </a>
                         <a href="{{ route('financial.dashboard') }}" class="btn-apple-outline" style="margin-left: var(--space-sm);">
-                            Financial
+                            {{ __('common.reports') }}
                         </a>
                     </div>
                 </div>
@@ -1192,23 +1221,23 @@
 
                 <!-- Quick Links -->
                 <div>
-                    <h6 style="color: var(--apple-white); font-weight: 600; margin-bottom: var(--space-lg);">Quick Links</h6>
+                    <h6 style="color: var(--apple-white); font-weight: 600; margin-bottom: var(--space-lg);">{{ __('dental.quick_links') }}</h6>
                     <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
-                        <a href="{{ route('home') }}" class="nav-link-apple">Home</a>
-                        <a href="{{ route('about') }}" class="nav-link-apple">About</a>
-                        <a href="{{ route('services') }}" class="nav-link-apple">Services</a>
-                        <a href="{{ route('contact') }}" class="nav-link-apple">Contact</a>
+                        <a href="{{ route('home') }}" class="nav-link-apple">{{ __('common.home') }}</a>
+                        <a href="{{ route('about') }}" class="nav-link-apple">{{ __('common.about') }}</a>
+                        <a href="{{ route('services') }}" class="nav-link-apple">{{ __('common.services') }}</a>
+                        <a href="{{ route('contact') }}" class="nav-link-apple">{{ __('common.contact') }}</a>
                     </div>
                 </div>
 
                 <!-- Services -->
                 <div>
-                    <h6 style="color: var(--apple-white); font-weight: 600; margin-bottom: var(--space-lg);">Services</h6>
+                    <h6 style="color: var(--apple-white); font-weight: 600; margin-bottom: var(--space-lg);">{{ __('common.services') }}</h6>
                     <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
-                        <a href="{{ route('patients') }}" class="nav-link-apple">Patient Database</a>
-                        <a href="{{ route('financial.dashboard') }}" class="nav-link-apple">Financial Reports</a>
-                        <a href="/admin" class="nav-link-apple">Admin Panel</a>
-                        <a href="#appointment" class="nav-link-apple">Book Appointment</a>
+                        <a href="{{ route('patients') }}" class="nav-link-apple">{{ __('dental.patient_management') }}</a>
+                        <a href="{{ route('financial.dashboard') }}" class="nav-link-apple">{{ __('dental.financial_reports') }}</a>
+                        <a href="/admin" class="nav-link-apple">{{ __('common.dashboard') }}</a>
+                        <a href="#appointment" class="nav-link-apple">{{ __('dental.book_appointment') }}</a>
                     </div>
                 </div>
 
@@ -1429,6 +1458,31 @@
 
         document.addEventListener('mousedown', function() {
             document.body.classList.remove('keyboard-navigation');
+        });
+
+        // Language switcher dropdown
+        function toggleDropdown(button) {
+            const dropdown = button.nextElementSibling;
+            const isVisible = dropdown.style.display === 'block';
+            
+            // Close all dropdowns first
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+            
+            // Toggle current dropdown
+            if (!isVisible) {
+                dropdown.style.display = 'block';
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
         });
 
         // Enhanced error handling

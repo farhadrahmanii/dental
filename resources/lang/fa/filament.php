@@ -1,0 +1,122 @@
+<?php
+
+return [
+    // Filament Navigation
+    'dashboard' => 'داشبورد',
+    'patients' => 'بیماران',
+    'invoices' => 'فاکتورها',
+    'payments' => 'پرداخت‌ها',
+    'services' => 'خدمات',
+    'appointments' => 'قرارها',
+    'reports' => 'گزارشات',
+    'settings' => 'تنظیمات',
+    
+    // Filament Actions
+    'create' => 'ایجاد',
+    'edit' => 'ویرایش',
+    'delete' => 'حذف',
+    'view' => 'مشاهده',
+    'save' => 'ذخیره',
+    'cancel' => 'لغو',
+    'submit' => 'ارسال',
+    'back' => 'بازگشت',
+    'next' => 'بعدی',
+    'previous' => 'قبلی',
+    'close' => 'بستن',
+    'open' => 'باز کردن',
+    'search' => 'جستجو',
+    'filter' => 'فیلتر',
+    'export' => 'صادرات',
+    'import' => 'واردات',
+    'print' => 'چاپ',
+    'download' => 'دانلود',
+    'upload' => 'آپلود',
+    
+    // Filament Status
+    'active' => 'فعال',
+    'inactive' => 'غیرفعال',
+    'pending' => 'در انتظار',
+    'completed' => 'تکمیل شده',
+    'cancelled' => 'لغو شده',
+    'paid' => 'پرداخت شده',
+    'unpaid' => 'پرداخت نشده',
+    'overdue' => 'پرداخت نشده',
+    
+    // Filament Messages
+    'success' => 'موفقیت',
+    'error' => 'خطا',
+    'warning' => 'هشدار',
+    'info' => 'اطلاعات',
+    'loading' => 'در حال بارگذاری...',
+    'no_data' => 'داده‌ای موجود نیست',
+    'no_results' => 'نتیجه‌ای یافت نشد',
+    'please_wait' => 'لطفاً صبر کنید...',
+    
+    // Filament Forms
+    'name' => 'نام',
+    'email' => 'ایمیل',
+    'phone' => 'تلفن',
+    'address' => 'آدرس',
+    'date' => 'تاریخ',
+    'time' => 'زمان',
+    'amount' => 'مبلغ',
+    'description' => 'توضیحات',
+    'notes' => 'یادداشت‌ها',
+    'status' => 'وضعیت',
+    'type' => 'نوع',
+    'category' => 'دسته‌بندی',
+    'price' => 'قیمت',
+    'quantity' => 'تعداد',
+    'total' => 'کل',
+    'subtotal' => 'جمع جزء',
+    'tax' => 'مالیات',
+    'discount' => 'تخفیف',
+    
+    // Filament Validation
+    'required' => 'این فیلد الزامی است',
+    'invalid_email' => 'لطفاً یک ایمیل معتبر وارد کنید',
+    'invalid_phone' => 'لطفاً یک شماره تلفن معتبر وارد کنید',
+    'min_length' => 'این فیلد باید حداقل :min کاراکتر داشته باشد',
+    'max_length' => 'این فیلد نباید بیش از :max کاراکتر داشته باشد',
+    'numeric' => 'این فیلد باید عددی باشد',
+    'unique' => 'این مقدار قبلاً وجود دارد',
+    
+    // Filament Tables
+    'actions' => 'اقدامات',
+    'created_at' => 'تاریخ ایجاد',
+    'updated_at' => 'تاریخ به‌روزرسانی',
+    'id' => 'شناسه',
+    'no_records' => 'رکوردی یافت نشد',
+    'showing' => 'نمایش',
+    'to' => 'تا',
+    'of' => 'از',
+    'results' => 'نتایج',
+    'per_page' => 'در هر صفحه',
+    'all' => 'همه',
+    
+    // Filament Resources
+    'patient' => 'بیمار',
+    'invoice' => 'فاکتور',
+    'payment' => 'پرداخت',
+    'service' => 'خدمت',
+    'appointment' => 'قرار',
+    'user' => 'کاربر',
+    
+    // Filament Pages
+    'list' => 'لیست',
+    'create_new' => 'ایجاد جدید',
+    'edit_record' => 'ویرایش رکورد',
+    'view_record' => 'مشاهده رکورد',
+    'delete_record' => 'حذف رکورد',
+    'bulk_actions' => 'اقدامات گروهی',
+    'select_all' => 'انتخاب همه',
+    'deselect_all' => 'لغو انتخاب همه',
+    
+    // Filament Widgets
+    'overview' => 'نمای کلی',
+    'statistics' => 'آمار',
+    'chart' => 'نمودار',
+    'table' => 'جدول',
+    'recent_activity' => 'فعالیت‌های اخیر',
+    'quick_actions' => 'اقدامات سریع',
+];

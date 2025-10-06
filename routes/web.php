@@ -7,6 +7,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\LanguageController;
 
 // Frontend routes for dental practice
 Route::get('/', [DentalController::class, 'home'])->name('home');
@@ -38,6 +39,9 @@ Route::post('services/{service}/toggle-status', [ServiceController::class, 'togg
 
 // Appointment Routes
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+
+// Language switching route
+Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
 Route::get('/api/appointments/time-slots', [AppointmentController::class, 'getAvailableTimeSlots'])->name('api.appointments.time-slots');
 Route::get('/api/services', [AppointmentController::class, 'getServices'])->name('api.services');
 Route::get('/api/appointments/calendar', [AppointmentController::class, 'calendar'])->name('api.appointments.calendar');

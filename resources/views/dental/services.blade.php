@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Dental Services - DentalCare Pro')
-@section('description', 'Comprehensive dental services including general dentistry, cosmetic procedures, implants, and emergency care.')
+@section('title', __('dental.our_services') . ' - ' . __('dental.app_name'))
+@section('description', __('dental.services_subtitle'))
 
 @section('content')
 <!-- Apple-style Page Header -->
 <section class="section-apple-sm" style="background: var(--surface);">
     <div class="container-apple">
         <div class="text-center">
-            <h1 class="display-medium mb-3">Our Dental Services</h1>
+            <h1 class="display-medium mb-3">{{ __('dental.our_services') }}</h1>
             <p class="body-large" style="color: var(--text-secondary); max-width: 600px; margin-left: auto; margin-right: auto;">
-                Comprehensive dental care with modern technology and experienced professionals
+                {{ __('dental.services_subtitle') }}
             </p>
         </div>
     </div>
@@ -27,26 +27,26 @@
                         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
-                <h3 class="title-large mb-3">General Dentistry</h3>
+                <h3 class="title-large mb-3">{{ __('dental.general_dentistry') }}</h3>
                 <p class="body-medium mb-4" style="color: var(--text-secondary);">
-                    Comprehensive oral health care including cleanings, fillings, root canals, and preventive treatments to maintain your dental health.
+                    {{ __('dental.general_dentistry_desc') }}
                 </p>
                 <ul style="list-style: none; padding: 0; text-align: left;">
                     <li style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                         <div style="width: 6px; height: 6px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-medium">Regular Checkups</span>
+                        <span class="body-medium">{{ __('dental.regular_checkups') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                         <div style="width: 6px; height: 6px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-medium">Teeth Cleaning</span>
+                        <span class="body-medium">{{ __('dental.teeth_cleaning') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                         <div style="width: 6px; height: 6px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-medium">Fillings & Crowns</span>
+                        <span class="body-medium">{{ __('dental.fillings_crowns') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                         <div style="width: 6px; height: 6px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-medium">Root Canal Therapy</span>
+                        <span class="body-medium">{{ __('dental.root_canal_therapy') }}</span>
                     </li>
                 </ul>
             </div>

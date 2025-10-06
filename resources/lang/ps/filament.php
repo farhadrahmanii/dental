@@ -1,0 +1,122 @@
+<?php
+
+return [
+    // Filament Navigation
+    'dashboard' => 'ډشبورډ',
+    'patients' => 'ناروغان',
+    'invoices' => 'رسیدونه',
+    'payments' => 'پیسې',
+    'services' => 'خدمات',
+    'appointments' => 'نېټې',
+    'reports' => 'راپورونه',
+    'settings' => 'تنظیمات',
+    
+    // Filament Actions
+    'create' => 'جوړول',
+    'edit' => 'سمون',
+    'delete' => 'ړنګول',
+    'view' => 'کتل',
+    'save' => 'ساتل',
+    'cancel' => 'لغوه کول',
+    'submit' => 'سپارل',
+    'back' => 'شاته',
+    'next' => 'راتلونکی',
+    'previous' => 'پخوانی',
+    'close' => 'تړل',
+    'open' => 'پرانیستل',
+    'search' => 'لټون',
+    'filter' => 'فلټر',
+    'export' => 'صادرول',
+    'import' => 'واردول',
+    'print' => 'چاپول',
+    'download' => 'ډاونلوډ',
+    'upload' => 'اپلوډ',
+    
+    // Filament Status
+    'active' => 'فعال',
+    'inactive' => 'غیر فعال',
+    'pending' => 'انتظار کې',
+    'completed' => 'بشپړ شوی',
+    'cancelled' => 'لغوه شوی',
+    'paid' => 'ورکړل شوی',
+    'unpaid' => 'ورکړل نه شوی',
+    'overdue' => 'ورکړل شوی',
+    
+    // Filament Messages
+    'success' => 'بریالیتوب',
+    'error' => 'تیروتنه',
+    'warning' => 'خبرداری',
+    'info' => 'معلومات',
+    'loading' => 'بار کېږي...',
+    'no_data' => 'کوم معلومات نشته',
+    'no_results' => 'کوم پایلې ونه موندل شوې',
+    'please_wait' => 'مهرباني وکړئ انتظار وکړئ...',
+    
+    // Filament Forms
+    'name' => 'نوم',
+    'email' => 'بریښنالیک',
+    'phone' => 'تلیفون',
+    'address' => 'پته',
+    'date' => 'نیټه',
+    'time' => 'وخت',
+    'amount' => 'مقدار',
+    'description' => 'توضیحات',
+    'notes' => 'یادښتونه',
+    'status' => 'حالت',
+    'type' => 'ډول',
+    'category' => 'کټګوري',
+    'price' => 'قیمت',
+    'quantity' => 'مقدار',
+    'total' => 'ټول',
+    'subtotal' => 'فرعي مجموع',
+    'tax' => 'مالیه',
+    'discount' => 'تخفیف',
+    
+    // Filament Validation
+    'required' => 'دا ډګر اړین دی',
+    'invalid_email' => 'مهرباني وکړئ سم بریښنالیک ولیکئ',
+    'invalid_phone' => 'مهرباني وکړئ سم تلیفون شمیره ولیکئ',
+    'min_length' => 'دا ډګر باید لږ تر لږه :min حروف ولري',
+    'max_length' => 'دا ډګر باید له :max حروفو څخه زیات نه وي',
+    'numeric' => 'دا ډګر باید شمیرې وي',
+    'unique' => 'دا ارزښت دمخه شته',
+    
+    // Filament Tables
+    'actions' => 'کړنې',
+    'created_at' => 'د جوړولو نیټه',
+    'updated_at' => 'د تازه کولو نیټه',
+    'id' => 'آی ډي',
+    'no_records' => 'کوم ریکارډ ونه موندل شو',
+    'showing' => 'ښودل کېږي',
+    'to' => 'ته',
+    'of' => 'د',
+    'results' => 'پایلې',
+    'per_page' => 'په هر پاڼه کې',
+    'all' => 'ټول',
+    
+    // Filament Resources
+    'patient' => 'ناروغ',
+    'invoice' => 'رسید',
+    'payment' => 'پیسې',
+    'service' => 'خدمت',
+    'appointment' => 'نېټه',
+    'user' => 'کارن',
+    
+    // Filament Pages
+    'list' => 'لیست',
+    'create_new' => 'نوی جوړ کړئ',
+    'edit_record' => 'ریکارډ سمون',
+    'view_record' => 'ریکارډ وګورئ',
+    'delete_record' => 'ریکارډ ړنګ کړئ',
+    'bulk_actions' => 'د ډیرو کړنو',
+    'select_all' => 'ټول غوره کړئ',
+    'deselect_all' => 'ټول لغوه کړئ',
+    
+    // Filament Widgets
+    'overview' => 'کتنه',
+    'statistics' => 'احصائیه',
+    'chart' => 'ګراف',
+    'table' => 'میز',
+    'recent_activity' => 'وروستي فعالیت',
+    'quick_actions' => 'د ژرتیا کړنې',
+];
