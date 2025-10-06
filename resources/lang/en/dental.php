@@ -349,4 +349,98 @@ return [
     'all_rights_reserved' => 'All rights reserved.',
     'privacy_policy' => 'Privacy Policy',
     'terms_conditions' => 'Terms & Conditions',
+    
+    // Services Preview Section
+    'comprehensive_dental_services' => 'Comprehensive Dental Services',
+    'services_preview_subtitle' => 'From routine checkups to advanced procedures, we provide complete dental care',
+    'general_dentistry_desc' => 'Comprehensive oral health care including cleanings, fillings, and preventive treatments.',
+    'cosmetic_dentistry_desc' => 'Transform your smile with whitening, veneers, and advanced cosmetic procedures.',
+    'implant_dentistry' => 'Implant Dentistry',
+    'implant_dentistry_desc' => 'Replace missing teeth with durable, natural-looking dental implants.',
+    'learn_more' => 'Learn More',
+    'view_all_services' => 'View All Services',
+    
+    // Patient Database Section
+    'advanced_patient_management' => 'Advanced Patient Management',
+    'patient_management_subtitle' => 'Our comprehensive patient database system ensures efficient care delivery',
+    'patient_records' => 'Patient Records',
+    'patient_records_desc' => 'Complete digital patient profiles',
+    'medical_history_tracking' => 'Medical history tracking',
+    'treatment_plan_management' => 'Treatment plan management',
+    'progress_monitoring' => 'Progress monitoring',
+    'digital_imaging_desc' => 'Advanced X-ray management',
+    'digital_xray_storage' => 'Digital X-ray storage',
+    'unique_identification_system' => 'Unique identification system',
+    'easy_retrieval_system' => 'Easy retrieval system',
+    'explore_patient_database' => 'Explore Patient Database',
+    
+    // Testimonials Section
+    'testimonials_subtitle' => 'Real experiences from our satisfied patients',
+    'testimonial_1' => 'DentalCare Pro transformed my smile completely. The staff is professional, the technology is amazing, and the results exceeded my expectations.',
+    'testimonial_2' => 'The dental implant procedure was seamless and pain-free. The team\'s expertise and modern equipment made all the difference.',
+    'testimonial_3' => 'From routine cleanings to cosmetic procedures, DentalCare Pro has been my go-to dental clinic. The staff is friendly and professional.',
+    'sarah_johnson' => 'Sarah Johnson',
+    'business_owner' => 'Business Owner',
+    'michael_chen' => 'Michael Chen',
+    'engineer' => 'Engineer',
+    'emily_rodriguez' => 'Emily Rodriguez',
+    'teacher' => 'Teacher',
+    
+    // Call to Action Section
+    'ready_transform_smile' => 'Ready to Transform Your Smile?',
+    'cta_subtitle' => 'Schedule your consultation today and let our experienced team create the perfect treatment plan for your dental needs.',
+    'book_appointment' => 'Book Appointment',
+    'contact_us' => 'Contact Us',
+    
+    // Services Page - Cosmetic Dentistry
+    'cosmetic_dentistry_desc_full' => 'Transform your smile with our advanced cosmetic procedures including whitening, veneers, and smile makeovers.',
+    'teeth_whitening' => 'Teeth Whitening',
+    'porcelain_veneers' => 'Porcelain Veneers',
+    'smile_makeover' => 'Smile Makeover',
+    'bonding' => 'Bonding',
+    
+    // Services Page - Implant Dentistry
+    'implant_dentistry_desc_full' => 'Replace missing teeth with durable, natural-looking dental implants that restore both function and aesthetics.',
+    'single_implants' => 'Single Implants',
+    'multiple_implants' => 'Multiple Implants',
+    'full_mouth_restoration' => 'Full Mouth Restoration',
+    'implant_crowns' => 'Implant Crowns',
+    
+    // Services Page - Orthodontic Treatment
+    'orthodontic_treatment' => 'Orthodontic Treatment',
+    'orthodontic_desc' => 'Straighten teeth and correct bite issues with traditional braces, clear aligners, and modern orthodontic solutions.',
+    'traditional_braces' => 'Traditional Braces',
+    'clear_aligners' => 'Clear Aligners',
+    'invisalign' => 'Invisalign',
+    'retainers' => 'Retainers',
+    
+    // Services Page - Emergency Care
+    'emergency_care_desc' => '24/7 emergency dental care for urgent situations including severe pain, broken teeth, and dental trauma.',
+    'tooth_pain_relief' => 'Tooth Pain Relief',
+    'broken_tooth_repair' => 'Broken Tooth Repair',
+    'lost_filling_crown' => 'Lost Filling/Crown',
+    'dental_trauma' => 'Dental Trauma',
+    
+    // Services Page - Digital Imaging
+    'digital_imaging_desc_full' => 'Advanced digital X-rays and 3D imaging for accurate diagnosis and treatment planning with minimal radiation exposure.',
+    'digital_xrays' => 'Digital X-Rays',
+    '3d_imaging' => '3D Imaging',
+    'panoramic_views' => 'Panoramic Views',
+    'low_radiation' => 'Low Radiation',
+    
+    // Services Page - Technology Section
+    'state_of_art_equipment' => 'State-of-the-Art Equipment',
+    'technology_desc' => 'We invest in the latest dental technology to provide you with the most accurate diagnoses and effective treatments available.',
+    'digital_xray_units' => 'Digital X-Ray Units',
+    'laser_systems' => 'Laser Systems',
+    
+    // Services Page - Process Section
+    'how_we_care' => 'How We Care For You',
+    'process_desc' => 'Our comprehensive process ensures you receive the best possible dental care from consultation to follow-up.',
+    'initial_consultation' => 'Initial Consultation & Examination',
+    'digital_imaging_diagnosis' => 'Digital Imaging & Diagnosis',
+    'customized_treatment_plan' => 'Customized Treatment Plan',
+    'professional_treatment_delivery' => 'Professional Treatment Delivery',
+    'follow_up_care' => 'Follow-up Care & Maintenance',
+    'book_consultation' => 'Book Consultation',
 ];

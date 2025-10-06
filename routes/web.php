@@ -24,14 +24,15 @@ Route::prefix('financial')->name('financial.')->group(function () {
     Route::get('/cash-flow', [FinancialController::class, 'cashFlow'])->name('cash-flow');
 });
 
-// Invoice Routes
-Route::resource('invoices', InvoiceController::class);
-Route::post('invoices/{invoice}/mark-sent', [InvoiceController::class, 'markAsSent'])->name('invoices.mark-sent');
-Route::get('invoices/{invoice}/print', [InvoiceController::class, 'print'])->name('invoices.print');
+// Invoice Routes - Hidden for later implementation
+// Route::resource('invoices', InvoiceController::class);
+// Route::post('invoices/{invoice}/mark-sent', [InvoiceController::class, 'markAsSent'])->name('invoices.mark-sent');
+// Route::get('invoices/{invoice}/print', [InvoiceController::class, 'print'])->name('invoices.print');
 
 // Payment Routes
 Route::resource('payments', PaymentController::class);
-Route::get('api/patient-invoices', [PaymentController::class, 'getPatientInvoices'])->name('api.patient-invoices');
+// Invoice-related API route hidden for later implementation
+// Route::get('api/patient-invoices', [PaymentController::class, 'getPatientInvoices'])->name('api.patient-invoices');
 
 // Service Routes
 Route::resource('services', ServiceController::class);

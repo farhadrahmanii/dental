@@ -5,7 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Patient;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\TextInput;
+use Filament\Schemas\Components\Select;
+use Filament\Schemas\Components\Textarea;
+use Filament\Schemas\Components\RichEditor;
+use Filament\Schemas\Components\FileUpload;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
@@ -32,21 +37,21 @@ class PatientResource extends Resource
                 Section::make('Patient Information')
                     ->columns(2)
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->label('Name')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('father_name')
+                        TextInput::make('father_name')
                             ->label('Father Name')
                             ->maxLength(255),
-                        Forms\Components\Select::make('sex')
+                        Select::make('sex')
                             ->label('Sex')
                             ->options([
                                 'male' => 'Male',
                                 'female' => 'Female',
                                 'other' => 'Other',
                             ]),
-                        Forms\Components\TextInput::make('age')
+                        TextInput::make('age')
                             ->label('Age')
                             ->numeric()
                             ->minValue(0)
@@ -56,14 +61,14 @@ class PatientResource extends Resource
                 Section::make('Case Details')
                     ->columns(2)
                     ->schema([
-                        Forms\Components\TextInput::make('x_ray_id')
+                        TextInput::make('x_ray_id')
                             ->label('X-ray ID')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('doctor_name')
+                        TextInput::make('doctor_name')
                             ->label('Doctor Name')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('treatment')
+                        Textarea::make('treatment')
                             ->label('Treatment')
                             ->columnSpanFull(),
                         CanvasPointerField::make('diagnosis')
@@ -72,10 +77,10 @@ class PatientResource extends Resource
                             ->storageDirectory('canvas-pointer')
                             ->pointRadius(6)
                             ->columnSpanFull(),
-                        Forms\Components\RichEditor::make('comment')
+                        RichEditor::make('comment')
                             ->label('Comment')
                             ->columnSpanFull(),
-                        Forms\Components\FileUpload::make('images')
+                        FileUpload::make('images')
                             ->label('Images')
                             ->disk('public')
                             ->directory('patients')

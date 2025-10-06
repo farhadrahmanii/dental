@@ -39,13 +39,8 @@ class PaymentController extends Controller
     public function create(Request $request)
     {
         $patients = Patient::all();
+        // Invoice functionality hidden for later implementation
         $invoices = collect();
-        
-        if ($request->has('patient_id')) {
-            $invoices = Invoice::where('patient_id', $request->patient_id)
-                ->where('status', '!=', 'paid')
-                ->get();
-        }
         
         return view('financial.payments.create', compact('patients', 'invoices'));
     }
@@ -53,7 +48,8 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'invoice_id' => 'required|exists:invoices,id',
+            // Invoice functionality hidden for later implementation
+            // 'invoice_id' => 'required|exists:invoices,id',
             'patient_id' => 'required|exists:patients,register_id',
             'amount' => 'required|numeric|min:0.01',
             'payment_method' => 'required|in:cash,card,bank_transfer,check,other',
@@ -62,19 +58,12 @@ class PaymentController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        $invoice = Invoice::findOrFail($request->invoice_id);
+        // Invoice functionality hidden for later implementation
+        // $invoice = Invoice::findOrFail($request->invoice_id);
         
-        // Check if payment amount exceeds invoice balance
-        $currentPaidAmount = $invoice->payments()->sum('amount');
-        $remainingBalance = $invoice->total_amount - $currentPaidAmount;
-        
-        if ($request->amount > $remainingBalance) {
-            return back()->withErrors(['amount' => 'Payment amount cannot exceed invoice balance.'])
-                ->withInput();
-        }
-
+        // For now, create payments without invoice association
         $payment = Payment::create([
-            'invoice_id' => $request->invoice_id,
+            'invoice_id' => null, // Will be set when invoice functionality is restored
             'patient_id' => $request->patient_id,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
@@ -83,14 +72,6 @@ class PaymentController extends Controller
             'notes' => $request->notes,
             'created_by' => Auth::id(),
         ]);
-
-        // Update invoice status if fully paid
-        $newPaidAmount = $currentPaidAmount + $request->amount;
-        if ($newPaidAmount >= $invoice->total_amount) {
-            $invoice->update(['status' => 'paid']);
-        } else {
-            $invoice->update(['status' => 'sent']);
-        }
 
         return redirect()->route('payments.show', $payment)
             ->with('success', 'Payment recorded successfully.');
@@ -106,9 +87,8 @@ class PaymentController extends Controller
     public function edit(Payment $payment)
     {
         $patients = Patient::all();
-        $invoices = Invoice::where('patient_id', $payment->patient_id)
-            ->where('status', '!=', 'paid')
-            ->get();
+        // Invoice functionality hidden for later implementation
+        $invoices = collect();
         
         return view('financial.payments.edit', compact('payment', 'patients', 'invoices'));
     }
@@ -116,7 +96,8 @@ class PaymentController extends Controller
     public function update(Request $request, Payment $payment)
     {
         $request->validate([
-            'invoice_id' => 'required|exists:invoices,id',
+            // Invoice functionality hidden for later implementation
+            // 'invoice_id' => 'required|exists:invoices,id',
             'patient_id' => 'required|exists:patients,register_id',
             'amount' => 'required|numeric|min:0.01',
             'payment_method' => 'required|in:cash,card,bank_transfer,check,other',
@@ -125,19 +106,11 @@ class PaymentController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        $invoice = Invoice::findOrFail($request->invoice_id);
-        
-        // Calculate remaining balance excluding current payment
-        $otherPayments = $invoice->payments()->where('id', '!=', $payment->id)->sum('amount');
-        $remainingBalance = $invoice->total_amount - $otherPayments;
-        
-        if ($request->amount > $remainingBalance) {
-            return back()->withErrors(['amount' => 'Payment amount cannot exceed invoice balance.'])
-                ->withInput();
-        }
+        // Invoice functionality hidden for later implementation
+        // $invoice = Invoice::findOrFail($request->invoice_id);
 
         $payment->update([
-            'invoice_id' => $request->invoice_id,
+            'invoice_id' => null, // Will be set when invoice functionality is restored
             'patient_id' => $request->patient_id,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
@@ -146,35 +119,30 @@ class PaymentController extends Controller
             'notes' => $request->notes,
         ]);
 
-        // Update invoice status
-        $totalPaidAmount = $invoice->payments()->sum('amount');
-        if ($totalPaidAmount >= $invoice->total_amount) {
-            $invoice->update(['status' => 'paid']);
-        } else {
-            $invoice->update(['status' => 'sent']);
-        }
-
         return redirect()->route('payments.show', $payment)
             ->with('success', 'Payment updated successfully.');
     }
 
     public function destroy(Payment $payment)
     {
-        $invoice = $payment->invoice;
+        // Invoice functionality hidden for later implementation
+        // $invoice = $payment->invoice;
         $payment->delete();
         
-        // Update invoice status
-        $totalPaidAmount = $invoice->payments()->sum('amount');
-        if ($totalPaidAmount >= $invoice->total_amount) {
-            $invoice->update(['status' => 'paid']);
-        } else {
-            $invoice->update(['status' => 'sent']);
-        }
+        // Invoice status update functionality hidden for later implementation
+        // $totalPaidAmount = $invoice->payments()->sum('amount');
+        // if ($totalPaidAmount >= $invoice->total_amount) {
+        //     $invoice->update(['status' => 'paid']);
+        // } else {
+        //     $invoice->update(['status' => 'sent']);
+        // }
         
         return redirect()->route('payments.index')
             ->with('success', 'Payment deleted successfully.');
     }
 
+    // Invoice-related API method hidden for later implementation
+    /*
     public function getPatientInvoices(Request $request)
     {
         $invoices = Invoice::where('patient_id', $request->patient_id)
@@ -183,4 +151,5 @@ class PaymentController extends Controller
         
         return response()->json($invoices);
     }
+    */
 }

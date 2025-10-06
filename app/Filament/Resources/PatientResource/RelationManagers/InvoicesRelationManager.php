@@ -18,6 +18,12 @@ class InvoicesRelationManager extends RelationManager
 
     protected static ?string $pluralModelLabel = 'Invoices';
 
+    // Hidden from navigation for later implementation
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema

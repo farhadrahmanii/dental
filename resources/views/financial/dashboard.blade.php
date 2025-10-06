@@ -95,7 +95,8 @@
                 </div>
             </div>
 
-            <!-- Outstanding Invoices -->
+            <!-- Outstanding Invoices - Hidden for later implementation -->
+            <!-- 
             <div class="card-apple-elevated">
                 <div style="padding: var(--space-xl);">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-lg);">
@@ -122,6 +123,7 @@
                     </div>
                 </div>
             </div>
+            -->
 
             <!-- Payment Methods -->
             <div class="card-apple-elevated">
@@ -217,7 +219,8 @@
 
             <!-- Sidebar -->
             <div>
-                <!-- Overdue Invoices -->
+                <!-- Overdue Invoices - Hidden for later implementation -->
+                <!--
                 <div class="card-apple-elevated" style="margin-bottom: var(--space-lg);">
                     <div style="padding: var(--space-xl);">
                         <h3 class="title-large mb-4">{{ __('financial.overdue_invoices') }}</h3>
@@ -247,6 +250,7 @@
                         @endif
                     </div>
                 </div>
+                -->
 
                 <!-- Top Services -->
                 <div class="card-apple-elevated">
@@ -284,7 +288,9 @@
             </p>
         </div>
         
-        <div class="grid-apple grid-apple-4">
+        <div class="grid-apple grid-apple-3">
+            <!-- Invoice creation hidden for later implementation -->
+            <!--
             <a href="{{ route('invoices.create') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
@@ -300,6 +306,7 @@
                     {{ __('financial.generate_new_invoice') }}
                 </p>
             </a>
+            -->
             
             <a href="{{ route('payments.create') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #34C759 0%, #30A46C 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">

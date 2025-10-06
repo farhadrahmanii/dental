@@ -17,14 +17,9 @@ class FinancialController extends Controller
         $todayRevenue = FinancialReport::getDailyRevenue() ?? 0;
         $monthlyRevenue = FinancialReport::getMonthlyRevenue() ?? 0;
         
-        // Get outstanding invoices total amount (numeric value)
-        $outstandingInvoicesTotal = Invoice::where('status', '!=', 'paid')
-            ->sum('total_amount') ?? 0;
-        
-        // Get outstanding invoices collection for display
-        $outstandingInvoices = Invoice::where('status', '!=', 'paid')
-            ->with('patient')
-            ->get();
+        // Invoice-related data hidden for later implementation
+        $outstandingInvoicesTotal = 0; // Invoice::where('status', '!=', 'paid')->sum('total_amount') ?? 0;
+        $outstandingInvoices = collect(); // Invoice::where('status', '!=', 'paid')->with('patient')->get();
         
         // Get payment methods summary with fallback
         $paymentMethodsSummary = FinancialReport::getPaymentMethodsSummary() ?? collect();
@@ -38,11 +33,8 @@ class FinancialController extends Controller
             ->limit(10)
             ->get();
         
-        // Get overdue invoices
-        $overdueInvoices = Invoice::where('status', '!=', 'paid')
-            ->where('due_date', '<', now())
-            ->with('patient')
-            ->get();
+        // Invoice-related data hidden for later implementation
+        $overdueInvoices = collect(); // Invoice::where('status', '!=', 'paid')->where('due_date', '<', now())->with('patient')->get();
         
         return view('financial.dashboard', compact(
             'todayRevenue',
