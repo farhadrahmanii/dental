@@ -30,9 +30,35 @@ class DentalController extends Controller
         return view('dental.contact');
     }
 
-    public function patients()
+    public function patients(Request $request)
     {
-        $patients = Patient::latest()->paginate(12);
+        $query = Patient::query();
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $searchTerm = $request->get('search');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('father_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('register_id', 'like', "%{$searchTerm}%")
+                  ->orWhere('doctor_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('treatment', 'like', "%{$searchTerm}%")
+                  ->orWhere('x_ray_id', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        // Doctor filter
+        if ($request->filled('doctor')) {
+            $query->where('doctor_name', $request->get('doctor'));
+        }
+
+        // Treatment filter
+        if ($request->filled('treatment')) {
+            $query->where('treatment', $request->get('treatment'));
+        }
+
+        $patients = $query->latest()->paginate(12)->withQueryString();
+        
         return view('dental.patients', compact('patients'));
     }
 

@@ -5,14 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Patient;
 use Filament\Forms;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\TextInput;
-use Filament\Schemas\Components\Select;
-use Filament\Schemas\Components\Textarea;
-use Filament\Schemas\Components\RichEditor;
-use Filament\Schemas\Components\FileUpload;
-use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\FileUpload;
 use Filament\Schemas\Schema;
+use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\ViewAction;
@@ -33,7 +33,7 @@ class PatientResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->components([
+            ->schema([
                 Section::make('Patient Information')
                     ->columns(2)
                     ->schema([
@@ -151,8 +151,9 @@ class PatientResource extends Resource
     public static function getRelations(): array
     {
         return [
-            \App\Filament\Resources\PatientResource\RelationManagers\InvoicesRelationManager::class,
-            \App\Filament\Resources\PatientResource\RelationManagers\PaymentsRelationManager::class,
+            // Temporarily disabled due to Filament v4 compatibility issues
+            // \App\Filament\Resources\PatientResource\RelationManagers\InvoicesRelationManager::class,
+            // \App\Filament\Resources\PatientResource\RelationManagers\PaymentsRelationManager::class,
         ];
     }
 

@@ -42,15 +42,15 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <!-- Invoice selection hidden for later implementation -->
-                                <!--
+                                {{-- Invoice selection hidden for later implementation --}}
+                                {{--
                                 <div class="mb-3">
                                     <label for="invoice_id" class="form-label">Invoice <span class="text-danger">*</span></label>
                                     <select name="invoice_id" id="invoice_id" class="form-select @error('invoice_id') is-invalid @enderror" required>
                                         <option value="">Select Invoice</option>
                                         @foreach($invoices as $invoice)
                                         <option value="{{ $invoice->id }}" data-balance="{{ $invoice->balance }}">
-                                            {{ $invoice->invoice_number }} - ${{ number_format($invoice->balance, 2) }} remaining
+                                            {{ $invoice->invoice_number }} - {{ \App\Helpers\CurrencyHelper::format($invoice->balance) }} remaining
                                         </option>
                                         @endforeach
                                     </select>
@@ -58,7 +58,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                -->
+                                --}}
                         </div>
                         
                         <div class="row">
@@ -119,8 +119,8 @@
             </div>
 
             <div class="col-md-4">
-                <!-- Invoice Summary - Hidden for later implementation -->
-                <!--
+                {{-- Invoice Summary - Hidden for later implementation --}}
+                {{--
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Invoice Summary</h5>
@@ -130,21 +130,21 @@
                             <strong>Invoice Number:</strong> <span id="invoice-number"></span>
                         </div>
                         <div class="mb-2">
-                            <strong>Total Amount:</strong> $<span id="invoice-total"></span>
+                            <strong>Total Amount:</strong> {{ \App\Helpers\CurrencyHelper::symbol() }}<span id="invoice-total"></span>
                         </div>
                         <div class="mb-2">
-                            <strong>Paid Amount:</strong> $<span id="invoice-paid"></span>
+                            <strong>Paid Amount:</strong> {{ \App\Helpers\CurrencyHelper::symbol() }}<span id="invoice-paid"></span>
                         </div>
                         <div class="mb-2">
-                            <strong>Remaining Balance:</strong> $<span id="invoice-balance"></span>
+                            <strong>Remaining Balance:</strong> {{ \App\Helpers\CurrencyHelper::symbol() }}<span id="invoice-balance"></span>
                         </div>
                         <hr>
                         <div class="alert alert-info">
-                            <small>Maximum payment amount: $<span id="max-payment"></span></small>
+                            <small>Maximum payment amount: {{ \App\Helpers\CurrencyHelper::symbol() }}<span id="max-payment"></span></small>
                         </div>
                     </div>
                 </div>
-                -->
+                --}}
 
                 <!-- Actions -->
                 <div class="card mt-4">
@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     invoices.forEach(invoice => {
                         const option = document.createElement('option');
                         option.value = invoice.id;
-                        option.textContent = `${invoice.invoice_number} - $${parseFloat(invoice.balance).toFixed(2)} remaining`;
+                        option.textContent = `${invoice.invoice_number} - {{ \App\Helpers\CurrencyHelper::symbol() }}${parseFloat(invoice.balance).toFixed(2)} remaining`;
                         option.dataset.balance = invoice.balance;
                         invoiceSelect.appendChild(option);
                     });
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentAmount = parseFloat(this.value);
         
         if (currentAmount > maxAmount) {
-            this.setCustomValidity(`Amount cannot exceed $${maxAmount.toFixed(2)}`);
+            this.setCustomValidity(`Amount cannot exceed {{ \App\Helpers\CurrencyHelper::symbol() }}${maxAmount.toFixed(2)}`);
         } else {
             this.setCustomValidity('');
         }

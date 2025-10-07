@@ -6,6 +6,23 @@ return [
     'comprehensive_overview' => 'Comprehensive financial overview with revenue analytics and business insights',
     'reports' => 'Reports',
     'cash_flow' => 'Cash Flow',
+    'cash_flow_description' => 'Monitor cash payments and daily cash flow trends',
+    
+    // Cash Flow specific translations
+    'total_cash_payments' => 'Total Cash Payments',
+    'average_daily_cash' => 'Average Daily Cash',
+    'cash_transactions' => 'Cash Transactions',
+    'daily_cash_flow' => 'Daily Cash Flow',
+    'recent_cash_payments' => 'Recent Cash Payments',
+    'last_30_days' => 'Last 30 Days',
+    'total_count' => 'Total Count',
+    'latest_transactions' => 'Latest Transactions',
+    'no_cash_data' => 'No Cash Flow Data',
+    'no_cash_data_description' => 'No cash payments recorded in the last 30 days',
+    'no_cash_payments' => 'No Cash Payments',
+    'no_cash_payments_description' => 'No cash payments have been recorded yet',
+    'reference' => 'Reference',
+    'notes' => 'Notes',
     
     // Financial Statistics
     'today_revenue' => 'Today\'s Revenue',
@@ -109,5 +126,11 @@ return [
     'payment_management' => 'Payment Management',
     'service_management' => 'Service Management',
     'report_management' => 'Report Management',
+    
+    // Currency
+    'currency' => 'Currency',
+    'currency_symbol' => '؋',
+    'currency_code' => 'AFN',
+    'currency_name' => 'Afghani',
 ];
 

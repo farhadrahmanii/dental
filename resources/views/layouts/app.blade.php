@@ -965,6 +965,214 @@
             -webkit-backdrop-filter: blur(20px);
         }
 
+        /* Enhanced Pagination Styles */
+        .pagination-apple {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .pagination-apple .pagination {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .pagination-apple .pagination li {
+            margin: 0;
+        }
+
+        .pagination-apple .pagination li a,
+        .pagination-apple .pagination li span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            padding: var(--space-sm);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: var(--surface);
+        }
+
+        .pagination-apple .pagination li a:hover {
+            background: var(--primary);
+            color: var(--apple-white);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pagination-apple .pagination li span {
+            background: var(--primary);
+            color: var(--apple-white);
+            border-color: var(--primary);
+        }
+
+        .pagination-apple .pagination li.disabled a,
+        .pagination-apple .pagination li.disabled span {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: var(--apple-gray-2);
+            color: var(--text-tertiary);
+        }
+
+        .pagination-apple .pagination li.disabled a:hover {
+            transform: none;
+            box-shadow: none;
+            background: var(--apple-gray-2);
+            color: var(--text-tertiary);
+            border-color: var(--border-light);
+        }
+
+        /* Enhanced Filter Tags */
+        .filter-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-xs) var(--space-sm);
+            background: rgba(0, 122, 255, 0.1);
+            color: var(--primary);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid rgba(0, 122, 255, 0.2);
+        }
+
+        .filter-tag button {
+            margin-left: var(--space-xs);
+            padding: 0;
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .filter-tag button:hover {
+            color: var(--primary-dark);
+        }
+
+        /* Enhanced Patient Cards */
+        .enhanced-patient-card {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .enhanced-patient-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.02) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .enhanced-patient-card:hover::before {
+            opacity: 1;
+        }
+
+        .enhanced-patient-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary);
+        }
+
+        /* View Toggle Buttons */
+        .view-toggle-btn {
+            transition: all 0.2s ease;
+        }
+
+        .view-toggle-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .view-toggle-btn.active {
+            background: var(--primary) !important;
+            color: var(--apple-white) !important;
+            border-color: var(--primary) !important;
+        }
+
+        /* Patients Grid Layout */
+        .patients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .patients-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .patients-grid.list-view .enhanced-patient-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+
+        .patients-grid.list-view .patient-header {
+            flex-direction: row;
+            margin-bottom: 0;
+            min-width: 200px;
+        }
+
+        .patients-grid.list-view .patient-details {
+            grid-template-columns: repeat(3, 1fr);
+            margin-bottom: 0;
+            flex: 1;
+        }
+
+        .patients-grid.list-view .enhanced-patient-card > div:last-child {
+            margin-left: auto;
+            min-width: 200px;
+        }
+
+        /* Responsive Design for Patients Page */
+        @media (max-width: 768px) {
+            .patients-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .patients-grid.list-view .enhanced-patient-card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .patients-grid.list-view .patient-header {
+                flex-direction: column;
+                text-align: center;
+                min-width: auto;
+            }
+            
+            .patients-grid.list-view .patient-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .patients-grid.list-view .enhanced-patient-card > div:last-child {
+                margin-left: 0;
+                min-width: auto;
+            }
+            
+            .pagination-apple {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+            
+            .pagination-apple .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
         /* Enhanced Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -1427,26 +1635,38 @@
             });
         }
 
-        // Enhanced image lazy loading
+        // Enhanced image lazy loading - Fixed version
         const images = document.querySelectorAll('img');
         const imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    img.style.opacity = '0';
-                    img.style.transition = 'opacity 0.3s ease';
                     
-                    img.onload = () => {
-                        img.style.opacity = '1';
-                    };
+                    // Only apply lazy loading if image has data-src attribute
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        
+                        img.onload = () => {
+                            img.style.opacity = '1';
+                            img.style.transition = 'opacity 0.3s ease';
+                        };
+                    }
                     
                     imageObserver.unobserve(img);
                 }
             });
+        }, {
+            rootMargin: '50px 0px', // Load images 50px before they come into view
+            threshold: 0.1
         });
 
         images.forEach(img => {
-            imageObserver.observe(img);
+            // Only observe images that have data-src attribute (lazy loaded)
+            if (img.dataset.src) {
+                img.style.opacity = '0.7'; // Set initial opacity for lazy loaded images
+                imageObserver.observe(img);
+            }
         });
 
         // Enhanced keyboard navigation
@@ -1499,6 +1719,101 @@
                 }, 0);
             });
         }
+
+        // Enhanced Patients Page Functionality
+        function toggleView(viewType) {
+            const grid = document.getElementById('patientsGrid');
+            const gridBtn = document.getElementById('gridViewBtn');
+            const listBtn = document.getElementById('listViewBtn');
+            
+            if (viewType === 'grid') {
+                grid.classList.remove('list-view');
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+                localStorage.setItem('patientsView', 'grid');
+            } else {
+                grid.classList.add('list-view');
+                listBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+                localStorage.setItem('patientsView', 'list');
+            }
+        }
+
+        // Restore view preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedView = localStorage.getItem('patientsView');
+            if (savedView === 'list') {
+                toggleView('list');
+            }
+        });
+
+        // Enhanced search functionality
+        function clearSearch() {
+            const searchInput = document.querySelector('input[name="search"]');
+            if (searchInput) {
+                searchInput.value = '';
+                searchInput.focus();
+            }
+        }
+
+        function removeFilter(filterName) {
+            const form = document.getElementById('searchForm');
+            const input = form.querySelector(`[name="${filterName}"]`);
+            if (input) {
+                if (input.type === 'text') {
+                    input.value = '';
+                } else if (input.type === 'select-one') {
+                    input.selectedIndex = 0;
+                }
+                form.submit();
+            }
+        }
+
+        // Enhanced search with debouncing
+        let searchTimeout;
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('input[name="search"]');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        // Auto-submit search after 500ms of no typing
+                        if (this.value.length >= 3 || this.value.length === 0) {
+                            this.form.submit();
+                        }
+                    }, 500);
+                });
+            }
+        });
+
+        // Enhanced patient card interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            const patientCards = document.querySelectorAll('.enhanced-patient-card');
+            patientCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+
+        // Enhanced pagination interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            const paginationLinks = document.querySelectorAll('.pagination-apple a');
+            paginationLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Add loading state
+                    const pagination = this.closest('.pagination-apple');
+                    if (pagination) {
+                        pagination.style.opacity = '0.7';
+                        pagination.style.pointerEvents = 'none';
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>

@@ -56,7 +56,7 @@
                             </svg>
                         </div>
                         <div style="text-align: right;">
-                            <div class="stat-number" style="font-size: 1.5rem; color: #34C759;">${{ number_format($todayRevenue, 2) }}</div>
+                            <div class="stat-number" style="font-size: 1.5rem; color: #34C759;">{{ \App\Helpers\CurrencyHelper::format($todayRevenue) }}</div>
                             <div class="stat-label">{{ __('financial.today_revenue') }}</div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                             </svg>
                         </div>
                         <div style="text-align: right;">
-                            <div class="stat-number" style="font-size: 1.5rem; color: var(--primary);">${{ number_format($monthlyRevenue, 2) }}</div>
+                            <div class="stat-number" style="font-size: 1.5rem; color: var(--primary);">{{ \App\Helpers\CurrencyHelper::format($monthlyRevenue) }}</div>
                             <div class="stat-label">{{ __('financial.monthly_revenue') }}</div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                             </svg>
                         </div>
                         <div style="text-align: right;">
-                            <div class="stat-number" style="font-size: 1.5rem; color: #FF9500;">${{ number_format($outstandingInvoicesTotal, 2) }}</div>
+                            <div class="stat-number" style="font-size: 1.5rem; color: #FF9500;">{{ \App\Helpers\CurrencyHelper::format($outstandingInvoicesTotal) }}</div>
                             <div class="stat-label">{{ __('financial.outstanding') }}</div>
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                                         </div>
                                     </td>
                                     <td style="padding: var(--space-md);">
-                                        <div style="font-weight: 600; color: var(--text-primary);">${{ number_format($payment->amount, 2) }}</div>
+                                        <div style="font-weight: 600; color: var(--text-primary);">{{ \App\Helpers\CurrencyHelper::format($payment->amount) }}</div>
                                     </td>
                                     <td style="padding: var(--space-md);">
                                         <span class="badge-apple badge-primary">{{ $payment->payment_method }}</span>
@@ -231,7 +231,7 @@
                                 <div style="font-size: 0.75rem; color: var(--text-tertiary);">Invoice #{{ $invoice->id }}</div>
                             </div>
                             <div style="text-align: right;">
-                                <div style="font-weight: 600; color: #FF3B30;">${{ number_format($invoice->total_amount, 2) }}</div>
+                                <div style="font-weight: 600; color: #FF3B30;">{{ \App\Helpers\CurrencyHelper::format($invoice->total_amount) }}</div>
                                 <div style="font-size: 0.75rem; color: var(--text-tertiary);">{{ $invoice->due_date->diffForHumans() }}</div>
                             </div>
                         </div>
@@ -241,6 +241,8 @@
                         </div>
                         @endforelse
                         
+                        <!-- Invoice routes disabled for later implementation -->
+                        <!--
                         @if($overdueInvoices->count() > 5)
                         <div style="text-align: center; margin-top: var(--space-md);">
                             <a href="{{ route('invoices.index') }}" class="btn-apple-outline" style="font-size: 0.875rem;">
@@ -248,6 +250,7 @@
                             </a>
                         </div>
                         @endif
+                        -->
                     </div>
                 </div>
                 -->
@@ -263,7 +266,7 @@
                                 <div style="font-size: 0.75rem; color: var(--text-tertiary);">{{ $service->total_quantity ?? 0 }} items</div>
                             </div>
                             <div style="text-align: right;">
-                                <div style="font-weight: 600; color: var(--primary);">${{ number_format($service->total_revenue ?? 0, 2) }}</div>
+                                <div style="font-weight: 600; color: var(--primary);">{{ \App\Helpers\CurrencyHelper::format($service->total_revenue ?? 0) }}</div>
                             </div>
                         </div>
                         @empty
@@ -289,8 +292,8 @@
         </div>
         
         <div class="grid-apple grid-apple-3">
-            <!-- Invoice creation hidden for later implementation -->
-            <!--
+            {{-- Invoice creation hidden for later implementation --}}
+            {{--
             <a href="{{ route('invoices.create') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
@@ -306,7 +309,7 @@
                     {{ __('financial.generate_new_invoice') }}
                 </p>
             </a>
-            -->
+            --}}
             
             <a href="{{ route('payments.create') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #34C759 0%, #30A46C 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">

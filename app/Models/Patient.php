@@ -40,6 +40,11 @@ class Patient extends Model
         return $this->hasMany(Payment::class, 'patient_id', 'register_id');
     }
 
+    public function services(): HasMany
+    {
+        return $this->hasManyThrough(Service::class, Payment::class, 'patient_id', 'id', 'register_id', 'service_id');
+    }
+
     public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class, 'patient_id', 'register_id');

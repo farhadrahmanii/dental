@@ -8,9 +8,12 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3 mb-0">Invoices</h1>
+                <!-- Invoice creation disabled for later implementation -->
+                <!--
                 <a href="{{ route('invoices.create') }}" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Create Invoice
                 </a>
+                -->
             </div>
         </div>
     </div>
@@ -81,7 +84,7 @@
                                     <td>{{ $invoice->patient->name }}</td>
                                     <td>{{ $invoice->invoice_date->format('M d, Y') }}</td>
                                     <td>{{ $invoice->due_date->format('M d, Y') }}</td>
-                                    <td>${{ number_format($invoice->total_amount, 2) }}</td>
+                                    <td>{{ \App\Helpers\CurrencyHelper::format($invoice->total_amount) }}</td>
                                     <td>
                                         <span class="badge bg-{{ $invoice->status === 'paid' ? 'success' : ($invoice->status === 'overdue' ? 'danger' : 'warning') }}">
                                             {{ ucfirst($invoice->status) }}

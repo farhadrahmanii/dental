@@ -20,8 +20,23 @@ class InvoiceResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    // Hidden from navigation for later implementation
+    // Temporarily disable to fix compatibility issues
     public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit($record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete($record): bool
     {
         return false;
     }

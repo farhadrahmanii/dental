@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             DevUserSeeder::class,
             PatientSeeder::class,
             ServiceSeeder::class,
+            DentalServicesSeeder::class,
         ]);
     }
 }

@@ -13,6 +13,7 @@ class Payment extends Model
     protected $fillable = [
         'invoice_id',
         'patient_id',
+        'service_id',
         'amount',
         'payment_method',
         'payment_date',
@@ -20,6 +21,17 @@ class Payment extends Model
         'notes',
         'created_by',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($payment) {
+            if (auth()->check() && !$payment->created_by) {
+                $payment->created_by = auth()->id();
+            }
+        });
+    }
 
     protected $casts = [
         'amount' => 'decimal:2',
@@ -34,6 +46,11 @@ class Payment extends Model
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'register_id');
+    }
+
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class);
     }
 
     public function createdBy(): BelongsTo

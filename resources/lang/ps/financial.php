@@ -109,4 +109,10 @@ return [
     'payment_management' => 'د پیسو مدیریت',
     'service_management' => 'د خدماتو مدیریت',
     'report_management' => 'د راپورونو مدیریت',
+    
+    // Currency
+    'currency' => 'د پیسو واحد',
+    'currency_symbol' => '؋',
+    'currency_code' => 'AFN',
+    'currency_name' => 'افغاني',
 ];

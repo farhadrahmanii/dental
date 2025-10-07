@@ -77,7 +77,7 @@
                                         <option value="">Select Service</option>
                                         @foreach($services as $service)
                                         <option value="{{ $service->id }}" data-price="{{ $service->price }}">
-                                            {{ $service->name }} - ${{ number_format($service->price, 2) }}
+                                            {{ $service->name }} - {{ \App\Helpers\CurrencyHelper::format($service->price) }}
                                         </option>
                                         @endforeach
                                     </select>
@@ -129,7 +129,7 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label for="subtotal" class="form-label">Subtotal</label>
-                            <input type="text" id="subtotal" class="form-control" readonly value="$0.00">
+                            <input type="text" id="subtotal" class="form-control" readonly value="{{ \App\Helpers\CurrencyHelper::format(0) }}">
                         </div>
                         <div class="mb-3">
                             <label for="tax_amount" class="form-label">Tax Amount</label>
@@ -141,7 +141,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="total_amount" class="form-label">Total Amount</label>
-                            <input type="text" id="total_amount" class="form-control" readonly value="$0.00">
+                            <input type="text" id="total_amount" class="form-control" readonly value="{{ \App\Helpers\CurrencyHelper::format(0) }}">
                         </div>
                     </div>
                 </div>
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const quantity = parseFloat(item.querySelector('.quantity-input').value) || 0;
         const unitPrice = parseFloat(item.querySelector('.unit-price-input').value) || 0;
         const total = quantity * unitPrice;
-        item.querySelector('.total-price').value = '$' + total.toFixed(2);
+        item.querySelector('.total-price').value = '{{ \App\Helpers\CurrencyHelper::symbol() }}' + total.toFixed(2);
     }
     
     function calculateTotal() {
@@ -249,8 +249,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const discountAmount = parseFloat(document.getElementById('discount_amount').value) || 0;
         const totalAmount = subtotal + taxAmount - discountAmount;
         
-        document.getElementById('subtotal').value = '$' + subtotal.toFixed(2);
-        document.getElementById('total_amount').value = '$' + totalAmount.toFixed(2);
+        document.getElementById('subtotal').value = '{{ \App\Helpers\CurrencyHelper::symbol() }}' + subtotal.toFixed(2);
+        document.getElementById('total_amount').value = '{{ \App\Helpers\CurrencyHelper::symbol() }}' + totalAmount.toFixed(2);
     }
 });
 </script>

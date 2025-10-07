@@ -32,6 +32,11 @@ class Service extends Model
         return $this->hasMany(InvoiceItem::class);
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class);
@@ -50,41 +55,73 @@ class Service extends Model
     // Translatable accessors
     public function getNameAttribute()
     {
-        return $this->getTranslatableAttribute('name');
+        $locale = app()->getLocale();
+        $fallbackLocale = config('app.fallback_locale', 'en');
+        
+        // Try to get the attribute in the current locale
+        $value = $this->getRawOriginal("name_{$locale}");
+        
+        // If not found, try fallback locale
+        if (empty($value) && $locale !== $fallbackLocale) {
+            $value = $this->getRawOriginal("name_{$fallbackLocale}");
+        }
+        
+        // If still not found, try the original attribute
+        if (empty($value)) {
+            $value = $this->getRawOriginal('name');
+        }
+        
+        return $value;
     }
 
     public function getDescriptionAttribute()
     {
-        return $this->getTranslatableAttribute('description');
+        $locale = app()->getLocale();
+        $fallbackLocale = config('app.fallback_locale', 'en');
+        
+        // Try to get the attribute in the current locale
+        $value = $this->getRawOriginal("description_{$locale}");
+        
+        // If not found, try fallback locale
+        if (empty($value) && $locale !== $fallbackLocale) {
+            $value = $this->getRawOriginal("description_{$fallbackLocale}");
+        }
+        
+        // If still not found, try the original attribute
+        if (empty($value)) {
+            $value = $this->getRawOriginal('description');
+        }
+        
+        return $value;
     }
 
     public function getNameEnAttribute()
     {
-        return $this->getAttribute('name_en') ?: $this->getAttribute('name');
+        return $this->getRawOriginal('name_en') ?: $this->getRawOriginal('name');
     }
 
     public function getNamePsAttribute()
     {
-        return $this->getAttribute('name_ps') ?: $this->getAttribute('name');
+        return $this->getRawOriginal('name_ps') ?: $this->getRawOriginal('name');
     }
 
     public function getNameFaAttribute()
     {
-        return $this->getAttribute('name_fa') ?: $this->getAttribute('name');
+        return $this->getRawOriginal('name_fa') ?: $this->getRawOriginal('name');
     }
 
     public function getDescriptionEnAttribute()
     {
-        return $this->getAttribute('description_en') ?: $this->getAttribute('description');
+        return $this->getRawOriginal('description_en') ?: $this->getRawOriginal('description');
     }
 
     public function getDescriptionPsAttribute()
     {
-        return $this->getAttribute('description_ps') ?: $this->getAttribute('description');
+        return $this->getRawOriginal('description_ps') ?: $this->getRawOriginal('description');
     }
 
     public function getDescriptionFaAttribute()
     {
-        return $this->getAttribute('description_fa') ?: $this->getAttribute('description');
+        return $this->getRawOriginal('description_fa') ?: $this->getRawOriginal('description');
     }
 }
