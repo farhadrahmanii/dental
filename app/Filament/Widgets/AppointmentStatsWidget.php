@@ -8,6 +8,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class AppointmentStatsWidget extends StatsOverviewWidget
 {
+
     protected function getStats(): array
     {
         $todayAppointments = Appointment::today()->count();

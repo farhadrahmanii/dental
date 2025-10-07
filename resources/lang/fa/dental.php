@@ -324,4 +324,14 @@ return [
     'professional_treatment_delivery' => 'ارائه درمان حرفه‌ای',
     'follow_up_care' => 'مراقبت و نگهداری پیگیری',
     'book_consultation' => 'رزرو مشاوره',
+    
+    // Quick Actions Translations
+    'system_quick_actions' => 'دسترسی سریع به سیستم',
+    'easy_access_to_main_features' => 'دسترسی آسان به ویژگی‌های اصلی سیستم',
+    'register_new_patient' => 'ثبت بیمار جدید',
+    'view_all_patients' => 'مشاهده همه بیماران',
+    'manage_dental_services' => 'مدیریت خدمات دندانپزشکی',
+    'schedule_new_appointment' => 'زمان‌بندی قرار ملاقات جدید',
+    'comprehensive_management' => 'مدیریت جامع سیستم',
+    'access_admin_panel' => 'دسترسی به پنل مدیریت',
 ];

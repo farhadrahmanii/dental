@@ -324,4 +324,14 @@ return [
     'professional_treatment_delivery' => 'مسلکي د درملنې وړاندې کول',
     'follow_up_care' => 'تعقیب پاملرنه او ساتنه',
     'book_consultation' => 'مشاوره وټاکئ',
+    
+    // Quick Actions Translations
+    'system_quick_actions' => 'د سیستم ګړندي لاسرسی',
+    'easy_access_to_main_features' => 'د اصلي ځانګړتیاوو اسانه لاسرسی',
+    'register_new_patient' => 'نوی ناروغ ثبت کړئ',
+    'view_all_patients' => 'ټول ناروغان وګورئ',
+    'manage_dental_services' => 'د غاښونو خدماتو مدیریت',
+    'schedule_new_appointment' => 'نوی ناسته وټاکئ',
+    'comprehensive_management' => 'د سیستم بشپړ مدیریت',
+    'access_admin_panel' => 'د ادمین پینل ته لاسرسی',
 ];

@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Patient;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -26,7 +26,15 @@ class PatientResource extends Resource
 {
     protected static ?string $model = Patient::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user-group';
+    
+    protected static ?string $navigationLabel = 'Patients';
+    
+    protected static ?string $modelLabel = 'Patient';
+    
+    protected static ?string $pluralModelLabel = 'Patients';
+    
+    protected static ?int $navigationSort = 1;
 
    
 
@@ -56,6 +64,26 @@ class PatientResource extends Resource
                             ->numeric()
                             ->minValue(0)
                             ->maxValue(120),
+                        TextInput::make('phone_number')
+                            ->label('Phone Number')
+                            ->tel()
+                            ->maxLength(20),
+                        TextInput::make('occupation')
+                            ->label('Occupation/Job')
+                            ->maxLength(255),
+                    ]),
+
+                Section::make('Address Information')
+                    ->columns(1)
+                    ->schema([
+                        Textarea::make('permanent_address')
+                            ->label('Permanent Address')
+                            ->rows(3)
+                            ->maxLength(500),
+                        Textarea::make('current_address')
+                            ->label('Current Address')
+                            ->rows(3)
+                            ->maxLength(500),
                     ]),
 
                 Section::make('Case Details')
@@ -116,6 +144,14 @@ class PatientResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('age')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('phone_number')
+                    ->label('Phone')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('occupation')
+                    ->label('Occupation')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('x_ray_id')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('doctor_name')

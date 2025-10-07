@@ -292,26 +292,8 @@
         </div>
         
         <div class="grid-apple grid-apple-3">
-            {{-- Invoice creation hidden for later implementation --}}
-            {{--
-            <a href="{{ route('invoices.create') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
-                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14,2 14,8 20,8"/>
-                        <line x1="16" y1="13" x2="8" y2="13"/>
-                        <line x1="16" y1="17" x2="8" y2="17"/>
-                        <polyline points="10,9 9,9 8,9"/>
-                    </svg>
-                </div>
-                <h3 class="title-large mb-3">{{ __('financial.create_invoice') }}</h3>
-                <p class="body-medium" style="color: var(--text-secondary);">
-                    {{ __('financial.generate_new_invoice') }}
-                </p>
-            </a>
-            --}}
-            
-            <a href="{{ route('payments.create') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
+            <!-- Record Payment -->
+            <a href="{{ route('payments.create') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.borderColor='#34C759'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='transparent'; this.style.transform='translateY(0)'">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #34C759 0%, #30A46C 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
                         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
@@ -323,7 +305,8 @@
                 </p>
             </a>
             
-            <a href="{{ route('financial.reports') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
+            <!-- View Reports -->
+            <a href="{{ route('financial.reports') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.borderColor='#FF9500'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='transparent'; this.style.transform='translateY(0)'">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #FF9500 0%, #FF8C00 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
                         <path d="M3 3v18h18"/>
@@ -336,7 +319,8 @@
                 </p>
             </a>
             
-            <a href="{{ route('financial.cash-flow') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
+            <!-- Cash Flow -->
+            <a href="{{ route('financial.cash-flow') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.borderColor='#5856D6'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='transparent'; this.style.transform='translateY(0)'">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #5856D6 0%, #4A4A9C 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
                         <path d="M12 1v6l4-4"/>
@@ -356,6 +340,124 @@
                     {{ __('financial.monitor_cash_flow') }}
                 </p>
             </a>
+        </div>
+    </div>
+</section>
+
+<!-- System Quick Actions -->
+<section class="section-apple" style="background: var(--background);">
+    <div class="container-apple">
+        <div class="text-center mb-6">
+            <h2 class="headline-large mb-3">{{ __('dental.system_quick_actions') }}</h2>
+            <p class="body-large" style="color: var(--text-secondary);">
+                {{ __('dental.easy_access_to_main_features') }}
+            </p>
+        </div>
+        
+        <div class="grid-apple grid-apple-4">
+            <!-- Add New Patient -->
+            <a href="{{ route('patients') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.borderColor='var(--primary)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='transparent'; this.style.transform='translateY(0)'">
+                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <h3 class="title-large mb-3">{{ __('dental.add_patient') }}</h3>
+                <p class="body-medium" style="color: var(--text-secondary);">
+                    {{ __('dental.register_new_patient') }}
+                </p>
+            </a>
+            
+            <!-- View Patients -->
+            <a href="{{ route('patients') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.borderColor='#007AFF'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='transparent'; this.style.transform='translateY(0)'">
+                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <h3 class="title-large mb-3">{{ __('dental.patient_list') }}</h3>
+                <p class="body-medium" style="color: var(--text-secondary);">
+                    {{ __('dental.view_all_patients') }}
+                </p>
+            </a>
+            
+            <!-- Manage Services -->
+            <a href="{{ route('services.index') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.borderColor='#FF3B30'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='transparent'; this.style.transform='translateY(0)'">
+                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #FF3B30 0%, #D70015 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <path d="M9 9h6v6H9z"/>
+                        <path d="M9 1v6"/>
+                        <path d="M15 1v6"/>
+                        <path d="M9 17v6"/>
+                        <path d="M15 17v6"/>
+                        <path d="M1 9h6"/>
+                        <path d="M1 15h6"/>
+                        <path d="M17 9h6"/>
+                        <path d="M17 15h6"/>
+                    </svg>
+                </div>
+                <h3 class="title-large mb-3">{{ __('dental.our_services') }}</h3>
+                <p class="body-medium" style="color: var(--text-secondary);">
+                    {{ __('dental.manage_dental_services') }}
+                </p>
+            </a>
+            
+            <!-- Book Appointment -->
+            <a href="{{ route('home') }}#appointment" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit; transition: all 0.3s ease; border: 2px solid transparent;" onmouseover="this.style.borderColor='#AF52DE'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='transparent'; this.style.transform='translateY(0)'">
+                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #AF52DE 0%, #8E44AD 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                </div>
+                <h3 class="title-large mb-3">{{ __('dental.book_appointment') }}</h3>
+                <p class="body-medium" style="color: var(--text-secondary);">
+                    {{ __('dental.schedule_new_appointment') }}
+                </p>
+            </a>
+        </div>
+        
+        <!-- Admin Panel Access -->
+        <div class="text-center mt-8">
+            <div class="card-apple-elevated" style="max-width: 400px; margin: 0 auto; padding: var(--space-xl);">
+                <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-lg);">
+                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #1C1C1E 0%, #2C2C2E 100%); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <path d="M9 9h6v6H9z"/>
+                            <path d="M9 1v6"/>
+                            <path d="M15 1v6"/>
+                            <path d="M9 17v6"/>
+                            <path d="M15 17v6"/>
+                            <path d="M1 9h6"/>
+                            <path d="M1 15h6"/>
+                            <path d="M17 9h6"/>
+                            <path d="M17 15h6"/>
+                        </svg>
+                    </div>
+                    <div style="text-align: left;">
+                        <h3 class="title-large mb-2">{{ __('dental.admin_panel') }}</h3>
+                        <p class="body-medium" style="color: var(--text-secondary); margin-bottom: var(--space-md);">
+                            {{ __('dental.comprehensive_management') }}
+                        </p>
+                        <a href="/admin" class="btn-apple" style="text-decoration: none;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: var(--space-sm);">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                            {{ __('dental.access_admin_panel') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

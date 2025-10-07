@@ -18,7 +18,15 @@ class InvoiceResource extends Resource
 {
     protected static ?string $model = Invoice::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
+    
+    protected static ?string $navigationLabel = 'Invoices';
+    
+    protected static ?string $modelLabel = 'Invoice';
+    
+    protected static ?string $pluralModelLabel = 'Invoices';
+    
+    protected static ?int $navigationSort = 4;
 
     // Temporarily disable to fix compatibility issues
     public static function shouldRegisterNavigation(): bool

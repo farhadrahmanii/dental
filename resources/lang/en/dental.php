@@ -406,6 +406,16 @@ return [
     'full_mouth_restoration' => 'Full Mouth Restoration',
     'implant_crowns' => 'Implant Crowns',
     
+    // Quick Actions Translations
+    'system_quick_actions' => 'System Quick Actions',
+    'easy_access_to_main_features' => 'Easy access to main system features',
+    'register_new_patient' => 'Register a new patient',
+    'view_all_patients' => 'View all patients',
+    'manage_dental_services' => 'Manage dental services',
+    'schedule_new_appointment' => 'Schedule a new appointment',
+    'comprehensive_management' => 'Comprehensive system management',
+    'access_admin_panel' => 'Access Admin Panel',
+
     // Services Page - Orthodontic Treatment
     'orthodontic_treatment' => 'Orthodontic Treatment',
     'orthodontic_desc' => 'Straighten teeth and correct bite issues with traditional braces, clear aligners, and modern orthodontic solutions.',
