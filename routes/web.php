@@ -46,12 +46,13 @@ Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.
 Route::get('/api/appointments/time-slots', [AppointmentController::class, 'getAvailableTimeSlots'])->name('api.appointments.time-slots');
 Route::get('/api/services', [AppointmentController::class, 'getServices'])->name('api.services');
 Route::get('/api/appointments/calendar', [AppointmentController::class, 'calendar'])->name('api.appointments.calendar');
+Route::get('/api/patient/search', [AppointmentController::class, 'searchPatient'])->name('api.patient.search');
 
-// Admin Appointment Management Routes
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('appointments', AppointmentController::class);
-    Route::patch('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
-});
+// Admin Appointment Management Routes - Now handled by Filament
+// Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+//     Route::resource('appointments', AppointmentController::class);
+//     Route::patch('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
+// });
 
 // PWA Routes (commented out - controller not implemented)
 // Route::get('/pwa', [PwaController::class, 'index'])->name('pwa');

@@ -40,6 +40,40 @@
             <div style="padding: var(--space-2xl);">
                 <form id="appointmentForm" action="{{ route('appointments.store') }}" method="post">
                     @csrf
+                    
+                    <!-- Patient Search Section -->
+                    <div class="form-group-apple" style="margin-bottom: var(--space-2xl);">
+                        <label class="form-label-apple">Search Existing Patient (Optional)</label>
+                        <div style="position: relative;">
+                            <input type="text" id="patient_search" class="form-input-apple" placeholder="Enter patient name, phone, or appointment number..." style="padding-right: 100px;">
+                            <button type="button" id="search_btn" class="btn-apple-outline" style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); padding: 0.5rem 1rem; font-size: 0.875rem;">
+                                Search
+                            </button>
+                        </div>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: var(--space-sm);">
+                            Search for an existing patient to view their history and auto-fill details
+                        </p>
+                    </div>
+
+                    <!-- Patient History Display -->
+                    <div id="patient_history" style="display: none; margin-bottom: var(--space-2xl); padding: var(--space-lg); background: var(--apple-gray-1); border-radius: var(--radius-lg); border: 1px solid var(--border-light);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md);">
+                            <h4 style="margin: 0; color: var(--text-primary);">Patient History</h4>
+                            <button type="button" id="clear_history" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: var(--space-xs);">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div id="patient_details" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); padding: var(--space-md); background: var(--surface); border-radius: var(--radius-md);"></div>
+                        
+                        <div id="patient_appointments" style="margin-top: var(--space-md);"></div>
+                        <div id="patient_services" style="margin-top: var(--space-md);"></div>
+                    </div>
+
+                    <!-- Patient Information Form -->
                     <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
                         <div class="form-group-apple">
                             <label class="form-label-apple">{{ __('dental.full_name') }}</label>
@@ -55,6 +89,8 @@
                         <label class="form-label-apple">{{ __('dental.email_address') }}</label>
                         <input type="email" name="patient_email" id="patient_email" class="form-input-apple" placeholder="{{ __('dental.enter_email_address') }}" required>
                     </div>
+                    
+                    <input type="hidden" name="patient_id" id="patient_id" value="">
                     
                     <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
                         <div class="form-group-apple">
@@ -380,6 +416,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorMessage = document.getElementById('error_message');
     const successText = document.getElementById('success_text');
     const errorText = document.getElementById('error_text');
+    
+    // Patient search elements
+    const patientSearch = document.getElementById('patient_search');
+    const searchBtn = document.getElementById('search_btn');
+    const patientHistory = document.getElementById('patient_history');
+    const clearHistoryBtn = document.getElementById('clear_history');
+    const patientDetails = document.getElementById('patient_details');
+    const patientAppointments = document.getElementById('patient_appointments');
+    const patientServices = document.getElementById('patient_services');
+    const patientIdInput = document.getElementById('patient_id');
+    const patientNameInput = document.getElementById('patient_name');
+    const patientEmailInput = document.getElementById('patient_email');
+    const patientPhoneInput = document.getElementById('patient_phone');
 
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
@@ -387,6 +436,145 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load services on page load
     loadServices();
+
+    // Patient Search Handler
+    searchBtn.addEventListener('click', function() {
+        searchPatient();
+    });
+
+    patientSearch.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchPatient();
+        }
+    });
+
+    clearHistoryBtn.addEventListener('click', function() {
+        clearPatientHistory();
+    });
+
+    function searchPatient() {
+        const query = patientSearch.value.trim();
+        if (!query) {
+            alert('Please enter a search query');
+            return;
+        }
+
+        // Show loading state
+        searchBtn.disabled = true;
+        searchBtn.textContent = 'Searching...';
+
+        fetch('{{ route("api.patient.search") }}?query=' + encodeURIComponent(query))
+            .then(response => response.json())
+            .then(data => {
+                searchBtn.disabled = false;
+                searchBtn.textContent = 'Search';
+
+                if (data.success) {
+                    displayPatientHistory(data);
+                } else {
+                    alert(data.message || 'Patient not found');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                searchBtn.disabled = false;
+                searchBtn.textContent = 'Search';
+                alert('An error occurred while searching');
+            });
+    }
+
+    function displayPatientHistory(data) {
+        // Fill form fields
+        patientIdInput.value = data.patient.id || '';
+        patientNameInput.value = data.patient.name;
+        patientEmailInput.value = data.patient.email || '';
+        patientPhoneInput.value = data.patient.phone || '';
+
+        // Display patient details
+        patientDetails.innerHTML = `
+            <div style="text-align: center;">
+                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Patient ID</div>
+                <div style="font-weight: 600; color: var(--primary);">${data.patient.id}</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Total Visits</div>
+                <div style="font-weight: 600;">${data.statistics.total_appointments}</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Completed</div>
+                <div style="font-weight: 600; color: #34C759;">${data.statistics.completed_appointments}</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Total Spent</div>
+                <div style="font-weight: 600; color: var(--primary);">$${data.statistics.total_spent}</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Last Visit</div>
+                <div style="font-weight: 600;">${data.statistics.last_visit}</div>
+            </div>
+        `;
+
+        // Display appointments
+        if (data.appointments && data.appointments.length > 0) {
+            patientAppointments.innerHTML = `
+                <h5 style="margin-bottom: var(--space-md); color: var(--text-primary);">Recent Appointments</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+                    ${data.appointments.slice(0, 5).map(apt => `
+                        <div style="padding: var(--space-sm); background: var(--surface); border-radius: var(--radius-sm); margin-bottom: var(--space-sm); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 500;">${apt.service}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary);">${apt.date} at ${apt.time}</div>
+                            </div>
+                            <span style="padding: 0.25rem 0.5rem; background: ${getStatusColor(apt.status)}; color: white; border-radius: var(--radius-sm); font-size: 0.75rem;">${apt.status}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Display services/payments
+        if (data.services && data.services.length > 0) {
+            patientServices.innerHTML = `
+                <h5 style="margin-bottom: var(--space-md); color: var(--text-primary);">Service History</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+                    ${data.services.slice(0, 5).map(service => `
+                        <div style="padding: var(--space-sm); background: var(--surface); border-radius: var(--radius-sm); margin-bottom: var(--space-sm); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 500;">${service.service}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary);">${service.date} - ${service.appointment_number}</div>
+                            </div>
+                            <div style="font-weight: 600; color: var(--primary);">$${service.amount}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Show patient history section
+        patientHistory.style.display = 'block';
+        patientHistory.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function clearPatientHistory() {
+        patientHistory.style.display = 'none';
+        patientIdInput.value = '';
+        patientSearch.value = '';
+        patientDetails.innerHTML = '';
+        patientAppointments.innerHTML = '';
+        patientServices.innerHTML = '';
+    }
+
+    function getStatusColor(status) {
+        const colors = {
+            'pending': '#FF9500',
+            'confirmed': '#007AFF',
+            'completed': '#34C759',
+            'cancelled': '#FF3B30',
+            'no_show': '#8E8E93'
+        };
+        return colors[status] || '#8E8E93';
+    }
 
     // Handle date change to load time slots
     appointmentDate.addEventListener('change', function() {

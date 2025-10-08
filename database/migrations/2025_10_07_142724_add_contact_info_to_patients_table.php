@@ -12,10 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('patients', function (Blueprint $table) {
-            $table->string('phone_number')->nullable()->after('age');
-            $table->text('permanent_address')->nullable()->after('phone_number');
-            $table->text('current_address')->nullable()->after('permanent_address');
-            $table->string('occupation')->nullable()->after('current_address');
+            // Check if columns don't exist before adding
+            if (!Schema::hasColumn('patients', 'phone_number')) {
+                $table->string('phone_number')->nullable()->after('age');
+            }
+            if (!Schema::hasColumn('patients', 'permanent_address')) {
+                $table->text('permanent_address')->nullable()->after('age');
+            }
+            if (!Schema::hasColumn('patients', 'current_address')) {
+                $table->text('current_address')->nullable()->after('age');
+            }
+            if (!Schema::hasColumn('patients', 'occupation')) {
+                $table->string('occupation')->nullable()->after('age');
+            }
         });
     }
 

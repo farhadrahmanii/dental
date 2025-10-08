@@ -14,6 +14,7 @@ class Payment extends Model
         'invoice_id',
         'patient_id',
         'service_id',
+        'appointment_id',
         'amount',
         'payment_method',
         'payment_date',
@@ -56,6 +57,11 @@ class Payment extends Model
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function appointment(): BelongsTo
+    {
+        return $this->belongsTo(Appointment::class);
     }
 
     public function scopeByMethod($query, $method)
