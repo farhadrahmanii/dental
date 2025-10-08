@@ -43,17 +43,17 @@
                     <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
                         <div class="form-group-apple">
                             <label class="form-label-apple">{{ __('dental.full_name') }}</label>
-                            <input type="text" name="name" id="patient_name" class="form-input-apple" placeholder="{{ __('dental.enter_full_name') }}" required>
+                            <input type="text" name="patient_name" id="patient_name" class="form-input-apple" placeholder="{{ __('dental.enter_full_name') }}" required>
                         </div>
                         <div class="form-group-apple">
                             <label class="form-label-apple">{{ __('dental.phone_number') }}</label>
-                            <input type="tel" name="phone" id="patient_phone" class="form-input-apple" placeholder="{{ __('dental.enter_phone_number') }}" required>
+                            <input type="tel" name="patient_phone" id="patient_phone" class="form-input-apple" placeholder="{{ __('dental.enter_phone_number') }}" required>
                         </div>
                     </div>
                     
                     <div class="form-group-apple">
                         <label class="form-label-apple">{{ __('dental.email_address') }}</label>
-                        <input type="email" name="email" id="patient_email" class="form-input-apple" placeholder="{{ __('dental.enter_email_address') }}" required>
+                        <input type="email" name="patient_email" id="patient_email" class="form-input-apple" placeholder="{{ __('dental.enter_email_address') }}" required>
                     </div>
                     
                     <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
@@ -363,3 +363,168 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const serviceSelect = document.getElementById('service_select');
+    const appointmentDate = document.getElementById('appointment_date');
+    const appointmentTime = document.getElementById('appointment_time');
+    const appointmentForm = document.getElementById('appointmentForm');
+    const submitBtn = document.getElementById('submit_btn');
+    const submitText = document.getElementById('submit_text');
+    const submitLoading = document.getElementById('submit_loading');
+    const timeSlotsLoading = document.getElementById('time_slots_loading');
+    const messageContainer = document.getElementById('appointment_message_container');
+    const successMessage = document.getElementById('success_message');
+    const errorMessage = document.getElementById('error_message');
+    const successText = document.getElementById('success_text');
+    const errorText = document.getElementById('error_text');
+
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    appointmentDate.setAttribute('min', today);
+
+    // Load services on page load
+    loadServices();
+
+    // Handle date change to load time slots
+    appointmentDate.addEventListener('change', function() {
+        const selectedDate = this.value;
+        if (selectedDate) {
+            loadTimeSlots(selectedDate);
+        } else {
+            appointmentTime.disabled = true;
+            appointmentTime.innerHTML = '<option value="">{{ __("dental.select_date_first") }}</option>';
+        }
+    });
+
+    // Handle form submission
+    appointmentForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        submitText.style.display = 'none';
+        submitLoading.style.display = 'block';
+        messageContainer.style.display = 'none';
+
+        // Get form data
+        const formData = new FormData(this);
+        
+        // Get selected service name and add it to form data
+        const selectedService = serviceSelect.options[serviceSelect.selectedIndex];
+        formData.append('service_name', selectedService.text);
+        formData.append('service_id', serviceSelect.value);
+
+        // Submit via AJAX
+        fetch('{{ route("appointments.store") }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            submitBtn.disabled = false;
+            submitText.style.display = 'block';
+            submitLoading.style.display = 'none';
+
+            if (data.success) {
+                // Show success message
+                successText.textContent = data.message + ' Your appointment number is: ' + data.appointment_number;
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                messageContainer.style.display = 'block';
+                
+                // Reset form
+                appointmentForm.reset();
+                appointmentTime.disabled = true;
+                appointmentTime.innerHTML = '<option value="">{{ __("dental.select_date_first") }}</option>';
+                
+                // Scroll to message
+                messageContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                // Show error message
+                errorText.textContent = data.message || 'An error occurred. Please try again.';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                messageContainer.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            submitBtn.disabled = false;
+            submitText.style.display = 'block';
+            submitLoading.style.display = 'none';
+            
+            // Show error message
+            errorText.textContent = 'An error occurred. Please try again.';
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+            messageContainer.style.display = 'block';
+            
+            console.error('Error:', error);
+        });
+    });
+
+    // Function to load services
+    function loadServices() {
+        fetch('{{ route("api.services") }}')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.services) {
+                    serviceSelect.innerHTML = '<option value="">{{ __("dental.select_service") }}</option>';
+                    data.services.forEach(service => {
+                        const option = document.createElement('option');
+                        option.value = service.id;
+                        option.textContent = service.name + (service.price ? ' - $' + parseFloat(service.price).toFixed(2) : '');
+                        serviceSelect.appendChild(option);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error loading services:', error);
+                serviceSelect.innerHTML = '<option value="">{{ __("dental.error_loading_services") }}</option>';
+            });
+    }
+
+    // Function to load time slots
+    function loadTimeSlots(date) {
+        // Show loading state
+        appointmentTime.disabled = true;
+        appointmentTime.innerHTML = '<option value="">{{ __("dental.loading") }}...</option>';
+        timeSlotsLoading.style.display = 'block';
+
+        fetch('{{ route("api.appointments.time-slots") }}?date=' + date)
+            .then(response => response.json())
+            .then(data => {
+                timeSlotsLoading.style.display = 'none';
+                
+                if (data.success && data.available_slots) {
+                    if (data.available_slots.length > 0) {
+                        appointmentTime.innerHTML = '<option value="">{{ __("dental.select_time_slot") }}</option>';
+                        data.available_slots.forEach(slot => {
+                            const option = document.createElement('option');
+                            option.value = slot.value;
+                            option.textContent = slot.label;
+                            appointmentTime.appendChild(option);
+                        });
+                        appointmentTime.disabled = false;
+                    } else {
+                        appointmentTime.innerHTML = '<option value="">{{ __("dental.no_slots_available") }}</option>';
+                    }
+                } else {
+                    appointmentTime.innerHTML = '<option value="">{{ __("dental.error_loading_slots") }}</option>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading time slots:', error);
+                timeSlotsLoading.style.display = 'none';
+                appointmentTime.innerHTML = '<option value="">{{ __("dental.error_loading_slots") }}</option>';
+            });
+    }
+});
+</script>
+@endpush
