@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Appointment;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 use Filament\Widgets\TableWidget;
 
 class UpcomingAppointmentsWidget extends TableWidget
@@ -58,7 +59,7 @@ class UpcomingAppointmentsWidget extends TableWidget
                     ]),
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
+                Action::make('view')
                     ->label('View')
                     ->icon('heroicon-o-eye')
                     ->url(fn ($record) => route('filament.admin.resources.appointments.view', $record)),

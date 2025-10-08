@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Appointment;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 use Filament\Widgets\TableWidget;
 use Filament\Actions;
 
@@ -73,12 +74,12 @@ class TodayAppointmentsWidget extends TableWidget
                     }),
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
+                Action::make('view')
                     ->label('View')
                     ->icon('heroicon-o-eye')
                     ->url(fn ($record) => route('filament.admin.resources.appointments.view', $record)),
                     
-                Tables\Actions\Action::make('confirm')
+                Action::make('confirm')
                     ->label('Confirm')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
@@ -86,7 +87,7 @@ class TodayAppointmentsWidget extends TableWidget
                     ->action(fn ($record) => $record->update(['status' => 'confirmed']))
                     ->visible(fn ($record) => $record->status === 'pending'),
                     
-                Tables\Actions\Action::make('complete')
+                Action::make('complete')
                     ->label('Complete')
                     ->icon('heroicon-o-check-badge')
                     ->color('success')

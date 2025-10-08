@@ -6,7 +6,7 @@ use App\Filament\Resources\AppointmentResource\Pages;
 use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Service;
-use Filament\Schemas\Components\DatePicker;
+use Filament\Forms\Components\DatePicker;
 use Filament\Schemas\Components\Select;
 use Filament\Schemas\Components\TextInput;
 use Filament\Schemas\Components\Textarea;
@@ -22,6 +22,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
+use Filament\Actions\Action;
 use Filament\Actions;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -255,14 +256,14 @@ class AppointmentResource extends Resource
             ->actions([
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
-                Tables\Actions\Action::make('confirm')
+                Action::make('confirm')
                     ->label('Confirm')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
                     ->action(fn ($record) => $record->update(['status' => 'confirmed']))
                     ->visible(fn ($record) => $record->status === 'pending'),
-                Tables\Actions\Action::make('complete')
+                Action::make('complete')
                     ->label('Complete')
                     ->icon('heroicon-o-check-badge')
                     ->color('success')
