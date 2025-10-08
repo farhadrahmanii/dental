@@ -187,9 +187,8 @@ class PatientResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Temporarily disabled due to Filament v4 compatibility issues
-            // \App\Filament\Resources\PatientResource\RelationManagers\InvoicesRelationManager::class,
-            // \App\Filament\Resources\PatientResource\RelationManagers\PaymentsRelationManager::class,
+            \App\Filament\Resources\PatientResource\RelationManagers\InvoicesRelationManager::class,
+            \App\Filament\Resources\PatientResource\RelationManagers\PaymentsRelationManager::class,
         ];
     }
 

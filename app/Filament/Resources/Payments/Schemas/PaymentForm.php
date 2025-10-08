@@ -5,10 +5,10 @@ namespace App\Filament\Resources\Payments\Schemas;
 use App\Models\Invoice;
 use App\Models\Patient;
 use App\Helpers\CurrencyHelper;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\DatePicker;
+use Filament\Schemas\Components\Select;
+use Filament\Schemas\Components\Textarea;
+use Filament\Schemas\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class PaymentForm
@@ -56,6 +56,15 @@ class PaymentForm
                             ->maxLength(255)
                             ->placeholder('Doctor\'s name'),
                     ]),
+
+                Select::make('invoice_id')
+                    ->label('Invoice (Optional)')
+                    ->relationship('invoice', 'invoice_number')
+                    ->searchable()
+                    ->preload()
+                    ->nullable()
+                    ->placeholder('Select invoice (optional)')
+                    ->helperText('Link this payment to a specific invoice'),
 
                 Select::make('service_id')
                     ->label('Service')

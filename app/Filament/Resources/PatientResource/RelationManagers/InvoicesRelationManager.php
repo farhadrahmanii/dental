@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\PatientResource\RelationManagers;
 
-use Filament\Forms;
+use Filament\Schemas\Components\TextInput;
+use Filament\Schemas\Components\DatePicker;
+use Filament\Schemas\Components\Select;
+use Filament\Schemas\Components\Textarea;
 use Filament\Schemas\Schema;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -28,18 +31,18 @@ class InvoicesRelationManager extends RelationManager
     {
         return $schema
             ->schema([
-                Forms\Components\TextInput::make('invoice_number')
+                TextInput::make('invoice_number')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('invoice_date')
+                DatePicker::make('invoice_date')
                     ->required(),
-                Forms\Components\DatePicker::make('due_date')
+                DatePicker::make('due_date')
                     ->required(),
-                Forms\Components\TextInput::make('total_amount')
+                TextInput::make('total_amount')
                     ->numeric()
                     ->prefix('$')
                     ->required(),
-                Forms\Components\Select::make('status')
+                Select::make('status')
                     ->options([
                         'draft' => 'Draft',
                         'sent' => 'Sent',
@@ -48,7 +51,7 @@ class InvoicesRelationManager extends RelationManager
                         'cancelled' => 'Cancelled',
                     ])
                     ->required(),
-                Forms\Components\Textarea::make('notes')
+                Textarea::make('notes')
                     ->columnSpanFull(),
             ]);
     }

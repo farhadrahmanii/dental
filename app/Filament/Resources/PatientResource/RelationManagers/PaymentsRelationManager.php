@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\PatientResource\RelationManagers;
 
-use Filament\Forms;
+use Filament\Schemas\Components\TextInput;
+use Filament\Schemas\Components\Select;
+use Filament\Schemas\Components\DatePicker;
+use Filament\Schemas\Components\Textarea;
 use Filament\Schemas\Schema;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -22,11 +25,11 @@ class PaymentsRelationManager extends RelationManager
     {
         return $schema
             ->schema([
-                Forms\Components\TextInput::make('amount')
+                TextInput::make('amount')
                     ->numeric()
                     ->prefix('$')
                     ->required(),
-                Forms\Components\Select::make('payment_method')
+                Select::make('payment_method')
                     ->options([
                         'cash' => 'Cash',
                         'card' => 'Card',
@@ -35,11 +38,11 @@ class PaymentsRelationManager extends RelationManager
                         'other' => 'Other',
                     ])
                     ->required(),
-                Forms\Components\DatePicker::make('payment_date')
+                DatePicker::make('payment_date')
                     ->required(),
-                Forms\Components\TextInput::make('reference_number')
+                TextInput::make('reference_number')
                     ->maxLength(255),
-                Forms\Components\Textarea::make('notes')
+                Textarea::make('notes')
                     ->columnSpanFull(),
             ]);
     }

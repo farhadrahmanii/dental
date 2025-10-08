@@ -28,27 +28,6 @@ class InvoiceResource extends Resource
     
     protected static ?int $navigationSort = 4;
 
-    // Temporarily disable to fix compatibility issues
-    public static function shouldRegisterNavigation(): bool
-    {
-        return false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
-    public static function canEdit($record): bool
-    {
-        return false;
-    }
-
-    public static function canDelete($record): bool
-    {
-        return false;
-    }
-
     public static function form(Schema $schema): Schema
     {
         return InvoiceForm::configure($schema);
