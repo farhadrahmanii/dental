@@ -1,0 +1,83 @@
+/* Custom Dashboard Styling */
+.dashboard-welcome-banner {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-stat-card {
+    transition: all 0.3s ease;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.quick-action-card {
+    transition: all 0.3s ease;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 2px solid transparent;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-color: #3b82f6;
+}
+
+.secondary-action-card {
+    transition: all 0.3s ease;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.secondary-action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Widget styling */
+.filament-stats-overview-widget {
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.filament-stats-overview-widget-card {
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+.filament-stats-overview-widget-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Chart widget improvements */
+.filament-chart-widget {
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .dashboard-welcome-banner {
+        padding: 1rem;
+    }
+    
+    .dashboard-stat-card {
+        padding: 1rem;
+    }
+    
+    .quick-action-card {
+        padding: 1rem;
+    }
+}
