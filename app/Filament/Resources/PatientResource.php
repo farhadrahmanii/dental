@@ -208,6 +208,7 @@ class PatientResource extends Resource
         return [
             \App\Filament\Resources\PatientResource\RelationManagers\InvoicesRelationManager::class,
             \App\Filament\Resources\PatientResource\RelationManagers\PaymentsRelationManager::class,
+            \App\Filament\Resources\PatientResource\RelationManagers\TreatmentsRelationManager::class,
         ];
     }
 
