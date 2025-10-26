@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Patient extends Model
 {
@@ -45,7 +46,7 @@ class Patient extends Model
         return $this->hasMany(Payment::class, 'patient_id', 'register_id');
     }
 
-    public function services(): HasMany
+    public function services(): HasManyThrough
     {
         return $this->hasManyThrough(Service::class, Payment::class, 'patient_id', 'id', 'register_id', 'service_id');
     }
@@ -66,5 +67,3 @@ class Patient extends Model
                $this->payments()->sum('amount');
     }
 }
-
-
