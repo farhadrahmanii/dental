@@ -27,6 +27,7 @@ class Patient extends Model
         'images',
         'treatment',
         'doctor_name',
+        'marital_status'
     ];
 
     protected $casts = [
@@ -61,7 +62,7 @@ class Patient extends Model
 
     public function getOutstandingBalanceAttribute()
     {
-        return $this->invoices()->where('status', '!=', 'paid')->sum('total_amount') - 
+        return $this->invoices()->where('status', '!=', 'paid')->sum('total_amount') -
                $this->payments()->sum('amount');
     }
 }
