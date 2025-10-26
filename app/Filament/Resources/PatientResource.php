@@ -27,16 +27,16 @@ class PatientResource extends Resource
     protected static ?string $model = Patient::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user-group';
-    
+
     protected static ?string $navigationLabel = 'Patients';
-    
+
     protected static ?string $modelLabel = 'Patient';
-    
+
     protected static ?string $pluralModelLabel = 'Patients';
-    
+
     protected static ?int $navigationSort = 1;
 
-   
+
 
     public static function form(Schema $schema): Schema
     {
@@ -71,6 +71,15 @@ class PatientResource extends Resource
                         TextInput::make('occupation')
                             ->label('Occupation/Job')
                             ->maxLength(255),
+                        Select::make('marital_status')
+                            ->label('Marital Status')
+                            ->options([
+                                'single' => 'Single',
+                                'married' => 'Married',
+                                'divorced' => 'Divorced',
+                                'widowed' => 'Widowed',
+                            ])
+                            ->nullable(),
                     ]),
 
                 Section::make('Address Information')
@@ -152,6 +161,16 @@ class PatientResource extends Resource
                     ->label('Occupation')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('marital_status')
+                    ->badge()
+                    ->color(fn ($state) => match ($state) {
+                        'single' => 'info',
+                        'married' => 'success',
+                        'divorced' => 'warning',
+                        'widowed' => 'danger',
+                        default => 'gray',
+                    })
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('x_ray_id')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('doctor_name')
@@ -202,5 +221,3 @@ class PatientResource extends Resource
         ];
     }
 }
-
-
