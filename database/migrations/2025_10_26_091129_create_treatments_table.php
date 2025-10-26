@@ -15,13 +15,14 @@ return new class extends Migration
     {
         Schema::create('treatments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("patient_id")
-                ->constrained()
-                ->onDelete('cascade');
-             $table->enum('treatment_type', array_column(DentalTreatment::cases(), 'value'));
-             $table->string('treatment_description')->nullable();
-             $table->date('treatment_date');
-             $table->enum('tooth_number', ToothNumber::values());
+            // ✅ fixed foreign key
+            $table->foreignId('patient_id')
+                  ->constrained(table: 'patients', column: 'register_id')
+                  ->onDelete('cascade');
+            $table->enum('treatment_type', DentalTreatment::values());
+            $table->string('treatment_description')->nullable();
+            $table->date('treatment_date');
+            $table->enum('tooth_number', ToothNumber::values());
             $table->timestamps();
         });
     }
