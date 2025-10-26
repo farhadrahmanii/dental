@@ -29,6 +29,9 @@ Route::prefix('v1')->group(function () {
     // Patient CRUD operations
     Route::apiResource('patients', PatientController::class);
 
+    // Add treatment to patient
+    Route::post('patients/{patient}/treatments', [PatientController::class, 'addTreatment']);
+
     // Sync operations
     Route::post('sync', [SyncController::class, 'sync']);
     Route::get('sync/status', [SyncController::class, 'status']);

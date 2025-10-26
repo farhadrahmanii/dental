@@ -56,6 +56,11 @@ class Patient extends Model
         return $this->hasMany(Appointment::class, 'patient_id', 'register_id');
     }
 
+    public function treatments(): HasMany
+    {
+        return $this->hasMany(Treatment::class, 'patient_id', 'register_id');
+    }
+
     public function getTotalSpentAttribute()
     {
         return $this->payments()->sum('amount');
