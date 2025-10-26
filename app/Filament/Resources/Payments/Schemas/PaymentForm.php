@@ -5,10 +5,10 @@ namespace App\Filament\Resources\Payments\Schemas;
 use App\Models\Invoice;
 use App\Models\Patient;
 use App\Helpers\CurrencyHelper;
-use Filament\Schemas\Components\DatePicker;
-use Filament\Schemas\Components\Select;
-use Filament\Schemas\Components\Textarea;
-use Filament\Schemas\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class PaymentForm
@@ -16,7 +16,7 @@ class PaymentForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->components([
+            ->schema([
                 Select::make('patient_id')
                     ->label('Patient')
                     ->relationship('patient', 'name')
