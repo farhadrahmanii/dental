@@ -10,7 +10,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
-use Filament\Schemas\Components\DatePicker;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Table;
 use App\Helpers\CurrencyHelper;
 
@@ -37,7 +37,7 @@ class PaymentsTable
 
                 TextColumn::make('amount')
                     ->label('Amount')
-                    ->formatStateUsing(fn ($state) => CurrencyHelper::format($state))
+                    ->formatStateUsing(fn($state) => CurrencyHelper::format($state))
                     ->sortable()
                     ->weight('bold')
                     ->color('success')
@@ -46,7 +46,7 @@ class PaymentsTable
                 TextColumn::make('payment_method')
                     ->label('Method')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'cash' => 'success',
                         'card' => 'info',
                         'bank_transfer' => 'warning',
@@ -54,7 +54,7 @@ class PaymentsTable
                         'other' => 'secondary',
                         default => 'gray',
                     })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'cash' => 'Cash',
                         'card' => 'Card',
                         'bank_transfer' => 'Bank Transfer',
@@ -112,14 +112,14 @@ class PaymentsTable
                         'other' => 'Other',
                     ])
                     ->multiple(),
-                
+
                 SelectFilter::make('service_id')
                     ->label('Service')
                     ->relationship('service', 'name')
                     ->searchable()
                     ->preload()
                     ->multiple(),
-                
+
                 Filter::make('payment_date')
                     ->form([
                         DatePicker::make('payment_from')
@@ -131,14 +131,14 @@ class PaymentsTable
                         return $query
                             ->when(
                                 $data['payment_from'],
-                                fn ($query, $date) => $query->whereDate('payment_date', '>=', $date)
+                                fn($query, $date) => $query->whereDate('payment_date', '>=', $date)
                             )
                             ->when(
                                 $data['payment_until'],
-                                fn ($query, $date) => $query->whereDate('payment_date', '<=', $date)
+                                fn($query, $date) => $query->whereDate('payment_date', '<=', $date)
                             );
                     }),
-                
+
                 SelectFilter::make('amount_range')
                     ->label('Amount Range')
                     ->options([
@@ -149,7 +149,7 @@ class PaymentsTable
                     ])
                     ->query(function ($query, array $data) {
                         if (!$data['value']) return;
-                        
+
                         return match ($data['value']) {
                             '0-100' => $query->whereBetween('amount', [0, 100]),
                             '100-500' => $query->whereBetween('amount', [100, 500]),
