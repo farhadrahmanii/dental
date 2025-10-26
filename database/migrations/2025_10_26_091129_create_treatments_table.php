@@ -15,14 +15,15 @@ return new class extends Migration
     {
         Schema::create('treatments', function (Blueprint $table) {
             $table->id();
-            // ✅ fixed foreign key
+            // Foreign key to patients table
             $table->foreignId('patient_id')
                   ->constrained(table: 'patients', column: 'register_id')
                   ->onDelete('cascade');
-            $table->enum('treatment_type', DentalTreatment::values());
+            $table->json('treatment_types');
             $table->string('treatment_description')->nullable();
             $table->date('treatment_date');
-            $table->enum('tooth_number', ToothNumber::values());
+            $table->json('tooth_numbers');
+
             $table->timestamps();
         });
     }
