@@ -18,6 +18,7 @@ return new class extends Migration
             // diagnosis stores URL or base64-saved URL from CanvasPointerField
             $table->string('diagnosis')->nullable();
             $table->longText('comment')->nullable();
+            $table->enum('marital_status', ['single', 'married', 'divorced', 'widowed'])->nullable();
             // store multiple image paths as JSON array
             $table->json('images')->nullable();
             $table->text('treatment')->nullable();
