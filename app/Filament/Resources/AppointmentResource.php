@@ -7,13 +7,13 @@ use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Service;
 use Filament\Forms\Components\DatePicker;
-use Filament\Schemas\Components\Select;
-use Filament\Schemas\Components\TextInput;
-use Filament\Schemas\Components\Textarea;
-use Filament\Schemas\Components\TimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TimePicker;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Hidden;
+use Filament\Forms\Components\Hidden;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -78,7 +78,7 @@ class AppointmentResource extends Resource
                             })
                             ->helperText('Select an existing patient to auto-fill their details')
                             ->columnSpanFull(),
-                        
+
                         Grid::make(3)
                             ->schema([
                                 TextInput::make('patient_name')
@@ -118,22 +118,22 @@ class AppointmentResource extends Resource
                                             }
                                         }
                                     }),
-                                
+
                                 Hidden::make('service_name'),
-                                
+
                                 DatePicker::make('appointment_date')
                                     ->label('Appointment Date')
                                     ->required()
                                     ->native(false)
                                     ->minDate(now())
                                     ->displayFormat('M d, Y'),
-                                
+
                                 TimePicker::make('appointment_time')
                                     ->label('Appointment Time')
                                     ->required()
                                     ->seconds(false)
                                     ->minutesStep(30),
-                                
+
                                 Select::make('status')
                                     ->label('Status')
                                     ->options([
@@ -147,13 +147,13 @@ class AppointmentResource extends Resource
                                     ->required()
                                     ->native(false),
                             ]),
-                        
+
                         Textarea::make('message')
                             ->label('Patient Message')
                             ->placeholder('Any message or special requests from the patient...')
                             ->rows(3)
                             ->columnSpanFull(),
-                        
+
                         Textarea::make('notes')
                             ->label('Internal Notes (Staff Only)')
                             ->placeholder('Internal notes visible only to staff...')
@@ -176,30 +176,30 @@ class AppointmentResource extends Resource
                     ->copyable()
                     ->weight('bold')
                     ->color('primary'),
-                
+
                 TextColumn::make('patient_name')
                     ->label('Patient')
                     ->searchable()
                     ->sortable()
-                    ->description(fn ($record) => $record->patient?->register_id ? 'ID: ' . $record->patient->register_id : 'New Patient'),
-                
+                    ->description(fn($record) => $record->patient?->register_id ? 'ID: ' . $record->patient->register_id : 'New Patient'),
+
                 TextColumn::make('patient_phone')
                     ->label('Phone')
                     ->searchable()
                     ->toggleable(),
-                
+
                 TextColumn::make('service_name')
                     ->label('Service')
                     ->searchable()
                     ->sortable()
-                    ->description(fn ($record) => $record->service ? '$' . number_format($record->service->price, 2) : ''),
-                
+                    ->description(fn($record) => $record->service ? '$' . number_format($record->service->price, 2) : ''),
+
                 TextColumn::make('appointment_date')
                     ->label('Date')
                     ->date('M d, Y')
                     ->sortable()
-                    ->description(fn ($record) => $record->formatted_time),
-                
+                    ->description(fn($record) => $record->formatted_time),
+
                 BadgeColumn::make('status')
                     ->label('Status')
                     ->colors([
@@ -210,7 +210,7 @@ class AppointmentResource extends Resource
                         'gray' => 'no_show',
                     ])
                     ->sortable(),
-                
+
                 TextColumn::make('created_at')
                     ->label('Created')
                     ->dateTime('M d, Y')
@@ -227,13 +227,13 @@ class AppointmentResource extends Resource
                         'no_show' => 'No Show',
                     ])
                     ->multiple(),
-                
+
                 SelectFilter::make('service_id')
                     ->label('Service')
                     ->relationship('service', 'name')
                     ->searchable()
                     ->multiple(),
-                
+
                 Filter::make('appointment_date')
                     ->form([
                         DatePicker::make('from')
@@ -245,11 +245,11 @@ class AppointmentResource extends Resource
                         return $query
                             ->when(
                                 $data['from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('appointment_date', '>=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('appointment_date', '>=', $date),
                             )
                             ->when(
                                 $data['until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('appointment_date', '<=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('appointment_date', '<=', $date),
                             );
                     }),
             ])
@@ -261,15 +261,15 @@ class AppointmentResource extends Resource
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->action(fn ($record) => $record->update(['status' => 'confirmed']))
-                    ->visible(fn ($record) => $record->status === 'pending'),
+                    ->action(fn($record) => $record->update(['status' => 'confirmed']))
+                    ->visible(fn($record) => $record->status === 'pending'),
                 Action::make('complete')
                     ->label('Complete')
                     ->icon('heroicon-o-check-badge')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->action(fn ($record) => $record->update(['status' => 'completed']))
-                    ->visible(fn ($record) => in_array($record->status, ['pending', 'confirmed'])),
+                    ->action(fn($record) => $record->update(['status' => 'completed']))
+                    ->visible(fn($record) => in_array($record->status, ['pending', 'confirmed'])),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
