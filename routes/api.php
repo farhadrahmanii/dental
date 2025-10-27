@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\SyncController;
+use App\Http\Controllers\Api\PatientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
     // Task CRUD operations
     Route::apiResource('tasks', TaskController::class);
-    
+
+    // Patient CRUD operations
+    Route::apiResource('patients', PatientController::class);
+
+    // Add treatment to patient
+    Route::post('patients/{patient}/treatments', [PatientController::class, 'addTreatment']);
+
     // Sync operations
     Route::post('sync', [SyncController::class, 'sync']);
     Route::get('sync/status', [SyncController::class, 'status']);
@@ -34,4 +41,3 @@ Route::prefix('v1')->group(function () {
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     // Add protected API routes here
 });
-

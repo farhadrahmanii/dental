@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Patient extends Model
 {
@@ -27,6 +28,7 @@ class Patient extends Model
         'images',
         'treatment',
         'doctor_name',
+        'marital_status'
     ];
 
     protected $casts = [
@@ -44,7 +46,7 @@ class Patient extends Model
         return $this->hasMany(Payment::class, 'patient_id', 'register_id');
     }
 
-    public function services(): HasMany
+    public function services(): HasManyThrough
     {
         return $this->hasManyThrough(Service::class, Payment::class, 'patient_id', 'id', 'register_id', 'service_id');
     }
@@ -54,6 +56,11 @@ class Patient extends Model
         return $this->hasMany(Appointment::class, 'patient_id', 'register_id');
     }
 
+    public function treatments(): HasMany
+    {
+        return $this->hasMany(Treatment::class, 'patient_id', 'register_id');
+    }
+
     public function getTotalSpentAttribute()
     {
         return $this->payments()->sum('amount');
@@ -61,9 +68,7 @@ class Patient extends Model
 
     public function getOutstandingBalanceAttribute()
     {
-        return $this->invoices()->where('status', '!=', 'paid')->sum('total_amount') - 
+        return $this->invoices()->where('status', '!=', 'paid')->sum('total_amount') -
                $this->payments()->sum('amount');
     }
 }
-
-

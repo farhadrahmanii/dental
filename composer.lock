@@ -2327,7 +2327,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+<<<<<<< HEAD
+            "time": "2025-10-23T15:25:03+00:00"
+=======
             "time": "2025-10-21T15:15:41+00:00"
+>>>>>>> 1a46188a979f4286482f0b48e5f20f5ba011b8b3
         },
         {
             "name": "laravel/prompts",

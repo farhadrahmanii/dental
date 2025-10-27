@@ -8,6 +8,11 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewPatient extends ViewRecord
 {
     protected static string $resource = PatientResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            // Add any header actions if needed
+        ];
+    }
 }
-
-
