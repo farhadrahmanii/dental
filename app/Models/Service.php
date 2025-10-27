@@ -35,15 +35,27 @@ class Service extends Model
     {
         parent::boot();
 
-        static::saving(function ($service) {
+        static::creating(function ($service) {
             // Set name from name_en if name is not set
             if (empty($service->name) && !empty($service->name_en)) {
-                $service->name = $service->name_en;
+                $service->attributes['name'] = $service->name_en;
             }
 
             // Set description from description_en if description is not set
             if (empty($service->description) && !empty($service->description_en)) {
-                $service->description = $service->description_en;
+                $service->attributes['description'] = $service->description_en;
+            }
+        });
+
+        static::updating(function ($service) {
+            // Set name from name_en if name is not set
+            if (empty($service->name) && !empty($service->name_en)) {
+                $service->attributes['name'] = $service->name_en;
+            }
+
+            // Set description from description_en if description is not set
+            if (empty($service->description) && !empty($service->description_en)) {
+                $service->attributes['description'] = $service->description_en;
             }
         });
     }
