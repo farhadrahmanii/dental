@@ -76,7 +76,7 @@ class InvoicesRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'paid' => 'success',
                         'overdue' => 'danger',
                         'sent' => 'warning',

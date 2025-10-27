@@ -5,10 +5,10 @@ namespace App\Filament\Resources\Payments\Schemas;
 use App\Models\Invoice;
 use App\Models\Patient;
 use App\Helpers\CurrencyHelper;
-use Filament\Schemas\Components\DatePicker;
-use Filament\Schemas\Components\Select;
-use Filament\Schemas\Components\Textarea;
-use Filament\Schemas\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class PaymentForm
@@ -16,7 +16,7 @@ class PaymentForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->components([
+            ->schema([
                 Select::make('patient_id')
                     ->label('Patient')
                     ->relationship('patient', 'name')
@@ -24,7 +24,6 @@ class PaymentForm
                     ->preload()
                     ->required()
                     ->placeholder('Select a patient')
-                    ->helperText('Choose the patient who made the payment')
                     ->createOptionForm([
                         TextInput::make('name')
                             ->required()
@@ -63,8 +62,7 @@ class PaymentForm
                     ->searchable()
                     ->preload()
                     ->nullable()
-                    ->placeholder('Select invoice (optional)')
-                    ->helperText('Link this payment to a specific invoice'),
+                    ->placeholder('Select invoice (optional)'),
 
                 Select::make('service_id')
                     ->label('Service')
@@ -72,8 +70,7 @@ class PaymentForm
                     ->searchable()
                     ->preload()
                     ->nullable()
-                    ->placeholder('Select service (optional)')
-                    ->helperText('Select the dental service performed for this payment'),
+                    ->placeholder('Select service (optional)'),
 
                 TextInput::make('amount')
                     ->label('Payment Amount')
@@ -81,8 +78,7 @@ class PaymentForm
                     ->prefix(CurrencyHelper::prefix())
                     ->required()
                     ->step(0.01)
-                    ->placeholder('0.00')
-                    ->helperText('Enter the payment amount in Afghani'),
+                    ->placeholder('0.00'),
 
                 Select::make('payment_method')
                     ->label('Payment Method')
@@ -95,27 +91,23 @@ class PaymentForm
                     ])
                     ->required()
                     ->default('cash')
-                    ->placeholder('Select payment method')
-                    ->helperText('Choose how the payment was made'),
+                    ->placeholder('Select payment method'),
 
                 DatePicker::make('payment_date')
                     ->label('Payment Date')
                     ->required()
                     ->default(now())
-                    ->displayFormat('M d, Y')
-                    ->helperText('Date when the payment was received'),
+                    ->displayFormat('M d, Y'),
 
                 TextInput::make('reference_number')
                     ->label('Reference Number')
                     ->maxLength(255)
-                    ->placeholder('Transaction ID, check number, etc.')
-                    ->helperText('Enter transaction reference if available'),
+                    ->placeholder('Transaction ID, check number, etc.'),
 
                 Textarea::make('notes')
                     ->label('Payment Notes')
                     ->rows(3)
                     ->placeholder('Add any additional notes about this payment')
-                    ->helperText('Optional notes about the payment')
                     ->columnSpanFull(),
             ]);
     }
