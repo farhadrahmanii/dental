@@ -18,14 +18,35 @@ class Service extends Model
         'category',
         'is_active',
         // Translatable fields
-        'name_en', 'name_ps', 'name_fa',
-        'description_en', 'description_ps', 'description_fa',
+        'name_en',
+        'name_ps',
+        'name_fa',
+        'description_en',
+        'description_ps',
+        'description_fa',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'is_active' => 'boolean',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($service) {
+            // Set name from name_en if name is not set
+            if (empty($service->name) && !empty($service->name_en)) {
+                $service->name = $service->name_en;
+            }
+
+            // Set description from description_en if description is not set
+            if (empty($service->description) && !empty($service->description_en)) {
+                $service->description = $service->description_en;
+            }
+        });
+    }
 
     public function invoiceItems(): HasMany
     {
@@ -57,20 +78,20 @@ class Service extends Model
     {
         $locale = app()->getLocale();
         $fallbackLocale = config('app.fallback_locale', 'en');
-        
+
         // Try to get the attribute in the current locale
         $value = $this->getRawOriginal("name_{$locale}");
-        
+
         // If not found, try fallback locale
         if (empty($value) && $locale !== $fallbackLocale) {
             $value = $this->getRawOriginal("name_{$fallbackLocale}");
         }
-        
+
         // If still not found, try the original attribute
         if (empty($value)) {
             $value = $this->getRawOriginal('name');
         }
-        
+
         return $value;
     }
 
@@ -78,20 +99,20 @@ class Service extends Model
     {
         $locale = app()->getLocale();
         $fallbackLocale = config('app.fallback_locale', 'en');
-        
+
         // Try to get the attribute in the current locale
         $value = $this->getRawOriginal("description_{$locale}");
-        
+
         // If not found, try fallback locale
         if (empty($value) && $locale !== $fallbackLocale) {
             $value = $this->getRawOriginal("description_{$fallbackLocale}");
         }
-        
+
         // If still not found, try the original attribute
         if (empty($value)) {
             $value = $this->getRawOriginal('description');
         }
-        
+
         return $value;
     }
 
