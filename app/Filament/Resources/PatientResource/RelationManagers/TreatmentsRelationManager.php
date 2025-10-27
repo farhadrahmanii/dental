@@ -38,12 +38,16 @@ class TreatmentsRelationManager extends RelationManager
                     ->label('Treatment Types')
                     ->options(array_combine(DentalTreatment::values(), DentalTreatment::values()))
                     ->multiple()
-                    ->required(),
+                    ->required()
+                    ->searchable()
+                    ->preload(),
                 Select::make('tooth_numbers')
                     ->label('Tooth Numbers')
                     ->options(array_combine(ToothNumber::values(), ToothNumber::values()))
                     ->multiple()
-                    ->required(),
+                    ->required()
+                    ->searchable()
+                    ->preload(),
                 DatePicker::make('treatment_date')
                     ->label('Treatment Date')
                     ->required(),
@@ -108,5 +112,14 @@ class TreatmentsRelationManager extends RelationManager
                     Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public function getTableRecordTitle(Model $record): string
+    {
+        // Convert array to string for record title
+        if (is_array($record->treatment_types)) {
+            return implode(', ', $record->treatment_types);
+        }
+        return (string) $record->treatment_types;
     }
 }

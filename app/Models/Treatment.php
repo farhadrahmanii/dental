@@ -8,9 +8,20 @@ class Treatment extends Model
 {
     protected $fillable = [
         'patient_id',
-        'treatment_type',
+        'treatment_types',
         'treatment_description',
         'treatment_date',
-        'tooth_number',
+        'tooth_numbers',
     ];
+
+    // Remove the JSON casting since these are now ENUM columns
+    protected $casts = [
+        'treatment_types' => 'array',
+        'tooth_numbers'   => 'array',
+    ];
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
 }
