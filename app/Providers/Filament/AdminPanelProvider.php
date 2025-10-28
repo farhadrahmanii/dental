@@ -19,6 +19,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Http\Middleware\SetLocale;
+use Filament\Facades\Filament;
+use Filament\Support\Facades\FilamentView;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -30,7 +32,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->topNavigation()
-            
+            ->renderHook(
+                'panels::content.start',
+                fn() => view('filament.partials.overview-charts')
+            )
+
             ->colors([
                 'primary' => Color::Blue,
                 'secondary' => Color::Purple,
