@@ -30,32 +30,21 @@
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-base font-semibold tracking-tight">Financial Overview</h3>
             </div>
-            <div class="flex gap-4 items-center" style="height:280px">
-                <div class="flex-1 h-full overflow-auto pr-2">
-                    <ul class="space-y-2.5 text-sm">
-                        @php
-                            $costs = [
-                                ['label' => 'مصارف تجهیزات', 'value' => 450000, 'color' => '#2563eb'],
-                                ['label' => 'قبض کرایه (فرض)', 'value' => 250000, 'color' => '#22c55e'],
-                                ['label' => 'معاش عمومی', 'value' => 200000, 'color' => '#a855f7'],
-                                ['label' => 'پُل خدمات', 'value' => 150000, 'color' => '#f59e0b'],
-                                ['label' => 'فرعی خدمت', 'value' => 100000, 'color' => '#06b6d4'],
-                                ['label' => 'قرطاسیه و لوازم', 'value' => 75000, 'color' => '#ef4444'],
-                                ['label' => 'مصارف لوازم‌یار', 'value' => 25000, 'color' => '#eab308'],
-                            ];
-                            $totalCosts = collect($costs)->sum('value');
-                        @endphp
-                        @foreach ($costs as $row)
-                            <li class="flex items-center gap-2.5">
-                                <span class="inline-block w-2.5 h-2.5 rounded-full"
-                                    style="background: {{ $row['color'] }}"></span>
-                                <span class="font-semibold tabular-nums">${{ number_format($row['value']) }}</span>
-                                <span class="text-gray-500 dark:text-gray-400">{{ $row['label'] }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-                <div class="relative" style="width:280px;height:280px">
+            <div
+                style="display:flex; align-items:center; justify-content:space-between; gap:16px; height:280px; flex-wrap:nowrap;">
+                @php
+                    $costs = [
+                        ['label' => 'مصارف تجهیزات', 'value' => 450000, 'color' => '#2563eb'],
+                        ['label' => 'قبض کرایه (فرض)', 'value' => 250000, 'color' => '#22c55e'],
+                        ['label' => 'معاش عمومی', 'value' => 200000, 'color' => '#a855f7'],
+                        ['label' => 'پُل خدمات', 'value' => 150000, 'color' => '#f59e0b'],
+                        ['label' => 'فرعی خدمت', 'value' => 100000, 'color' => '#06b6d4'],
+                        ['label' => 'قرطاسیه و لوازم', 'value' => 75000, 'color' => '#ef4444'],
+                        ['label' => 'مصارف لوازم‌یار', 'value' => 25000, 'color' => '#eab308'],
+                    ];
+                    $totalCosts = collect($costs)->sum('value');
+                @endphp
+                <div class="relative" style="width:280px;height:280px; flex:0 0 280px;">
                     <canvas id="financeDonut" style="width:280px;height:280px"></canvas>
                     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div class="text-center">
@@ -65,6 +54,15 @@
                         </div>
                     </div>
                 </div>
+                <ul class="legend list-unstyled m-0" style="flex:1 1 auto; font-size:12px; line-height:1.4;">
+                    @foreach ($costs as $row)
+                        <li class="d-flex align-items-center mb-1" style="display:flex; align-items:center; gap:.5rem;">
+                            <span
+                                style="display:inline-block; width:10px; height:10px; border-radius:2px; background: {{ $row['color'] }}"></span>
+                            <span>{{ $row['label'] }}</span>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
         </div>
     </div>
