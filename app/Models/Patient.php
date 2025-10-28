@@ -46,10 +46,10 @@ class Patient extends Model
         return $this->hasMany(Payment::class, 'patient_id', 'register_id');
     }
 
-    public function services(): HasManyThrough
-    {
-        return $this->hasManyThrough(Service::class, Payment::class, 'patient_id', 'id', 'register_id', 'service_id');
-    }
+    // public function services(): HasManyThrough
+    // {
+    //     return $this->hasManyThrough(Service::class, Payment::class, 'patient_id', 'id', 'register_id', 'service_id');
+    // }
 
     public function appointments(): HasMany
     {
@@ -59,6 +59,17 @@ class Patient extends Model
     public function treatments()
     {
         return $this->hasMany(Treatment::class, 'patient_id', 'register_id');
+    }
+    public function services()
+    {
+        return $this->hasManyThrough(
+            Service::class,       // final model
+            Treatment::class,     // intermediate model
+            'patient_id',         // FK on treatments table
+            'id',                 // PK on services table
+            'register_id',        // local key on patients table
+            'service_id'          // FK on treatments table pointing to services
+        );
     }
 
     public function getTotalSpentAttribute()

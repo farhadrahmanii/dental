@@ -19,14 +19,13 @@ class Treatment extends Model
         'treatment_date' => 'date',
     ];
 
-    public function patient()
+   public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'register_id');
     }
 
-
     public function service()
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(Service::class, 'service_id', 'id');
     }
 }

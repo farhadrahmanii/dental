@@ -27,9 +27,9 @@ class Service extends Model
         'is_active' => 'boolean',
     ];
 
-    public function treatments(): HasMany
+    public function treatments()
     {
-        return $this->hasMany(Treatment::class);
+        return $this->hasMany(Treatment::class, 'service_id', 'id');
     }
 
     public function invoiceItems(): HasMany
