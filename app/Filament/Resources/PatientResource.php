@@ -20,6 +20,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\Action;
 use RuelLuna\CanvasPointer\Forms\Components\CanvasPointerField;
 
 class PatientResource extends Resource
@@ -195,6 +196,10 @@ class PatientResource extends Resource
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
+                Action::make('add_treatment')
+                    ->label('Add Treatment')
+                    ->icon('heroicon-o-beaker')
+                    ->url(fn ($record) => '/admin/treatments/create?patient_id=' . $record->register_id),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

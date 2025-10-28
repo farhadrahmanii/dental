@@ -17,14 +17,4 @@ class ListPatients extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-
-    protected function getTableActions(): array
-    {
-        return [
-            Actions\Action::make('add_treatment')
-                ->label('Add Treatment')
-                ->icon('heroicon-o-beaker')
-                ->url(fn ($record) => TreatmentResource::getUrl('create', ['patient_id' => $record->register_id])),
-        ];
-    }
 }

@@ -24,13 +24,15 @@ class CreateTreatment extends CreateRecord
         return $data;
     }
 
-    protected function fillForm(): void
+    protected function getDefaultFormValues(): array
     {
-        parent::fillForm();
+        $values = parent::getDefaultFormValues();
 
         // Pre-fill patient_id if provided in URL
         if ($patientId = request()->query('patient_id')) {
-            $this->form->fill(['patient_id' => $patientId]);
+            $values['patient_id'] = $patientId;
         }
+
+        return $values;
     }
 }
