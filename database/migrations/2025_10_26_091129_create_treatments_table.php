@@ -19,7 +19,9 @@ return new class extends Migration
             $table->foreignId('patient_id')
                   ->constrained(table: 'patients', column: 'register_id')
                   ->onDelete('cascade');
-            $table->json('treatment_types');
+             $table->foreignId('service_id')
+                  ->constrained()
+                  ->onDelete('cascade');
             $table->string('treatment_description')->nullable();
             $table->date('treatment_date');
             $table->json('tooth_numbers');
