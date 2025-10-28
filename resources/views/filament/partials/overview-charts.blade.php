@@ -45,8 +45,9 @@
                     $totalCosts = collect($costs)->sum('value');
                 @endphp
                 <div class="relative" style="width:280px;height:280px; flex:0 0 280px;">
-                    <canvas id="financeDonut" style="width:280px;height:280px"></canvas>
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <canvas id="financeDonut" style="width:280px;height:280px; position:relative; z-index:1"></canvas>
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none"
+                        style="z-index:2;">
                         <div class="text-center">
                             <div class="text-2xl font-extrabold tabular-nums">
                                 ${{ number_format($totalCosts / 1000000, 2) }}M</div>
