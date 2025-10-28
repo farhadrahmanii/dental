@@ -8,7 +8,7 @@
 <section class="section-apple-sm" style="background: linear-gradient(135deg, var(--surface) 0%, var(--apple-gray-1) 100%); position: relative; overflow: hidden;">
     <!-- Background Pattern -->
     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 20%, rgba(0, 122, 255, 0.03) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0, 122, 255, 0.02) 0%, transparent 50%); pointer-events: none;"></div>
-    
+
     <div class="container-apple" style="position: relative; z-index: 1;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-lg);">
             <div style="flex: 1; min-width: 300px;">
@@ -18,7 +18,7 @@
                 <p class="body-large" style="color: var(--text-secondary); max-width: 500px;">
                     {{ __('dental.comprehensive_patient_management') }}
                 </p>
-                
+
                 <!-- Quick Stats -->
                 <div style="display: flex; gap: var(--space-lg); margin-top: var(--space-lg); flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: var(--space-sm);">
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div style="display: flex; gap: var(--space-md); flex-wrap: wrap;">
                 <a href="/admin" class="btn-apple-outline" style="display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-md) var(--space-lg);">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -73,9 +73,9 @@
                         <p style="color: var(--text-secondary); font-size: 0.875rem;">{{ __('dental.find_patients_quickly') }}</p>
                     </div>
                 </div>
-                
+
                 <form method="GET" action="{{ route('patients') }}" id="searchForm">
-                    <div class="grid-apple" style="grid-template-columns: 2fr 1fr 1fr auto; gap: var(--space-lg); align-items: end;">
+                    <div class="grid-apple" style="grid-template-columns: 2fr 1fr auto; gap: var(--space-lg); align-items: end;">
                         <div class="form-group-apple">
                             <label class="form-label-apple">{{ __('dental.search_patients') }}</label>
                             <div class="search-apple" style="position: relative;">
@@ -94,7 +94,7 @@
                                 @endif
                             </div>
                         </div>
-                        
+
                         <div class="form-group-apple">
                             <label class="form-label-apple">{{ __('dental.doctor') }}</label>
                             <select name="doctor" class="form-select-apple">
@@ -104,17 +104,7 @@
                                 <option value="Dr. Williams" {{ request('doctor') == 'Dr. Williams' ? 'selected' : '' }}>Dr. Williams</option>
                             </select>
                         </div>
-                        
-                        <div class="form-group-apple">
-                            <label class="form-label-apple">{{ __('dental.treatment') }}</label>
-                            <select name="treatment" class="form-select-apple">
-                                <option value="">{{ __('dental.all_treatments') }}</option>
-                                <option value="General" {{ request('treatment') == 'General' ? 'selected' : '' }}>{{ __('dental.general') }}</option>
-                                <option value="Cosmetic" {{ request('treatment') == 'Cosmetic' ? 'selected' : '' }}>{{ __('dental.cosmetic') }}</option>
-                                <option value="Implant" {{ request('treatment') == 'Implant' ? 'selected' : '' }}>{{ __('dental.implant') }}</option>
-                            </select>
-                        </div>
-                        
+
                         <div class="form-group-apple">
                             <button type="submit" class="btn-apple" style="padding: var(--space-md) var(--space-lg); min-width: 120px;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -125,9 +115,9 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Active Filters Display -->
-                    @if(request('search') || request('doctor') || request('treatment'))
+                    @if(request('search') || request('doctor'))
                     <div style="margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--border-light);">
                         <div style="display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap;">
                             <span style="color: var(--text-secondary); font-size: 0.875rem; font-weight: 500;">{{ __('dental.active_filters') }}:</span>
@@ -141,12 +131,6 @@
                             <span class="filter-tag">
                                 {{ __('dental.doctor') }}: {{ request('doctor') }}
                                 <button type="button" onclick="removeFilter('doctor')" style="margin-left: var(--space-xs); background: none; border: none; color: inherit; cursor: pointer;">×</button>
-                            </span>
-                            @endif
-                            @if(request('treatment'))
-                            <span class="filter-tag">
-                                {{ __('dental.treatment') }}: {{ request('treatment') }}
-                                <button type="button" onclick="removeFilter('treatment')" style="margin-left: var(--space-xs); background: none; border: none; color: inherit; cursor: pointer;">×</button>
                             </span>
                             @endif
                             <a href="{{ route('patients') }}" class="btn-apple-outline" style="padding: var(--space-xs) var(--space-sm); font-size: 0.75rem;">
@@ -168,10 +152,6 @@
             <div class="stat-apple">
                 <div class="stat-number">{{ $patients->where('doctor_name', '!=', null)->count() }}</div>
                 <div class="stat-label">{{ __('dental.with_doctor') }}</div>
-            </div>
-            <div class="stat-apple">
-                <div class="stat-number">{{ $patients->where('treatment', '!=', null)->count() }}</div>
-                <div class="stat-label">{{ __('dental.in_treatment') }}</div>
             </div>
             <div class="stat-apple">
                 <div class="stat-number">{{ $patients->where('x_ray_id', '!=', null)->count() }}</div>
@@ -249,7 +229,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="patient-details">
                     <div class="patient-detail">
                         <div class="patient-detail-label">{{ __('dental.age') }}</div>
@@ -262,10 +242,6 @@
                     <div class="patient-detail">
                         <div class="patient-detail-label">{{ __('dental.doctor') }}</div>
                         <div class="patient-detail-value">{{ $patient->doctor_name ?? __('dental.not_assigned') }}</div>
-                    </div>
-                    <div class="patient-detail">
-                        <div class="patient-detail-label">{{ __('dental.treatment') }}</div>
-                        <div class="patient-detail-value">{{ $patient->treatment ?? __('dental.pending') }}</div>
                     </div>
                     <div class="patient-detail">
                         <div class="patient-detail-label">{{ __('dental.xray_id') }}</div>
@@ -353,7 +329,7 @@
                 {{ __('dental.powerful_tools') }}
             </p>
         </div>
-        
+
         <div class="grid-apple grid-apple-4">
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
@@ -367,7 +343,7 @@
                     {{ __('dental.search_description') }}
                 </p>
             </div>
-            
+
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
@@ -379,7 +355,7 @@
                     {{ __('dental.filter_description') }}
                 </p>
             </div>
-            
+
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
@@ -392,7 +368,7 @@
                     {{ __('dental.analytics_description') }}
                 </p>
             </div>
-            
+
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
@@ -419,7 +395,7 @@
                 {{ __('dental.manage_patient_operations') }}
             </p>
         </div>
-        
+
         <div class="grid-apple grid-apple-3">
             <a href="/admin" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
@@ -433,7 +409,7 @@
                     {{ __('dental.register_new_patient') }}
                 </p>
             </a>
-            
+
             <a href="{{ route('home') }}#appointment" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #34C759 0%, #30A46C 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
@@ -446,7 +422,7 @@
                     {{ __('dental.schedule_appointment') }}
                 </p>
             </a>
-            
+
             <a href="{{ route('financial.dashboard') }}" class="card-apple" style="text-align: center; padding: var(--space-xl); text-decoration: none; color: inherit;">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #FF9500 0%, #FF8C00 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">

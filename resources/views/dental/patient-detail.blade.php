@@ -10,7 +10,7 @@
         <div class="text-center">
             <h1 class="display-medium mb-3">Patient Details</h1>
             <p class="body-large" style="color: var(--text-secondary); max-width: 600px; margin-left: auto; margin-right: auto;">
-                Comprehensive patient information and treatment history
+                Comprehensive patient information
             </p>
         </div>
     </div>
@@ -49,35 +49,28 @@
                                 <span class="body-large" style="font-weight: 600;">{{ $patient->age }} years</span>
                             </div>
                         </div>
-                        
+
                         <div class="form-group-apple">
                             <label class="form-label-apple">Father's Name</label>
                             <div style="background: var(--apple-gray-1); padding: var(--space-md); border-radius: var(--radius-md);">
                                 <span class="body-large">{{ $patient->father_name ?? 'Not provided' }}</span>
                             </div>
                         </div>
-                        
+
                         <div class="form-group-apple">
                             <label class="form-label-apple">Assigned Doctor</label>
                             <div style="background: var(--apple-gray-1); padding: var(--space-md); border-radius: var(--radius-md);">
                                 <span class="body-large">{{ $patient->doctor_name ?? 'Not assigned' }}</span>
                             </div>
                         </div>
-                        
-                        <div class="form-group-apple">
-                            <label class="form-label-apple">Treatment Type</label>
-                            <div style="background: var(--apple-gray-1); padding: var(--space-md); border-radius: var(--radius-md);">
-                                <span class="body-large">{{ $patient->treatment ?? 'Pending' }}</span>
-                            </div>
-                        </div>
-                        
+
                         <div class="form-group-apple">
                             <label class="form-label-apple">X-Ray ID</label>
                             <div style="background: var(--apple-gray-1); padding: var(--space-md); border-radius: var(--radius-md);">
                                 <span class="body-large">{{ $patient->x_ray_id ?? 'Not available' }}</span>
                             </div>
                         </div>
-                        
+
                         <div class="form-group-apple">
                             <label class="form-label-apple">Images Count</label>
                             <div style="background: var(--apple-gray-1); padding: var(--space-md); border-radius: var(--radius-md);">
@@ -190,63 +183,6 @@
     </div>
 </section>
 
-<!-- Treatment History -->
-@if($patient->diagnosis || $patient->treatment)
-<section class="section-apple" style="background: var(--surface);">
-    <div class="container-apple">
-        <div class="text-center mb-6">
-            <h2 class="headline-large mb-3">Treatment History</h2>
-            <p class="body-large" style="color: var(--text-secondary);">
-                Complete treatment information and medical history
-            </p>
-        </div>
-        
-        <div class="card-apple-elevated">
-            <div style="padding: var(--space-2xl);">
-                <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
-                    <div>
-                        <h3 class="title-large mb-4">Current Treatment</h3>
-                        <div style="background: var(--apple-gray-1); padding: var(--space-lg); border-radius: var(--radius-md);">
-                            <div class="body-large" style="font-weight: 600; color: var(--primary); margin-bottom: var(--space-sm);">
-                                {{ $patient->treatment ?? 'No active treatment' }}
-                            </div>
-                            <div class="body-medium" style="color: var(--text-secondary);">
-                                @if($patient->doctor_name)
-                                    Under the care of {{ $patient->doctor_name }}
-                                @else
-                                    Treatment pending doctor assignment
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h3 class="title-large mb-4">Medical Records</h3>
-                        <div style="background: var(--apple-gray-1); padding: var(--space-lg); border-radius: var(--radius-md);">
-                            <div class="body-medium" style="color: var(--text-secondary);">
-                                @if($patient->x_ray_id)
-                                    <div style="margin-bottom: var(--space-sm);">
-                                        <strong>X-Ray ID:</strong> {{ $patient->x_ray_id }}
-                                    </div>
-                                @endif
-                                @if($patient->images && is_array($patient->images))
-                                    <div style="margin-bottom: var(--space-sm);">
-                                        <strong>Images:</strong> {{ count($patient->images) }} files
-                                    </div>
-                                @endif
-                                <div>
-                                    <strong>Patient ID:</strong> {{ $patient->register_id }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-@endif
-
 <!-- Related Services -->
 <section class="section-apple">
     <div class="container-apple">
@@ -256,7 +192,7 @@
                 Explore our comprehensive dental services
             </p>
         </div>
-        
+
         <div class="grid-apple grid-apple-3">
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
@@ -270,7 +206,7 @@
                 </p>
                 <a href="{{ route('services') }}" class="btn-apple-outline">Learn More</a>
             </div>
-            
+
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
@@ -283,7 +219,7 @@
                 </p>
                 <a href="{{ route('services') }}" class="btn-apple-outline">Learn More</a>
             </div>
-            
+
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">

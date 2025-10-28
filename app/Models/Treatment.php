@@ -8,7 +8,7 @@ class Treatment extends Model
 {
     protected $fillable = [
         'patient_id',
-        'treatment_types',
+        'service_id',
         'treatment_description',
         'treatment_date',
         'tooth_numbers',
