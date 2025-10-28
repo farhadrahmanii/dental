@@ -14,14 +14,19 @@ class Treatment extends Model
         'tooth_numbers',
     ];
 
-    // Remove the JSON casting since these are now ENUM columns
     protected $casts = [
-        'treatment_types' => 'array',
         'tooth_numbers'   => 'array',
+        'treatment_date' => 'date',
     ];
 
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Patient::class, 'patient_id', 'register_id');
+    }
+
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
     }
 }

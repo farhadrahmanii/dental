@@ -27,6 +27,11 @@ class Service extends Model
         'is_active' => 'boolean',
     ];
 
+    public function treatments(): HasMany
+    {
+        return $this->hasMany(Treatment::class);
+    }
+
     public function invoiceItems(): HasMany
     {
         return $this->hasMany(InvoiceItem::class);
@@ -57,20 +62,20 @@ class Service extends Model
     {
         $locale = app()->getLocale();
         $fallbackLocale = config('app.fallback_locale', 'en');
-        
+
         // Try to get the attribute in the current locale
         $value = $this->getRawOriginal("name_{$locale}");
-        
+
         // If not found, try fallback locale
         if (empty($value) && $locale !== $fallbackLocale) {
             $value = $this->getRawOriginal("name_{$fallbackLocale}");
         }
-        
+
         // If still not found, try the original attribute
         if (empty($value)) {
             $value = $this->getRawOriginal('name');
         }
-        
+
         return $value;
     }
 
@@ -78,20 +83,20 @@ class Service extends Model
     {
         $locale = app()->getLocale();
         $fallbackLocale = config('app.fallback_locale', 'en');
-        
+
         // Try to get the attribute in the current locale
         $value = $this->getRawOriginal("description_{$locale}");
-        
+
         // If not found, try fallback locale
         if (empty($value) && $locale !== $fallbackLocale) {
             $value = $this->getRawOriginal("description_{$fallbackLocale}");
         }
-        
+
         // If still not found, try the original attribute
         if (empty($value)) {
             $value = $this->getRawOriginal('description');
         }
-        
+
         return $value;
     }
 
