@@ -21,6 +21,11 @@ class CreateTreatment extends CreateRecord
             // The cast in the model should handle this, but we ensure it here
         }
 
+        // If patient_id is not set but provided in URL, use it
+        if (!isset($data['patient_id']) && ($patientId = request()->query('patient_id'))) {
+            $data['patient_id'] = $patientId;
+        }
+
         return $data;
     }
 
@@ -34,5 +39,15 @@ class CreateTreatment extends CreateRecord
         }
 
         return $values;
+    }
+
+    public function mount(): void
+    {
+        parent::mount();
+
+        // Ensure patient_id is set in form state if provided in URL
+        if ($patientId = request()->query('patient_id')) {
+            $this->form->fill(['patient_id' => $patientId]);
+        }
     }
 }

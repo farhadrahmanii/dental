@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -50,7 +51,22 @@ class TreatmentResource extends Resource
                             ->relationship('patient', 'name')
                             ->searchable()
                             ->required()
-                            ->disabledOn('edit'),
+                            ->visible(fn () => !request()->query('patient_id')),
+                        TextInput::make('patient_name')
+                            ->label('Patient')
+                            ->visible(fn () => request()->query('patient_id'))
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->formatStateUsing(function () {
+                                if ($patientId = request()->query('patient_id')) {
+                                    $patient = Patient::find($patientId);
+                                    return $patient ? $patient->name : '';
+                                }
+                                return '';
+                            }),
+                        Hidden::make('patient_id')
+                            ->visible(fn () => request()->query('patient_id'))
+                            ->dehydrated(true),
                         Select::make('service_id')
                             ->label('Service')
                             ->relationship('service', 'name')
