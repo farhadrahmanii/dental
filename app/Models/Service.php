@@ -18,8 +18,12 @@ class Service extends Model
         'category',
         'is_active',
         // Translatable fields
-        'name_en', 'name_ps', 'name_fa',
-        'description_en', 'description_ps', 'description_fa',
+        'name_en',
+        'name_ps',
+        'name_fa',
+        'description_en',
+        'description_ps',
+        'description_fa',
     ];
 
     protected $casts = [
