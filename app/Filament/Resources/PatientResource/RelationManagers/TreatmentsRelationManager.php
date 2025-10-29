@@ -2,18 +2,15 @@
 
 namespace App\Filament\Resources\PatientResource\RelationManagers;
 
-use App\Enums\DentalTreatment;
 use App\Enums\ToothNumber;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions;
-use Illuminate\Database\Eloquent\Model;
 
 class TreatmentsRelationManager extends RelationManager
 {
@@ -34,13 +31,11 @@ class TreatmentsRelationManager extends RelationManager
     {
         return $schema
             ->schema([
-                Select::make('treatment_types')
-                    ->label('Treatment Types')
-                    ->options(array_combine(DentalTreatment::values(), DentalTreatment::values()))
-                    ->multiple()
-                    ->required()
+                Select::make('service_id')
+                    ->label('Service')
+                    ->relationship('service', 'name')
                     ->searchable()
-                    ->preload(),
+                    ->required(),
                 Select::make('tooth_numbers')
                     ->label('Tooth Numbers')
                     ->options(array_combine(ToothNumber::values(), ToothNumber::values()))
@@ -60,16 +55,10 @@ class TreatmentsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('treatment_types')
+            ->recordTitleAttribute('service.name')
             ->columns([
-                Tables\Columns\TextColumn::make('treatment_types')
-                    ->label('Treatment Types')
-                    ->formatStateUsing(function ($state) {
-                        if (is_array($state)) {
-                            return implode(', ', $state);
-                        }
-                        return $state;
-                    })
+                Tables\Columns\TextColumn::make('service.name')
+                    ->label('Service')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tooth_numbers')
@@ -112,14 +101,5 @@ class TreatmentsRelationManager extends RelationManager
                     Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public function getTableRecordTitle(Model $record): string
-    {
-        // Convert array to string for record title
-        if (is_array($record->treatment_types)) {
-            return implode(', ', $record->treatment_types);
-        }
-        return (string) $record->treatment_types;
     }
 }
