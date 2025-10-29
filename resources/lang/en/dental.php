@@ -4,62 +4,63 @@ return [
     // App Title
     'app_name' => 'DentalCare Pro',
     'app_description' => 'Professional dental care with modern technology and experienced doctors. Book your appointment today.',
-    
+
     // Home Page
     'hero_title' => 'Creating The Healthy Smile You Want',
     'hero_subtitle' => 'Experience exceptional dental care with our state-of-the-art technology and highly skilled professionals. We\'re committed to providing you with the best dental services in a comfortable and modern environment.',
     'book_appointment' => 'Book Appointment',
     'view_services' => 'View Services',
-    
+
     // Services
     'our_services' => 'Our Dental Services',
     'services_subtitle' => 'Comprehensive dental care with modern technology and experienced professionals',
-    
+
     'general_dentistry' => 'General Dentistry',
     'general_dentistry_desc' => 'Comprehensive oral health care including cleanings, fillings, root canals, and preventive treatments to maintain your dental health.',
     'regular_checkups' => 'Regular Checkups',
     'teeth_cleaning' => 'Teeth Cleaning',
     'fillings_crowns' => 'Fillings & Crowns',
     'root_canal_therapy' => 'Root Canal Therapy',
-    
+
     'cosmetic_dentistry' => 'Cosmetic Dentistry',
     'cosmetic_dentistry_desc' => 'Transform your smile with our cosmetic dental procedures designed to enhance your appearance and boost your confidence.',
     'teeth_whitening' => 'Teeth Whitening',
     'veneers' => 'Veneers',
     'dental_bonding' => 'Dental Bonding',
     'smile_makeover' => 'Smile Makeover',
-    
+
     'orthodontics' => 'Orthodontics',
     'orthodontics_desc' => 'Straighten your teeth and improve your bite with our advanced orthodontic treatments for patients of all ages.',
     'braces' => 'Braces',
     'invisalign' => 'Invisalign',
     'retainers' => 'Retainers',
     'bite_correction' => 'Bite Correction',
-    
+
     'oral_surgery' => 'Oral Surgery',
     'oral_surgery_desc' => 'Advanced surgical procedures including wisdom teeth removal, dental implants, and complex extractions.',
     'wisdom_teeth' => 'Wisdom Teeth Removal',
     'dental_implants' => 'Dental Implants',
     'tooth_extraction' => 'Tooth Extraction',
     'jaw_surgery' => 'Jaw Surgery',
-    
+
     'emergency_care' => 'Emergency Care',
     'emergency_care_desc' => '24/7 emergency dental services for urgent dental problems that require immediate attention.',
     'toothache_relief' => 'Toothache Relief',
     'broken_tooth' => 'Broken Tooth Repair',
     'lost_filling' => 'Lost Filling Replacement',
     'dental_trauma' => 'Dental Trauma',
-    
+
     'pediatric_dentistry' => 'Pediatric Dentistry',
     'pediatric_dentistry_desc' => 'Specialized dental care for children, creating positive dental experiences and promoting lifelong oral health.',
     'child_checkups' => 'Child Checkups',
     'preventive_care' => 'Preventive Care',
     'fluoride_treatment' => 'Fluoride Treatment',
     'dental_sealants' => 'Dental Sealants',
-    
+
     // Patient Management
     'patient_management' => 'Patient Management',
     'add_patient' => 'Add Patient',
+    'add_treatment' => 'Add Treatment',
     'patient_list' => 'Patient List',
     'patient_details' => 'Patient Details',
     'patient_name' => 'Patient Name',
@@ -75,7 +76,7 @@ return [
     'x_ray_id' => 'X-Ray ID',
     'images' => 'Images',
     'comment' => 'Comment',
-    
+
     // Appointments
     'appointment_booking' => 'Appointment Booking',
     'book_new_appointment' => 'Book New Appointment',
@@ -85,7 +86,7 @@ return [
     'appointment_notes' => 'Appointment Notes',
     'upcoming_appointments' => 'Upcoming Appointments',
     'appointment_history' => 'Appointment History',
-    
+
     // Financial
     'financial_management' => 'Financial Management',
     'invoice_management' => 'Invoice Management',
@@ -105,7 +106,7 @@ return [
     'payment_amount' => 'Payment Amount',
     'outstanding_balance' => 'Outstanding Balance',
     'total_spent' => 'Total Spent',
-    
+
     // Reports
     'financial_reports' => 'Financial Reports',
     'patient_reports' => 'Patient Reports',
@@ -114,7 +115,7 @@ return [
     'monthly_report' => 'Monthly Report',
     'yearly_report' => 'Yearly Report',
     'cash_flow' => 'Cash Flow',
-    
+
     // About Page
     'about_us' => 'About Us',
     'our_mission' => 'Our Mission',
@@ -124,7 +125,7 @@ return [
     'years_experience' => 'Years of Experience',
     'happy_patients' => 'Happy Patients',
     'successful_treatments' => 'Successful Treatments',
-    
+
     // Contact Page
     'contact_us' => 'Contact Us',
     'get_in_touch' => 'Get in Touch',
@@ -142,7 +143,7 @@ return [
     'your_phone' => 'Your Phone',
     'subject' => 'Subject',
     'message' => 'Message',
-    
+
     // Footer
     'quick_links' => 'Quick Links',
     'our_services' => 'Our Services',
@@ -152,7 +153,7 @@ return [
     'all_rights_reserved' => 'All rights reserved.',
     'privacy_policy' => 'Privacy Policy',
     'terms_conditions' => 'Terms & Conditions',
-    
+
     // Additional Pages
     'patient_database' => 'Patient Database',
     'comprehensive_patient_management' => 'Comprehensive patient management system with advanced search and filtering capabilities',
@@ -182,7 +183,7 @@ return [
     'x_ray_images' => 'X-Ray Images',
     'treatment_photos' => 'Treatment Photos',
     'documents' => 'Documents',
-    
+
     // About Page
     'about_dentalcare_pro' => 'About DentalCare Pro',
     'dedicated_exceptional_care' => 'Dedicated to providing exceptional dental care with modern technology and compassionate service',
@@ -213,7 +214,7 @@ return [
     'dr_brown' => 'Dr. David Brown',
     'dr_brown_title' => 'Pediatric Dentist',
     'dr_brown_description' => 'Specialized in children\'s dental care and preventive treatments.',
-    
+
     // Contact Page
     'contact_us_title' => 'Contact Us',
     'get_in_touch_description' => 'Get in touch with our dental care team. We\'re here to help with all your dental needs.',
@@ -260,7 +261,7 @@ return [
     'twitter' => 'Twitter',
     'linkedin' => 'LinkedIn',
     'youtube' => 'YouTube',
-    
+
     // Appointment Booking Section
     'book_your_appointment' => 'Book Your Appointment',
     'schedule_consultation' => 'Schedule your consultation with our experienced dental team',
@@ -293,7 +294,7 @@ return [
     'appointment_reminder' => 'Appointment Reminder',
     'appointment_cancellation' => 'Appointment Cancellation',
     'appointment_rescheduling' => 'Appointment Rescheduling',
-    
+
     // Services Section
     'why_choose_us' => 'Why Choose Us',
     'why_choose_description' => 'We combine advanced technology with compassionate care to deliver exceptional dental services',
@@ -305,14 +306,14 @@ return [
     'patient_centered_desc' => 'Personalized treatment plans tailored to your needs',
     'emergency_service' => 'Emergency Service',
     'emergency_service_desc' => '24/7 emergency dental care when you need it most',
-    
+
     // Statistics Section
     'our_achievements' => 'Our Achievements',
     'years_experience' => 'Years Experience',
     'happy_patients' => 'Happy Patients',
     'successful_treatments' => 'Successful Treatments',
     'awards_certifications' => 'Awards & Certifications',
-    
+
     // Testimonials Section
     'what_patients_say' => 'What Our Patients Say',
     'patient_testimonials' => 'Read testimonials from our satisfied patients',
@@ -322,14 +323,14 @@ return [
     'highly_recommend_desc' => 'Outstanding dental care with modern facilities and friendly staff.',
     'amazing_experience' => 'Amazing Experience',
     'amazing_experience_desc' => 'From consultation to completion, everything was handled with care and expertise.',
-    
+
     // CTA Section
     'ready_to_smile' => 'Ready to Smile?',
     'ready_to_smile_desc' => 'Book your appointment today and take the first step towards a healthier, more beautiful smile.',
     'get_started' => 'Get Started',
     'call_now' => 'Call Now',
     'visit_clinic' => 'Visit Our Clinic',
-    
+
     // Footer Content
     'providing_exceptional_care' => 'Providing exceptional dental care with modern technology and experienced professionals.',
     'patient_database' => 'Patient Database',
@@ -354,7 +355,7 @@ return [
     'all_rights_reserved' => 'All rights reserved.',
     'privacy_policy' => 'Privacy Policy',
     'terms_conditions' => 'Terms & Conditions',
-    
+
     // Services Preview Section
     'comprehensive_dental_services' => 'Comprehensive Dental Services',
     'services_preview_subtitle' => 'From routine checkups to advanced procedures, we provide complete dental care',
@@ -364,7 +365,7 @@ return [
     'implant_dentistry_desc' => 'Replace missing teeth with durable, natural-looking dental implants.',
     'learn_more' => 'Learn More',
     'view_all_services' => 'View All Services',
-    
+
     // Patient Database Section
     'advanced_patient_management' => 'Advanced Patient Management',
     'patient_management_subtitle' => 'Our comprehensive patient database system ensures efficient care delivery',
@@ -378,7 +379,7 @@ return [
     'unique_identification_system' => 'Unique identification system',
     'easy_retrieval_system' => 'Easy retrieval system',
     'explore_patient_database' => 'Explore Patient Database',
-    
+
     // Testimonials Section
     'testimonials_subtitle' => 'Real experiences from our satisfied patients',
     'testimonial_1' => 'DentalCare Pro transformed my smile completely. The staff is professional, the technology is amazing, and the results exceeded my expectations.',
@@ -390,27 +391,27 @@ return [
     'engineer' => 'Engineer',
     'emily_rodriguez' => 'Emily Rodriguez',
     'teacher' => 'Teacher',
-    
+
     // Call to Action Section
     'ready_transform_smile' => 'Ready to Transform Your Smile?',
     'cta_subtitle' => 'Schedule your consultation today and let our experienced team create the perfect treatment plan for your dental needs.',
     'book_appointment' => 'Book Appointment',
     'contact_us' => 'Contact Us',
-    
+
     // Services Page - Cosmetic Dentistry
     'cosmetic_dentistry_desc_full' => 'Transform your smile with our advanced cosmetic procedures including whitening, veneers, and smile makeovers.',
     'teeth_whitening' => 'Teeth Whitening',
     'porcelain_veneers' => 'Porcelain Veneers',
     'smile_makeover' => 'Smile Makeover',
     'bonding' => 'Bonding',
-    
+
     // Services Page - Implant Dentistry
     'implant_dentistry_desc_full' => 'Replace missing teeth with durable, natural-looking dental implants that restore both function and aesthetics.',
     'single_implants' => 'Single Implants',
     'multiple_implants' => 'Multiple Implants',
     'full_mouth_restoration' => 'Full Mouth Restoration',
     'implant_crowns' => 'Implant Crowns',
-    
+
     // Quick Actions Translations
     'system_quick_actions' => 'System Quick Actions',
     'easy_access_to_main_features' => 'Easy access to main system features',
@@ -428,27 +429,27 @@ return [
     'clear_aligners' => 'Clear Aligners',
     'invisalign' => 'Invisalign',
     'retainers' => 'Retainers',
-    
+
     // Services Page - Emergency Care
     'emergency_care_desc' => '24/7 emergency dental care for urgent situations including severe pain, broken teeth, and dental trauma.',
     'tooth_pain_relief' => 'Tooth Pain Relief',
     'broken_tooth_repair' => 'Broken Tooth Repair',
     'lost_filling_crown' => 'Lost Filling/Crown',
     'dental_trauma' => 'Dental Trauma',
-    
+
     // Services Page - Digital Imaging
     'digital_imaging_desc_full' => 'Advanced digital X-rays and 3D imaging for accurate diagnosis and treatment planning with minimal radiation exposure.',
     'digital_xrays' => 'Digital X-Rays',
     '3d_imaging' => '3D Imaging',
     'panoramic_views' => 'Panoramic Views',
     'low_radiation' => 'Low Radiation',
-    
+
     // Services Page - Technology Section
     'state_of_art_equipment' => 'State-of-the-Art Equipment',
     'technology_desc' => 'We invest in the latest dental technology to provide you with the most accurate diagnoses and effective treatments available.',
     'digital_xray_units' => 'Digital X-Ray Units',
     'laser_systems' => 'Laser Systems',
-    
+
     // Services Page - Process Section
     'how_we_care' => 'How We Care For You',
     'process_desc' => 'Our comprehensive process ensures you receive the best possible dental care from consultation to follow-up.',
