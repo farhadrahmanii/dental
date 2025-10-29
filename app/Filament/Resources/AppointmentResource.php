@@ -60,7 +60,20 @@ class AppointmentResource extends Resource
                                     ->required()
                                     ->maxLength(255)
                                     ->placeholder('Patient phone number'),
+                                TextInput::make('doctor_name')
+                                    ->label('Doctor Name')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->placeholder('Doctor name'),
                             ])
+                            ->createOptionUsing(function (array $data): string {
+                                $patient = Patient::create([
+                                    'name' => $data['name'],
+                                    'phone_number' => $data['phone_number'],
+                                    'doctor_name' => $data['doctor_name'],
+                                ]);
+                                return $patient->register_id;
+                            })
                             ->getSearchResultsUsing(function (string $search): array {
                                 return Patient::where('name', 'like', "%{$search}%")
                                     ->orWhere('phone_number', 'like', "%{$search}%")
@@ -101,7 +114,6 @@ class AppointmentResource extends Resource
                                 TextInput::make('patient_email')
                                     ->label('Email Address')
                                     ->email()
-                                    ->required()
                                     ->maxLength(255),
                                 TextInput::make('patient_phone')
                                     ->label('Phone Number')
