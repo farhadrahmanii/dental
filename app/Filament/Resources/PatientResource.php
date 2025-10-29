@@ -37,8 +37,6 @@ class PatientResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-
-
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -195,6 +193,7 @@ class PatientResource extends Resource
             \App\Filament\Resources\PatientResource\RelationManagers\InvoicesRelationManager::class,
             \App\Filament\Resources\PatientResource\RelationManagers\PaymentsRelationManager::class,
             \App\Filament\Resources\PatientResource\RelationManagers\TreatmentsRelationManager::class,
+            \App\Filament\Resources\PatientResource\RelationManagers\XraysRelationManager::class,
         ];
     }
 
