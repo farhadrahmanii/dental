@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('transcription_id')->unique();
             $table->foreignId('patient_id')->constrained('patients', 'register_id')->onDelete('cascade');
-            $table->longText('transcription_text')->nullable();
-            $table->string('recorded_by')->nullable();
+            $table->longText('transcription_text');
+            $table->string('recorded_by');
             $table->date('date');
             $table->timestamps();
         });

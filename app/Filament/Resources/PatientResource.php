@@ -179,6 +179,46 @@ class PatientResource extends Resource
                     ->label('Add X-ray')
                     ->icon('heroicon-o-photo')
                     ->url(fn ($record) => url('/admin/patients/' . $record->register_id . '/xrays/create')),
+                Action::make('add_transcription')
+                    ->label('Add Transcription')
+                    ->icon('heroicon-o-document-text')
+                    ->modalHeading('Add Transcription')
+                    ->form([
+                        \Filament\Forms\Components\Textarea::make('transcription_text')
+                            ->label('Transcription Text')
+                            ->required()
+                            ->rows(8)
+                            ->columnSpanFull(),
+                        \Filament\Forms\Components\TextInput::make('recorded_by')
+                            ->label('Recorded By')
+                            ->required()
+                            ->maxLength(255),
+                        \Filament\Forms\Components\DatePicker::make('date')
+                            ->label('Date')
+                            ->default(now()),
+                    ])
+                    ->action(function ($record, array $data): void {
+                        $last = \App\Models\Transcription::orderBy('id', 'desc')->first();
+                        $nextNumber = 1;
+                        if ($last && preg_match('/AFG-(\d+)/', $last->transcription_id, $m)) {
+                            $nextNumber = ((int) $m[1]) + 1;
+                        }
+                        $transcriptionId = 'AFG-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
+                        \App\Models\Transcription::create([
+                            'transcription_id' => $transcriptionId,
+                            'patient_id' => $record->register_id,
+                            'transcription_text' => $data['transcription_text'],
+                            'recorded_by' => $data['recorded_by'],
+                            'date' => $data['date'] ?? now(),
+                        ]);
+
+                        \Filament\Notifications\Notification::make()
+                            ->success()
+                            ->title('Transcription added')
+                            ->body('The transcription has been added successfully.')
+                            ->send();
+                    }),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
@@ -194,6 +234,7 @@ class PatientResource extends Resource
             \App\Filament\Resources\PatientResource\RelationManagers\PaymentsRelationManager::class,
             \App\Filament\Resources\PatientResource\RelationManagers\TreatmentsRelationManager::class,
             \App\Filament\Resources\PatientResource\RelationManagers\XraysRelationManager::class,
+            \App\Filament\Resources\PatientResource\RelationManagers\TranscriptionsRelationManager::class,
         ];
     }
 
@@ -205,6 +246,7 @@ class PatientResource extends Resource
             'edit' => Pages\EditPatient::route('/{record}/edit'),
             'view' => Pages\ViewPatient::route('/{record}'),
             'create-xray' => Pages\CreateXray::route('/{record}/xrays/create'),
+            'create-transcription' => Pages\CreateTranscription::route('/{record}/transcriptions/create'),
         ];
     }
 }
