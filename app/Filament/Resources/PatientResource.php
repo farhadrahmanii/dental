@@ -99,25 +99,6 @@ class PatientResource extends Resource
                 Section::make('Case Details')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('x_ray_id')
-                            ->label('X-ray ID')
-                            ->maxLength(255),
-                        TextInput::make('doctor_name')
-                            ->label('Doctor Name')
-                            ->required()
-                            ->maxLength(255),
-                        Textarea::make('treatment')
-                            ->label('Treatment')
-                            ->columnSpanFull(),
-                        CanvasPointerField::make('diagnosis')
-                            ->label('Diagnosis (image with points)')
-                            ->storageDisk('public')
-                            ->storageDirectory('canvas-pointer')
-                            ->pointRadius(6)
-                            ->columnSpanFull(),
-                        RichEditor::make('comment')
-                            ->label('Comment')
-                            ->columnSpanFull(),
                         FileUpload::make('images')
                             ->label('Images')
                             ->disk('public')
@@ -172,10 +153,6 @@ class PatientResource extends Resource
                         default => 'gray',
                     })
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('x_ray_id')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('doctor_name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('total_spent')
                     ->label('Total Spent')
                     ->money('USD')
@@ -200,6 +177,10 @@ class PatientResource extends Resource
                     ->label('Add Treatment')
                     ->icon('heroicon-o-beaker')
                     ->url(fn ($record) => '/admin/treatments/create?patient_id=' . $record->register_id),
+                Action::make('add_xray')
+                    ->label('Add X-ray')
+                    ->icon('heroicon-o-photo')
+                    ->url(fn ($record) => url('/admin/patients/' . $record->register_id . '/xrays/create')),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
@@ -224,6 +205,7 @@ class PatientResource extends Resource
             'create' => Pages\CreatePatient::route('/create'),
             'edit' => Pages\EditPatient::route('/{record}/edit'),
             'view' => Pages\ViewPatient::route('/{record}'),
+            'create-xray' => Pages\CreateXray::route('/{record}/xrays/create'),
         ];
     }
 }
