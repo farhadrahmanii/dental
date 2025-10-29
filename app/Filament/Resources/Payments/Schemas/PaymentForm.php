@@ -64,13 +64,18 @@ class PaymentForm
                     ->nullable()
                     ->placeholder('Select invoice (optional)'),
 
-                Select::make('service_id')
-                    ->label('Service')
-                    ->relationship('service', 'name')
-                    ->searchable()
+                Select::make('type')
+                    ->label('Type')
+                    ->options([
+                        'treatment' => 'Treatment',
+                        'xray' => 'X-ray',
+                        'other' => 'Other',
+                    ])
+                    ->required()
+                    ->default('treatment')
+                    ->native(false)
                     ->preload()
-                    ->nullable()
-                    ->placeholder('Select service (optional)'),
+                    ->hint('Select what the payment is for'),
 
                 TextInput::make('amount')
                     ->label('Payment Amount')
