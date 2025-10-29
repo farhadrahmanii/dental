@@ -32,9 +32,35 @@ class Patient extends Model
     ];
 
     protected $casts = [
-        'images' => 'array',
         'age' => 'integer',
     ];
+
+    /**
+     * Set the images attribute.
+     */
+    public function setImagesAttribute($value)
+    {
+        if (is_null($value) || $value === '' || $value === []) {
+            $this->attributes['images'] = json_encode([]);
+        } elseif (is_array($value)) {
+            $this->attributes['images'] = json_encode($value);
+        } else {
+            $this->attributes['images'] = $value;
+        }
+    }
+
+    /**
+     * Get the images attribute.
+     */
+    public function getImagesAttribute($value)
+    {
+        if (is_null($value) || $value === '') {
+            return [];
+        }
+        
+        $decoded = json_decode($value, true);
+        return is_array($decoded) ? $decoded : [];
+    }
 
     public function invoices(): HasMany
     {

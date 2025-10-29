@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions;
 use Illuminate\Database\Eloquent\Model;
+use RuelLuna\CanvasPointer\Forms\Components\CanvasPointerField;
 
 class TreatmentsRelationManager extends RelationManager
 {
@@ -39,11 +40,23 @@ class TreatmentsRelationManager extends RelationManager
                     ->options(array_combine(DentalTreatment::values(), DentalTreatment::values()))
                     ->multiple()
                     ->required(),
+                CanvasPointerField::make('tooth_selection_visual')
+                    ->label('Select Teeth on Chart (Visual)')
+                    ->imageUrl('/images/dental-chart.jpg')
+                    ->width(480)
+                    ->height(640)
+                    ->pointRadius(15)
+                    ->storageDisk('public')
+                    ->storageDirectory('treatments-tooth-selection')
+                    ->dehydrated()
+                    ->columnSpanFull()
+                    ->helperText('Click on the teeth to visually mark which teeth are being treated'),
                 Select::make('tooth_numbers')
-                    ->label('Tooth Numbers')
+                    ->label('Tooth Numbers (Manual Selection)')
                     ->options(array_combine(ToothNumber::values(), ToothNumber::values()))
                     ->multiple()
-                    ->required(),
+                    ->required()
+                    ->helperText('Select tooth numbers from the dropdown'),
                 DatePicker::make('treatment_date')
                     ->label('Treatment Date')
                     ->required(),

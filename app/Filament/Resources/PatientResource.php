@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PatientResource\Pages;
 use App\Models\Patient;
+use App\Enums\DentalTreatment;
+use App\Enums\ToothNumber;
 use Filament\Forms;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -11,6 +13,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Repeater;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -43,34 +47,44 @@ class PatientResource extends Resource
         return $schema
             ->schema([
                 Section::make('Patient Information')
-                    ->columns(2)
+                    ->description('Basic patient information and demographics')
+                    ->icon('heroicon-o-user')
+                    ->columns(3)
                     ->schema([
                         TextInput::make('name')
-                            ->label('Name')
+                            ->label('Full Name')
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->placeholder('Enter patient full name')
+                            ->prefixIcon('heroicon-o-user'),
                         TextInput::make('father_name')
                             ->label('Father Name')
-                            ->maxLength(255),
-                        Select::make('sex')
-                            ->label('Sex')
-                            ->options([
-                                'male' => 'Male',
-                                'female' => 'Female',
-                                'other' => 'Other',
-                            ]),
+                            ->maxLength(255)
+                            ->placeholder('Enter father name')
+                            ->prefixIcon('heroicon-o-user-group'),
                         TextInput::make('age')
                             ->label('Age')
                             ->numeric()
                             ->minValue(0)
-                            ->maxValue(120),
+                            ->maxValue(120)
+                            ->placeholder('Enter age')
+                            ->suffix('years')
+                            ->prefixIcon('heroicon-o-calendar'),
+                        Select::make('sex')
+                            ->label('Gender')
+                            ->options([
+                                'male' => 'Male',
+                                'female' => 'Female',
+                                'other' => 'Other',
+                            ])
+                            ->native(false)
+                            ->prefixIcon('heroicon-o-user'),
                         TextInput::make('phone_number')
                             ->label('Phone Number')
                             ->tel()
-                            ->maxLength(20),
-                        TextInput::make('occupation')
-                            ->label('Occupation/Job')
-                            ->maxLength(255),
+                            ->maxLength(20)
+                            ->placeholder('+93 XXX XXX XXX')
+                            ->prefixIcon('heroicon-o-phone'),
                         Select::make('marital_status')
                             ->label('Marital Status')
                             ->options([
@@ -79,55 +93,182 @@ class PatientResource extends Resource
                                 'divorced' => 'Divorced',
                                 'widowed' => 'Widowed',
                             ])
-                            ->nullable(),
-                    ]),
+                            ->native(false)
+                            ->nullable()
+                            ->prefixIcon('heroicon-o-heart'),
+                        TextInput::make('occupation')
+                            ->label('Occupation')
+                            ->maxLength(255)
+                            ->placeholder('Enter occupation or job title')
+                            ->prefixIcon('heroicon-o-briefcase')
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible(),
 
                 Section::make('Address Information')
-                    ->columns(1)
+                    ->description('Patient residential details')
+                    ->icon('heroicon-o-map-pin')
+                    ->columns(2)
                     ->schema([
                         Textarea::make('permanent_address')
                             ->label('Permanent Address')
                             ->rows(3)
-                            ->maxLength(500),
+                            ->maxLength(500)
+                            ->placeholder('Enter permanent residence address'),
                         Textarea::make('current_address')
                             ->label('Current Address')
                             ->rows(3)
-                            ->maxLength(500),
-                    ]),
+                            ->maxLength(500)
+                            ->placeholder('Enter current residence address'),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
 
-                Section::make('Case Details')
+                Section::make('Medical Details')
+                    ->description('Dental case information and diagnosis')
+                    ->icon('heroicon-o-clipboard-document-list')
                     ->columns(2)
                     ->schema([
                         TextInput::make('x_ray_id')
                             ->label('X-ray ID')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->placeholder('Enter X-ray reference ID')
+                            ->prefixIcon('heroicon-o-camera'),
                         TextInput::make('doctor_name')
-                            ->label('Doctor Name')
+                            ->label('Attending Doctor')
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->placeholder('Enter doctor name')
+                            ->prefixIcon('heroicon-o-user-circle'),
                         Textarea::make('treatment')
-                            ->label('Treatment')
+                            ->label('Treatment Notes')
+                            ->placeholder('Enter general treatment notes...')
+                            ->rows(3)
                             ->columnSpanFull(),
                         CanvasPointerField::make('diagnosis')
-                            ->label('Diagnosis (image with points)')
+                            ->label('🦷 Dental Chart - Visual Diagnosis')
+                            ->imageUrl('/images/dental-chart.jpg')
+                            ->width(480)
+                            ->height(640)
+                            ->pointRadius(15)
                             ->storageDisk('public')
                             ->storageDirectory('canvas-pointer')
-                            ->pointRadius(6)
-                            ->columnSpanFull(),
+                            ->dehydrated()
+                            ->columnSpanFull()
+                            ->helperText('Click on the affected teeth in the chart above to mark problem areas'),
                         RichEditor::make('comment')
-                            ->label('Comment')
+                            ->label('Additional Comments')
+                            ->placeholder('Enter detailed comments, observations, or notes...')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'bulletList',
+                                'orderedList',
+                            ])
                             ->columnSpanFull(),
                         FileUpload::make('images')
-                            ->label('Images')
+                            ->label('Patient Images & Documents')
                             ->disk('public')
                             ->directory('patients')
                             ->multiple()
                             ->image()
+                            ->imageEditor()
                             ->reorderable()
                             ->downloadable()
                             ->openable()
+                            ->maxFiles(10)
+                            ->columnSpanFull()
+                            ->helperText('Upload X-rays, photos, or other medical documents'),
+                    ])
+                    ->collapsible(),
+
+                Section::make('Treatments History')
+                    ->description('Record and manage patient treatments')
+                    ->icon('heroicon-o-wrench-screwdriver')
+                    ->schema([
+                        Repeater::make('treatments')
+                            ->relationship('treatments')
+                            ->schema([
+                                Select::make('treatment_types')
+                                    ->label('Treatment Types')
+                                    ->options(array_combine(DentalTreatment::values(), DentalTreatment::values()))
+                                    ->multiple()
+                                    ->required(),
+                                Select::make('tooth_numbers')
+                                    ->label('Tooth Numbers')
+                                    ->options(array_combine(ToothNumber::values(), ToothNumber::values()))
+                                    ->multiple()
+                                    ->required(),
+                                DatePicker::make('treatment_date')
+                                    ->label('Treatment Date')
+                                    ->required()
+                                    ->default(now()),
+                                Textarea::make('treatment_description')
+                                    ->label('Treatment Description')
+                                    ->rows(2),
+                            ])
+                            ->columns(2)
+                            ->collapsible()
+                            ->collapsed()
+                            ->itemLabel(fn (array $state): ?string => 
+                                isset($state['treatment_types']) && is_array($state['treatment_types']) 
+                                    ? implode(', ', $state['treatment_types']) 
+                                    : 'New Treatment'
+                            )
+                            ->addActionLabel('Add Treatment')
                             ->columnSpanFull(),
-                    ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+
+                Section::make('Payment Records')
+                    ->description('Track and manage patient payments')
+                    ->icon('heroicon-o-currency-dollar')
+                    ->schema([
+                        Repeater::make('payments')
+                            ->relationship('payments')
+                            ->schema([
+                                TextInput::make('amount')
+                                    ->label('Amount')
+                                    ->numeric()
+                                    ->prefix('$')
+                                    ->required(),
+                                Select::make('payment_method')
+                                    ->label('Payment Method')
+                                    ->options([
+                                        'cash' => 'Cash',
+                                        'card' => 'Card',
+                                        'bank_transfer' => 'Bank Transfer',
+                                        'check' => 'Check',
+                                        'other' => 'Other',
+                                    ])
+                                    ->required()
+                                    ->default('cash'),
+                                DatePicker::make('payment_date')
+                                    ->label('Payment Date')
+                                    ->required()
+                                    ->default(now()),
+                                TextInput::make('reference_number')
+                                    ->label('Reference Number')
+                                    ->maxLength(255),
+                                Textarea::make('notes')
+                                    ->label('Notes')
+                                    ->rows(2),
+                            ])
+                            ->columns(2)
+                            ->collapsible()
+                            ->collapsed()
+                            ->itemLabel(fn (array $state): ?string => 
+                                isset($state['amount']) 
+                                    ? '$' . number_format($state['amount'], 2) . ' - ' . ucfirst($state['payment_method'] ?? 'New Payment')
+                                    : 'New Payment'
+                            )
+                            ->addActionLabel('Add Payment')
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
             ]);
     }
 
