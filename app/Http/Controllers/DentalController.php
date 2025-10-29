@@ -64,7 +64,13 @@ class DentalController extends Controller
 
     public function patientDetail($id)
     {
-        $patient = Patient::findOrFail($id);
+        $patient = Patient::with([
+            'xrays',
+            'treatments.service',
+            'payments',
+            'invoices',
+        ])->findOrFail($id);
+
         return view('dental.patient-detail', compact('patient'));
     }
 }
