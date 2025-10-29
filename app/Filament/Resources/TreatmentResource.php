@@ -71,6 +71,7 @@ class TreatmentResource extends Resource
                             ->label('Service')
                             ->relationship('service', 'name')
                             ->searchable()
+                            ->preload()
                             ->required(),
                         DatePicker::make('treatment_date')
                             ->label('Treatment Date')
