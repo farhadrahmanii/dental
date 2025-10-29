@@ -12,6 +12,7 @@ use Filament\Schemas\Schema;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Str;
 
 class CreateXray extends Page implements HasForms
@@ -48,10 +49,11 @@ class CreateXray extends Page implements HasForms
             'comment' => $data['comment'] ?? null,
         ]);
 
-        $this->notification()->success(
-            title: 'X-ray added',
-            body: 'The X-ray has been added successfully.',
-        );
+        Notification::make()
+            ->success()
+            ->title('X-ray added')
+            ->body('The X-ray has been added successfully.')
+            ->send();
 
         $this->redirect(PatientResource::getUrl('view', ['record' => $this->record->register_id]));
     }
