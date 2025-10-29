@@ -48,9 +48,12 @@ class CreateXray extends Page implements HasForms
             'comment' => $data['comment'] ?? null,
         ]);
 
-        session()->flash('status', 'X-ray added successfully.');
+        $this->notification()->success(
+            title: 'X-ray added',
+            body: 'The X-ray has been added successfully.',
+        );
 
-        $this->redirect('/admin/patients');
+        $this->redirect(PatientResource::getUrl('view', ['record' => $this->record->register_id]));
     }
 
     public function getHeading(): string
@@ -70,17 +73,20 @@ class CreateXray extends Page implements HasForms
                     ->disk('public')
                     ->imageEditor()
                     ->openable()
-                    ->downloadable(),
+                    ->downloadable()
+                    ->columnSpanFull(),
                 TextInput::make('treatment')
                     ->label('Treatment')
                     ->placeholder('e.g. Root canal')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
                 TextInput::make('doctor_name')
                     ->label('Doctor Name')
                     ->placeholder('e.g. Dr. Ahmad Zai')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
                 Textarea::make('comment')
                     ->label('Comment (optional)')
                     ->placeholder('Notes about this X-ray (optional)')
@@ -88,8 +94,7 @@ class CreateXray extends Page implements HasForms
                     ->maxLength(1000)
                     ->columnSpanFull(),
             ])
+            ->columns(2)
             ->statePath('data');
     }
 }
-
-
