@@ -36,6 +36,11 @@ class Patient extends Model
         'age' => 'integer',
     ];
 
+    public function xrays(): HasMany
+    {
+        return $this->hasMany(Xray::class, 'patient_id', 'register_id');
+    }
+
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class, 'patient_id', 'register_id');
