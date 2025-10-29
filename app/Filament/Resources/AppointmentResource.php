@@ -48,7 +48,19 @@ class AppointmentResource extends Resource
                         Select::make('patient_id')
                             ->label('Existing Patient (Optional)')
                             ->placeholder('Search by name or phone...')
+                            ->preload()
                             ->searchable()
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->placeholder('Patient full name'),
+                                TextInput::make('phone_number')
+                                    ->tel()
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->placeholder('Patient phone number'),
+                            ])
                             ->getSearchResultsUsing(function (string $search): array {
                                 return Patient::where('name', 'like', "%{$search}%")
                                     ->orWhere('phone_number', 'like', "%{$search}%")
@@ -76,6 +88,7 @@ class AppointmentResource extends Resource
                                     }
                                 }
                             })
+                            ->autofocus(fn ($get) => $get('patient_id') !== null)
                             ->helperText('Select an existing patient to auto-fill their details')
                             ->columnSpanFull(),
 
