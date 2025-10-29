@@ -41,6 +41,11 @@ class Patient extends Model
         return $this->hasMany(Xray::class, 'patient_id', 'register_id');
     }
 
+    public function transcriptions(): HasMany
+    {
+        return $this->hasMany(Transcription::class, 'patient_id', 'register_id');
+    }
+
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class, 'patient_id', 'register_id');
