@@ -153,9 +153,34 @@ class PatientResource extends Resource
                             ->pointRadius(15)
                             ->storageDisk('public')
                             ->storageDirectory('canvas-pointer')
-                            ->dehydrated()
                             ->columnSpanFull()
-                            ->helperText('Click on the affected teeth in the chart above to mark problem areas'),
+                            ->helperText('Click on the affected teeth in the chart above to mark problem areas')
+                            ->hidden(fn (string $operation): bool => $operation === 'view'),
+                        
+                        Forms\Components\Placeholder::make('diagnosis_view')
+                            ->label('🦷 Dental Chart - Marked Diagnosis')
+                            ->content(function ($record) {
+                                if (!$record || !$record->diagnosis) {
+                                    return new \Illuminate\Support\HtmlString('
+                                        <div class="rounded-lg border border-dashed border-gray-300 dark:border-gray-600 p-8 text-center bg-gray-50 dark:bg-gray-800">
+                                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No dental chart diagnosis recorded yet</p>
+                                            <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">Edit this patient to add dental markings</p>
+                                        </div>
+                                    ');
+                                }
+                                
+                                return new \Illuminate\Support\HtmlString('
+                                    <div class="rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden bg-white dark:bg-gray-800 p-4">
+                                        <img src="' . $record->diagnosis . '" alt="Dental Chart Diagnosis" class="w-full h-auto mx-auto" style="max-width: 480px;" />
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">📌 Marked dental chart showing affected teeth</p>
+                                ');
+                            })
+                            ->columnSpanFull()
+                            ->visible(fn (string $operation): bool => $operation === 'view'),
                         RichEditor::make('comment')
                             ->label('Additional Comments')
                             ->placeholder('Enter detailed comments, observations, or notes...')
