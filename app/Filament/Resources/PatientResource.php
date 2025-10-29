@@ -125,7 +125,7 @@ class PatientResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('sex')
                     ->badge()
-                    ->color(fn ($state) => match ($state) {
+                    ->color(fn($state) => match ($state) {
                         'male' => 'info',
                         'female' => 'pink',
                         'other' => 'warning',
@@ -143,7 +143,7 @@ class PatientResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('marital_status')
                     ->badge()
-                    ->color(fn ($state) => match ($state) {
+                    ->color(fn($state) => match ($state) {
                         'single' => 'info',
                         'married' => 'success',
                         'divorced' => 'warning',
@@ -158,27 +158,23 @@ class PatientResource extends Resource
                 Tables\Columns\TextColumn::make('outstanding_balance')
                     ->label('Outstanding Balance')
                     ->money('USD')
-                    ->color(fn ($state) => $state > 0 ? 'danger' : 'success')
+                    ->color(fn($state) => $state > 0 ? 'danger' : 'success')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->since()
                     ->sortable(),
             ])
-            ->filters([
-            ])
+            ->filters([])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
                 Action::make('add_treatment')
                     ->label('Add Treatment')
                     ->icon('heroicon-o-beaker')
-                    ->url(fn ($record) => '/admin/treatments/create?patient_id=' . $record->register_id),
+                    ->url(fn($record) => '/admin/treatments/create?patient_id=' . $record->register_id),
                 Action::make('add_xray')
                     ->label('Add X-ray')
                     ->icon('heroicon-o-photo')
-                    ->url(fn ($record) => url('/admin/patients/' . $record->register_id . '/xrays/create')),
+                    ->url(fn($record) => url('/admin/patients/' . $record->register_id . '/xrays/create')),
                 Action::make('add_transcription')
                     ->label('Add Transcription')
                     ->icon('heroicon-o-document-text')
@@ -219,6 +215,9 @@ class PatientResource extends Resource
                             ->body('The transcription has been added successfully.')
                             ->send();
                     }),
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
