@@ -118,4 +118,13 @@ class Patient extends Model
         return $this->invoices()->where('status', '!=', 'paid')->sum('total_amount') -
                $this->payments()->sum('amount');
     }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Patient $patient): void {
+            if (blank($patient->doctor_name)) {
+                $patient->doctor_name = 'Unassigned';
+            }
+        });
+    }
 }

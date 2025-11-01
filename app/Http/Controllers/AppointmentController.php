@@ -52,6 +52,24 @@ class AppointmentController extends Controller
             ], 422);
         }
 
+        $patientId = $request->input('patient_id');
+
+        if (blank($patientId)) {
+            $patient = Patient::firstOrCreate(
+                ['phone_number' => $request->patient_phone],
+                [
+                    'name' => $request->patient_name,
+                    'doctor_name' => Auth::user()?->name ?? 'Unassigned',
+                ]
+            );
+
+            if (!$patient->wasRecentlyCreated) {
+                $patient->update(['name' => $request->patient_name]);
+            }
+
+            $patientId = $patient->register_id;
+        }
+
         // Check if the time slot is available
         $isAvailable = $this->isTimeSlotAvailable($request->appointment_date, $request->appointment_time);
         
@@ -71,7 +89,7 @@ class AppointmentController extends Controller
             'appointment_date' => $request->appointment_date,
             'appointment_time' => $request->appointment_time,
             'message' => $request->message,
-            'patient_id' => $request->patient_id,
+            'patient_id' => $patientId,
             'created_by' => Auth::id(),
             'status' => 'pending',
         ]);
