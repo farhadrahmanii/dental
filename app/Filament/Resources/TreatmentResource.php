@@ -14,6 +14,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\ViewField;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -83,6 +84,9 @@ class TreatmentResource extends Resource
                             ->required()
                             ->searchable()
                             ->preload(),
+                        ViewField::make('dental_chart')
+                            ->view('filament.forms.components.dental-chart')
+                            ->columnSpanFull(),
                         Textarea::make('treatment_description')
                             ->label('Treatment Description')
                             ->columnSpanFull(),
