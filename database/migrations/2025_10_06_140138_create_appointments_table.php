@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('appointment_number')->unique();
             $table->string('patient_name');
-            $table->string('patient_email');
+            $table->string('patient_email')->nullable();
             $table->string('patient_phone');
             $table->foreignId('service_id')->nullable()->constrained()->onDelete('set null');
             $table->string('service_name'); // Store service name for reference

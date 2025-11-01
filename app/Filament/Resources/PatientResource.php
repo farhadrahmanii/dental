@@ -172,9 +172,9 @@ class PatientResource extends Resource
                             ->columns(2)
                             ->collapsible()
                             ->collapsed()
-                            ->itemLabel(fn (array $state): ?string => 
-                                isset($state['treatment_types']) && is_array($state['treatment_types']) 
-                                    ? implode(', ', $state['treatment_types']) 
+                            ->itemLabel(fn (array $state): ?string =>
+                                isset($state['treatment_types']) && is_array($state['treatment_types'])
+                                    ? implode(', ', $state['treatment_types'])
                                     : 'New Treatment'
                             )
                             ->addActionLabel('Add Treatment')
@@ -220,8 +220,8 @@ class PatientResource extends Resource
                             ->columns(2)
                             ->collapsible()
                             ->collapsed()
-                            ->itemLabel(fn (array $state): ?string => 
-                                isset($state['amount']) 
+                            ->itemLabel(fn (array $state): ?string =>
+                                isset($state['amount'])
                                     ? '$' . number_format($state['amount'], 2) . ' - ' . ucfirst($state['payment_method'] ?? 'New Payment')
                                     : 'New Payment'
                             )
