@@ -14,7 +14,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TernaryFilter;
-use Carbon\Carbon;
+use Filament\Forms\Components\DatePicker;
 use App\Helpers\CurrencyHelper;
 
 class InvoicesTable
@@ -112,22 +112,13 @@ class InvoicesTable
                     ->form([
                         DatePicker::make('value')
                             ->label('Invoice Date')
-                            ->native(false)
                             ->displayFormat('M d, Y'),
                     ])
                     ->query(function ($query, array $data) {
-                        if (blank($data['value'] ?? null)) {
-                            return $query;
-                        }
-
-                        return $query->whereDate('invoice_date', $data['value']);
-                    })
-                    ->indicateUsing(function (array $data) {
-                        if (blank($data['value'] ?? null)) {
-                            return null;
-                        }
-
-                        return 'Invoice date: ' . Carbon::parse($data['value'])->format('M d, Y');
+                        return $query->when(
+                            $data['value'] ?? null,
+                            fn ($query, $date) => $query->whereDate('invoice_date', $date),
+                        );
                     }),
                 
                 Filter::make('due_date')
@@ -135,22 +126,13 @@ class InvoicesTable
                     ->form([
                         DatePicker::make('value')
                             ->label('Due Date')
-                            ->native(false)
                             ->displayFormat('M d, Y'),
                     ])
                     ->query(function ($query, array $data) {
-                        if (blank($data['value'] ?? null)) {
-                            return $query;
-                        }
-
-                        return $query->whereDate('due_date', $data['value']);
-                    })
-                    ->indicateUsing(function (array $data) {
-                        if (blank($data['value'] ?? null)) {
-                            return null;
-                        }
-
-                        return 'Due date: ' . Carbon::parse($data['value'])->format('M d, Y');
+                        return $query->when(
+                            $data['value'] ?? null,
+                            fn ($query, $date) => $query->whereDate('due_date', $date),
+                        );
                     }),
                 
                 SelectFilter::make('amount_range')
