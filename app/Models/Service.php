@@ -31,33 +31,9 @@ class Service extends Model
         'is_active' => 'boolean',
     ];
 
-    protected static function boot()
+    public function treatments()
     {
-        parent::boot();
-
-        static::creating(function ($service) {
-            // Set name from name_en if name is not set
-            if (empty($service->name) && !empty($service->name_en)) {
-                $service->attributes['name'] = $service->name_en;
-            }
-
-            // Set description from description_en if description is not set
-            if (empty($service->description) && !empty($service->description_en)) {
-                $service->attributes['description'] = $service->description_en;
-            }
-        });
-
-        static::updating(function ($service) {
-            // Set name from name_en if name is not set
-            if (empty($service->name) && !empty($service->name_en)) {
-                $service->attributes['name'] = $service->name_en;
-            }
-
-            // Set description from description_en if description is not set
-            if (empty($service->description) && !empty($service->description_en)) {
-                $service->attributes['description'] = $service->description_en;
-            }
-        });
+        return $this->hasMany(Treatment::class, 'service_id', 'id');
     }
 
     public function invoiceItems(): HasMany

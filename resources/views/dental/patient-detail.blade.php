@@ -10,7 +10,7 @@
         <div class="text-center">
             <h1 class="display-medium mb-3">Patient Details</h1>
             <p class="body-large" style="color: var(--text-secondary); max-width: 600px; margin-left: auto; margin-right: auto;">
-                Comprehensive patient information and treatment history
+                Comprehensive patient information
             </p>
         </div>
     </div>
@@ -49,35 +49,28 @@
                                 <span class="body-large" style="font-weight: 600;">{{ $patient->age }} years</span>
                             </div>
                         </div>
-                        
+
                         <div class="form-group-apple">
                             <label class="form-label-apple">Father's Name</label>
                             <div style="background: var(--apple-gray-1); padding: var(--space-md); border-radius: var(--radius-md);">
                                 <span class="body-large">{{ $patient->father_name ?? 'Not provided' }}</span>
                             </div>
                         </div>
-                        
+
                         <div class="form-group-apple">
                             <label class="form-label-apple">Assigned Doctor</label>
                             <div style="background: var(--apple-gray-1); padding: var(--space-md); border-radius: var(--radius-md);">
                                 <span class="body-large">{{ $patient->doctor_name ?? 'Not assigned' }}</span>
                             </div>
                         </div>
-                        
+
                         <div class="form-group-apple">
-                            <label class="form-label-apple">Treatment Type</label>
+                            <label class="form-label-apple">X-rays</label>
                             <div style="background: var(--apple-gray-1); padding: var(--space-md); border-radius: var(--radius-md);">
-                                <span class="body-large">{{ $patient->treatment ?? 'Pending' }}</span>
+                                <span class="body-large">{{ $patient->xrays->count() }} record(s)</span>
                             </div>
                         </div>
-                        
-                        <div class="form-group-apple">
-                            <label class="form-label-apple">X-Ray ID</label>
-                            <div style="background: var(--apple-gray-1); padding: var(--space-md); border-radius: var(--radius-md);">
-                                <span class="body-large">{{ $patient->x_ray_id ?? 'Not available' }}</span>
-                            </div>
-                        </div>
-                        
+
                         <div class="form-group-apple">
                             <label class="form-label-apple">Images Count</label>
                             <div style="background: var(--apple-gray-1); padding: var(--space-md); border-radius: var(--radius-md);">
@@ -107,6 +100,49 @@
                             <div class="card-apple" style="padding: var(--space-md); text-align: center;">
                                 <img src="{{ $image }}" alt="Patient Image" class="img-small img-optimized" style="margin-bottom: var(--space-sm);">
                                 <div class="body-medium" style="color: var(--text-tertiary);">Image {{ $loop->iteration }}</div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+
+                    <!-- X-rays Section -->
+                    @if($patient->xrays && $patient->xrays->count() > 0)
+                    <div class="form-group-apple">
+                        <label class="form-label-apple">X-rays</label>
+                        <div class="grid-apple" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-md);">
+                            @foreach($patient->xrays as $xray)
+                            <div class="card-apple" style="padding: var(--space-md); text-align: center;">
+                                @if($xray->xray_image)
+                                    <img src="{{ asset('storage/' . $xray->xray_image) }}" alt="X-ray Image" class="img-small img-optimized" style="margin-bottom: var(--space-sm);">
+                                @endif
+                                <div class="body-medium" style="color: var(--text-tertiary);">{{ $xray->treatment }} — {{ $xray->doctor_name }}</div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+
+                    <!-- Treatments Section -->
+                    @if($patient->treatments && $patient->treatments->count() > 0)
+                    <div class="form-group-apple">
+                        <label class="form-label-apple">Treatments</label>
+                        <div class="grid-apple" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-md);">
+                            @foreach($patient->treatments as $treatment)
+                            <div class="card-apple" style="padding: var(--space-md);">
+                                <div class="title-small" style="margin-bottom: var(--space-xs);">{{ optional($treatment->service)->name ?? 'Service' }}</div>
+                                <div class="body-medium" style="color: var(--text-secondary); margin-bottom: var(--space-xs);">
+                                    {{ \Illuminate\Support\Carbon::parse($treatment->treatment_date)->toFormattedDateString() }}
+                                </div>
+                                @php($teeth = is_array($treatment->tooth_numbers) ? implode(', ', $treatment->tooth_numbers) : ($treatment->tooth_numbers ?? ''))
+                                @if($teeth)
+                                    <div class="caption" style="color: var(--text-tertiary); margin-bottom: var(--space-xs);">Teeth: {{ $teeth }}</div>
+                                @endif
+                                @if($treatment->treatment_description)
+                                    <div class="body-small" style="color: var(--text-tertiary); line-height: 1.5;">
+                                        {{ \Illuminate\Support\Str::limit($treatment->treatment_description, 140) }}
+                                    </div>
+                                @endif
                             </div>
                             @endforeach
                         </div>
@@ -190,63 +226,6 @@
     </div>
 </section>
 
-<!-- Treatment History -->
-@if($patient->diagnosis || $patient->treatment)
-<section class="section-apple" style="background: var(--surface);">
-    <div class="container-apple">
-        <div class="text-center mb-6">
-            <h2 class="headline-large mb-3">Treatment History</h2>
-            <p class="body-large" style="color: var(--text-secondary);">
-                Complete treatment information and medical history
-            </p>
-        </div>
-        
-        <div class="card-apple-elevated">
-            <div style="padding: var(--space-2xl);">
-                <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
-                    <div>
-                        <h3 class="title-large mb-4">Current Treatment</h3>
-                        <div style="background: var(--apple-gray-1); padding: var(--space-lg); border-radius: var(--radius-md);">
-                            <div class="body-large" style="font-weight: 600; color: var(--primary); margin-bottom: var(--space-sm);">
-                                {{ $patient->treatment ?? 'No active treatment' }}
-                            </div>
-                            <div class="body-medium" style="color: var(--text-secondary);">
-                                @if($patient->doctor_name)
-                                    Under the care of {{ $patient->doctor_name }}
-                                @else
-                                    Treatment pending doctor assignment
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h3 class="title-large mb-4">Medical Records</h3>
-                        <div style="background: var(--apple-gray-1); padding: var(--space-lg); border-radius: var(--radius-md);">
-                            <div class="body-medium" style="color: var(--text-secondary);">
-                                @if($patient->x_ray_id)
-                                    <div style="margin-bottom: var(--space-sm);">
-                                        <strong>X-Ray ID:</strong> {{ $patient->x_ray_id }}
-                                    </div>
-                                @endif
-                                @if($patient->images && is_array($patient->images))
-                                    <div style="margin-bottom: var(--space-sm);">
-                                        <strong>Images:</strong> {{ count($patient->images) }} files
-                                    </div>
-                                @endif
-                                <div>
-                                    <strong>Patient ID:</strong> {{ $patient->register_id }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-@endif
-
 <!-- Related Services -->
 <section class="section-apple">
     <div class="container-apple">
@@ -256,7 +235,7 @@
                 Explore our comprehensive dental services
             </p>
         </div>
-        
+
         <div class="grid-apple grid-apple-3">
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
@@ -270,7 +249,7 @@
                 </p>
                 <a href="{{ route('services') }}" class="btn-apple-outline">Learn More</a>
             </div>
-            
+
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
@@ -283,7 +262,7 @@
                 </p>
                 <a href="{{ route('services') }}" class="btn-apple-outline">Learn More</a>
             </div>
-            
+
             <div class="card-apple" style="text-align: center; padding: var(--space-xl);">
                 <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-lg);">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">

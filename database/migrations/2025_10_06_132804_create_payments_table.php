@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('invoice_id')->constrained()->onDelete('cascade');
             $table->foreignId('patient_id')->constrained('patients', 'register_id')->onDelete('cascade');
+            $table->enum('type', ['treatment', 'xray', 'other'])->default('treatment');
             $table->decimal('amount', 10, 2);
             $table->enum('payment_method', ['cash', 'card', 'bank_transfer', 'check', 'other'])->default('cash');
             $table->date('payment_date');

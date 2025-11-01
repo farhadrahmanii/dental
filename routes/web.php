@@ -56,3 +56,5 @@ Route::get('/api/patient/search', [AppointmentController::class, 'searchPatient'
 
 // PWA Routes (commented out - controller not implemented)
 // Route::get('/pwa', [PwaController::class, 'index'])->name('pwa');
+
+

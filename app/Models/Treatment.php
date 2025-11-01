@@ -9,7 +9,7 @@ class Treatment extends Model
 {
     protected $fillable = [
         'patient_id',
-        'treatment_types',
+        'service_ids',
         'treatment_description',
         'treatment_date',
         'tooth_numbers',
@@ -76,5 +76,11 @@ class Treatment extends Model
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'register_id');
+    }
+
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'service_id', 'id');
     }
 }

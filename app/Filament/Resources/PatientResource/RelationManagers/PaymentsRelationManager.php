@@ -26,6 +26,15 @@ class PaymentsRelationManager extends RelationManager
     {
         return $schema
             ->schema([
+                Select::make('type')
+                    ->label('Type')
+                    ->options([
+                        'treatment' => 'Treatment',
+                        'xray' => 'X-ray',
+                        'other' => 'Other',
+                    ])
+                    ->required()
+                    ->default('treatment'),
                 TextInput::make('amount')
                     ->numeric()
                     ->prefix('$')
@@ -53,6 +62,22 @@ class PaymentsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('amount')
             ->columns([
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Type')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'treatment' => 'success',
+                        'xray' => 'info',
+                        'other' => 'warning',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'treatment' => 'Treatment',
+                        'xray' => 'X-ray',
+                        'other' => 'Other',
+                        default => ucfirst($state),
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->money('USD')
                     ->sortable(),

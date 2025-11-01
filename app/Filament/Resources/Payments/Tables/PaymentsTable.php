@@ -28,12 +28,22 @@ class PaymentsTable
                     ->copyable()
                     ->tooltip('Click to copy patient name'),
 
-                TextColumn::make('service.name')
-                    ->label('Service')
-                    ->searchable()
-                    ->sortable()
-                    ->placeholder('No service')
-                    ->color('info'),
+                TextColumn::make('type')
+                    ->label('Type')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'treatment' => 'success',
+                        'xray' => 'info',
+                        'other' => 'warning',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'treatment' => 'Treatment',
+                        'xray' => 'X-ray',
+                        'other' => 'Other',
+                        default => ucfirst($state),
+                    })
+                    ->sortable(),
 
                 TextColumn::make('amount')
                     ->label('Amount')
@@ -113,11 +123,13 @@ class PaymentsTable
                     ])
                     ->multiple(),
 
-                SelectFilter::make('service_id')
-                    ->label('Service')
-                    ->relationship('service', 'name')
-                    ->searchable()
-                    ->preload()
+                SelectFilter::make('type')
+                    ->label('Type')
+                    ->options([
+                        'treatment' => 'Treatment',
+                        'xray' => 'X-ray',
+                        'other' => 'Other',
+                    ])
                     ->multiple(),
 
                 Filter::make('payment_date')
