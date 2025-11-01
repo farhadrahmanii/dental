@@ -11,8 +11,9 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\DateFilter;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TernaryFilter;
+use Filament\Forms\Components\DatePicker;
 use App\Helpers\CurrencyHelper;
 
 class InvoicesTable
@@ -105,13 +106,33 @@ class InvoicesTable
                     ])
                     ->multiple(),
                 
-                DateFilter::make('invoice_date')
+                Filter::make('invoice_date')
                     ->label('Invoice Date')
-                    ->displayFormat('M d, Y'),
+                    ->form([
+                        DatePicker::make('value')
+                            ->label('Invoice Date')
+                            ->displayFormat('M d, Y'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query->when(
+                            $data['value'] ?? null,
+                            fn ($query, $date) => $query->whereDate('invoice_date', $date),
+                        );
+                    }),
                 
-                DateFilter::make('due_date')
+                Filter::make('due_date')
                     ->label('Due Date')
-                    ->displayFormat('M d, Y'),
+                    ->form([
+                        DatePicker::make('value')
+                            ->label('Due Date')
+                            ->displayFormat('M d, Y'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query->when(
+                            $data['value'] ?? null,
+                            fn ($query, $date) => $query->whereDate('due_date', $date),
+                        );
+                    }),
                 
                 SelectFilter::make('amount_range')
                     ->label('Amount Range')
