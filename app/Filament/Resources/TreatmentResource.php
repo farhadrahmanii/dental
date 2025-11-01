@@ -50,6 +50,7 @@ class TreatmentResource extends Resource
                         Select::make('patient_id')
                             ->label('Patient')
                             ->relationship('patient', 'name')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => (string) ($record->name ?: "Patient #{$record->register_id}"))
                             ->searchable()
                             ->required()
                             ->visible(fn () => !request()->query('patient_id')),
@@ -71,6 +72,19 @@ class TreatmentResource extends Resource
                         Select::make('service_id')
                             ->label('Service')
                             ->relationship('service', 'name')
+                            ->getOptionLabelFromRecordUsing(function ($record) {
+                                $name = $record->name;
+                                if (empty($name)) {
+                                    // Try to get from raw attributes as fallback
+                                    $locale = app()->getLocale();
+                                    $fallbackLocale = config('app.fallback_locale', 'en');
+                                    $name = $record->getRawOriginal("name_{$locale}") 
+                                        ?: $record->getRawOriginal("name_{$fallbackLocale}")
+                                        ?: $record->getRawOriginal('name')
+                                        ?: "Service #{$record->id}";
+                                }
+                                return (string) $name; // Ensure it's always a string
+                            })
                             ->searchable()
                             ->preload()
                             ->required(),
