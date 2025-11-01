@@ -78,6 +78,11 @@ class Treatment extends Model
         return $this->belongsTo(Patient::class, 'patient_id', 'register_id');
     }
 
+   public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'register_id');
+    }
+
     public function service()
     {
         return $this->belongsTo(Service::class, 'service_id', 'id');
