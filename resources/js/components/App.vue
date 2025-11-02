@@ -150,9 +150,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useAppStore } from './stores/app-store.js';
-import TaskItem from './components/TaskItem.vue';
-import AddTaskModal from './components/AddTaskModal.vue';
+import { useAppStore } from '../stores/app-store.js';
+import TaskItem from './TaskItem.vue';
+import AddTaskModal from './AddTaskModal.vue';
 
 const store = useAppStore();
 const {

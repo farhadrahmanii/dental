@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AppointmentResource\Pages;
+use App\Helpers\CurrencyHelper;
 use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Service;
@@ -217,7 +218,7 @@ class AppointmentResource extends Resource
                     ->label('Service')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->service ? '$' . number_format($record->service->price, 2) : ''),
+                    ->description(fn($record) => $record->service ? CurrencyHelper::format($record->service->price) : ''),
 
                 TextColumn::make('appointment_date')
                     ->label('Date')

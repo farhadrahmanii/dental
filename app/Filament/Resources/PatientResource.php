@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PatientResource\Pages;
+use App\Helpers\CurrencyHelper;
 use App\Models\Patient;
 use App\Enums\DentalTreatment;
 use App\Enums\ToothNumber;
@@ -193,7 +194,7 @@ class PatientResource extends Resource
                                 TextInput::make('amount')
                                     ->label('Amount')
                                     ->numeric()
-                                    ->prefix('$')
+                                    ->prefix(CurrencyHelper::symbol())
                                     ->required(),
                                 Select::make('payment_method')
                                     ->label('Payment Method')
@@ -222,7 +223,7 @@ class PatientResource extends Resource
                             ->collapsed()
                             ->itemLabel(fn (array $state): ?string =>
                                 isset($state['amount'])
-                                    ? '$' . number_format($state['amount'], 2) . ' - ' . ucfirst($state['payment_method'] ?? 'New Payment')
+                                    ? CurrencyHelper::symbol() . number_format($state['amount'], 2) . ' - ' . ucfirst($state['payment_method'] ?? 'New Payment')
                                     : 'New Payment'
                             )
                             ->addActionLabel('Add Payment')
@@ -275,11 +276,11 @@ class PatientResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('total_spent')
                     ->label('Total Spent')
-                    ->money('USD')
+                    ->money('AFN')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('outstanding_balance')
                     ->label('Outstanding Balance')
-                    ->money('USD')
+                    ->money('AFN')
                     ->color(fn($state) => $state > 0 ? 'danger' : 'success')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
