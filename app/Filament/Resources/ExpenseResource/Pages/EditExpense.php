@@ -17,5 +17,16 @@ class EditExpense extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function getValidationRules(): array
+    {
+        // Override validation to allow any string for expense_type
+        $rules = parent::getValidationRules();
+        
+        // Allow any string for expense_type (not just from options list)
+        $rules['expense_type'] = ['required', 'string', 'max:255'];
+        
+        return $rules;
+    }
 }
 

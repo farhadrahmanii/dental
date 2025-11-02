@@ -45,31 +45,61 @@ class ExpenseResource extends Resource
                     ->schema([
                         Select::make('expense_type')
                             ->label('Expense Type')
-                            ->options([
-                                'Utilities' => 'Utilities',
-                                'Supplies' => 'Supplies',
-                                'Equipment' => 'Equipment',
-                                'Rent' => 'Rent',
-                                'Salaries' => 'Salaries',
-                                'Maintenance' => 'Maintenance',
-                                'Marketing' => 'Marketing',
-                                'Insurance' => 'Insurance',
-                                'Professional Services' => 'Professional Services',
-                                'Other' => 'Other',
-                            ])
+                            ->options(function () {
+                                // Get predefined expense types
+                                $predefined = [
+                                    'Utilities' => 'Utilities',
+                                    'Supplies' => 'Supplies',
+                                    'Equipment' => 'Equipment',
+                                    'Rent' => 'Rent',
+                                    'Salaries' => 'Salaries',
+                                    'Maintenance' => 'Maintenance',
+                                    'Marketing' => 'Marketing',
+                                    'Insurance' => 'Insurance',
+                                    'Professional Services' => 'Professional Services',
+                                    'Other' => 'Other',
+                                ];
+                                
+                                // Get existing expense types from database
+                                try {
+                                    $existing = Expense::distinct()
+                                        ->pluck('expense_type')
+                                        ->filter()
+                                        ->mapWithKeys(fn($type) => [$type => $type])
+                                        ->toArray();
+                                    
+                                    // Merge predefined with existing (existing takes precedence)
+                                    return array_merge($predefined, $existing);
+                                } catch (\Throwable $e) {
+                                    // If table doesn't exist yet, return only predefined
+                                    return $predefined;
+                                }
+                            })
                             ->searchable()
+                            ->preload()
                             ->createOptionForm([
                                 TextInput::make('name')
                                     ->label('Expense Type Name')
                                     ->required()
-                                    ->maxLength(255),
+                                    ->maxLength(255)
+                                    ->placeholder('Enter expense type name')
+                                    ->rules(['required', 'string', 'max:255']),
                             ])
                             ->createOptionUsing(function (array $data): string {
-                                return $data['name'];
+                                // Return the trimmed name - this will be the selected value
+                                // The value is automatically set in the form state
+                                return trim($data['name']);
+                            })
+                            ->getOptionLabelUsing(function ($value): ?string {
+                                // Always return the value as label (handles both existing and newly created)
+                                // This ensures custom values not in options list are still displayed
+                                return $value ?: null;
                             })
                             ->required()
                             ->native(false)
-                            ->prefixIcon('heroicon-o-tag'),
+                            ->rules(['required', 'string', 'max:255'])
+                            ->prefixIcon('heroicon-o-tag')
+                            ->helperText('Select an existing type or create a new one using the + button'),
 
                         Textarea::make('description')
                             ->label('Description')
