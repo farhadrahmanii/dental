@@ -54,5 +54,43 @@ class ExpenseCategoryWidget extends TableWidget
             ->emptyStateDescription('No expenses have been recorded for the current month yet.')
             ->emptyStateIcon('heroicon-o-receipt-percent');
     }
+
+    /**
+     * Override to handle aggregate query results that don't have model IDs
+     */
+    public function getTableRecordKey($record): string
+    {
+        // For aggregated results (stdClass from GROUP BY), use expense_type as the key
+        if (is_object($record)) {
+            if (isset($record->expense_type)) {
+                return (string) $record->expense_type;
+            }
+            // Try to get ID if it's a model
+            if (method_exists($record, 'getKey')) {
+                $key = $record->getKey();
+                if ($key !== null) {
+                    return (string) $key;
+                }
+            }
+        }
+        
+        // Handle arrays
+        if (is_array($record)) {
+            if (isset($record['expense_type'])) {
+                return (string) $record['expense_type'];
+            }
+            if (isset($record['id'])) {
+                return (string) $record['id'];
+            }
+        }
+        
+        // Fallback to parent method for actual model instances
+        try {
+            return parent::getTableRecordKey($record);
+        } catch (\Throwable $e) {
+            // Last resort: use a hash or index
+            return md5(serialize($record));
+        }
+    }
 }
 
