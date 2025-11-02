@@ -85,11 +85,6 @@
                         </div>
                     </div>
                     
-                    <div class="form-group-apple">
-                        <label class="form-label-apple">{{ __('dental.email_address') }}</label>
-                        <input type="email" name="patient_email" id="patient_email" class="form-input-apple" placeholder="{{ __('dental.enter_email_address') }}" required>
-                    </div>
-                    
                     <input type="hidden" name="patient_id" id="patient_id" value="">
                     
                     <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
@@ -427,8 +422,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const patientServices = document.getElementById('patient_services');
     const patientIdInput = document.getElementById('patient_id');
     const patientNameInput = document.getElementById('patient_name');
-    const patientEmailInput = document.getElementById('patient_email');
     const patientPhoneInput = document.getElementById('patient_phone');
+    const currencySymbol = @json(config('app.currency.symbol'));
 
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
@@ -488,7 +483,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Fill form fields
         patientIdInput.value = data.patient.id || '';
         patientNameInput.value = data.patient.name;
-        patientEmailInput.value = data.patient.email || '';
         patientPhoneInput.value = data.patient.phone || '';
 
         // Display patient details
@@ -507,7 +501,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div style="text-align: center;">
                 <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Total Spent</div>
-                <div style="font-weight: 600; color: var(--primary);">$${data.statistics.total_spent}</div>
+                <div style="font-weight: 600; color: var(--primary);">${currencySymbol}${data.statistics.total_spent}</div>
             </div>
             <div style="text-align: center;">
                 <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Last Visit</div>
@@ -544,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div style="font-weight: 500;">${service.service}</div>
                                 <div style="font-size: 0.75rem; color: var(--text-secondary);">${service.date} - ${service.appointment_number}</div>
                             </div>
-                            <div style="font-weight: 600; color: var(--primary);">$${service.amount}</div>
+                            <div style="font-weight: 600; color: var(--primary);">${currencySymbol}${service.amount}</div>
                         </div>
                     `).join('')}
                 </div>
@@ -667,7 +661,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     data.services.forEach(service => {
                         const option = document.createElement('option');
                         option.value = service.id;
-                        option.textContent = service.name + (service.price ? ' - $' + parseFloat(service.price).toFixed(2) : '');
+                        option.textContent = service.name + (service.price ? ' - ' + currencySymbol + parseFloat(service.price).toFixed(2) : '');
                         serviceSelect.appendChild(option);
                     });
                 }
