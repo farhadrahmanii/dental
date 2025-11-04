@@ -293,15 +293,18 @@ class PatientResource extends Resource
                 Action::make('add_treatment')
                     ->label('Add Treatment')
                     ->icon('heroicon-o-beaker')
-                    ->url(fn($record) => '/admin/treatments/create?patient_id=' . $record->register_id),
+                    ->visible(fn ($record) => $record !== null)
+                    ->url(fn($record) => $record ? '/admin/treatments/create?patient_id=' . $record->register_id : '#'),
                 Action::make('add_xray')
                     ->label('Add X-ray')
                     ->icon('heroicon-o-photo')
-                    ->url(fn($record) => url('/admin/patients/' . $record->register_id . '/xrays/create')),
+                    ->visible(fn ($record) => $record !== null)
+                    ->url(fn($record) => $record ? url('/admin/patients/' . $record->register_id . '/xrays/create') : '#'),
                 Action::make('add_transcription')
                     ->label('Add Transcription')
                     ->icon('heroicon-o-document-text')
                     ->modalHeading('Add Transcription')
+                    ->visible(fn ($record) => $record !== null)
                     ->form([
                         \Filament\Forms\Components\Textarea::make('transcription_text')
                             ->label('Transcription Text')
@@ -317,6 +320,16 @@ class PatientResource extends Resource
                             ->default(now()),
                     ])
                     ->action(function ($record, array $data): void {
+                        // Ensure record exists
+                        if (!$record || !$record->register_id) {
+                            \Filament\Notifications\Notification::make()
+                                ->danger()
+                                ->title('Error')
+                                ->body('Patient record not found.')
+                                ->send();
+                            return;
+                        }
+
                         $last = \App\Models\Transcription::orderBy('id', 'desc')->first();
                         $nextNumber = 1;
                         if ($last && preg_match('/AFG-(\d+)/', $last->transcription_id, $m)) {
