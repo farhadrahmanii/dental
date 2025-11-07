@@ -116,6 +116,8 @@ return [
     'cash_flow' => 'جریان نقدی',
     
     // About Page
+    'about_dentalcare_pro' => 'درباره DentalCare Pro',
+    'dedicated_exceptional_care' => 'متعهد به ارائه مراقبت دندانپزشکی استثنایی با فناوری مدرن و خدمات دلسوزانه',
     'about_us' => 'درباره ما',
     'our_mission' => 'ماموریت ما',
     'our_vision' => 'چشم‌انداز ما',

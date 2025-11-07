@@ -116,6 +116,8 @@ return [
     'cash_flow' => 'د پیسو جریان',
     
     // About Page
+    'about_dentalcare_pro' => 'د DentalCare Pro په اړه',
+    'dedicated_exceptional_care' => 'د عصري ټیکنالوژۍ او دلسوزي خدمت سره د غیر معمولي ډینټل پاملرنې وړاندې کولو ته وقف شوی',
     'about_us' => 'زموږ په اړه',
     'our_mission' => 'زموږ ماموریت',
     'our_vision' => 'زموږ لید',
