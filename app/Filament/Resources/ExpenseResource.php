@@ -109,10 +109,10 @@ class ExpenseResource extends Resource
                                 // The value is automatically set in the form state
                                 return trim($data['name']);
                             })
-                            ->getOptionLabelUsing(function ($value): ?string {
+                            ->getOptionLabelUsing(function ($value): string {
                                 // Always return the value as label (handles both existing and newly created)
                                 // This ensures custom values not in options list are still displayed
-                                return $value ?: null;
+                                return $value ?: '';
                             })
                             ->required()
                             ->native(false)

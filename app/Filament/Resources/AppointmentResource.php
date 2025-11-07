@@ -101,9 +101,12 @@ class AppointmentResource extends Resource
                                     })
                                     ->toArray();
                             })
-                            ->getOptionLabelUsing(function ($value): ?string {
+                            ->getOptionLabelUsing(function ($value): string {
+                                if (!$value) {
+                                    return '';
+                                }
                                 $patient = Patient::find($value);
-                                return $patient ? $patient->name . ' - ' . ($patient->phone_number ?? 'No Phone') : null;
+                                return $patient ? $patient->name . ' - ' . ($patient->phone_number ?? 'No Phone') : '';
                             })
                             ->reactive()
                             ->afterStateUpdated(function ($state, callable $set) {
@@ -147,7 +150,20 @@ class AppointmentResource extends Resource
                             ->schema([
                                 Select::make('service_id')
                                     ->label('Service')
-                                    ->options(Service::active()->pluck('name', 'id'))
+                                    ->options(function () {
+                                        return Service::active()
+                                            ->get()
+                                            ->mapWithKeys(function ($service) {
+                                                $name = $service->name;
+                                                // Ensure name is never null or empty
+                                                if (empty($name)) {
+                                                    $name = "Service #{$service->id}";
+                                                }
+                                                return [$service->id => (string) $name];
+                                            })
+                                            ->filter()
+                                            ->toArray();
+                                    })
                                     ->searchable()
                                     ->required()
                                     ->reactive()
@@ -155,7 +171,8 @@ class AppointmentResource extends Resource
                                         if ($state) {
                                             $service = Service::find($state);
                                             if ($service) {
-                                                $set('service_name', $service->name);
+                                                $name = $service->name;
+                                                $set('service_name', $name ?: "Service #{$service->id}");
                                             }
                                         }
                                     }),
