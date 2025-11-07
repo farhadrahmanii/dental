@@ -119,7 +119,7 @@ class TreatmentResource extends Resource
                         ViewField::make('dental_chart')
                             ->view('filament.forms.components.dental-chart')
                             ->columnSpanFull(),
-                        CanvasPointerField::make('body-points')
+                        CanvasPointerField::make('body_points')
                             ->pointRadius(15)
                             ->imageUrl('/images/dental-chart.jpg')
                             ->width(800)
@@ -127,7 +127,8 @@ class TreatmentResource extends Resource
                             ->storageDisk('public')
                             ->storageDirectory('canvas-pointer')
                             ->label(__('filament.select_body_parts_pain'))
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->dehydrated(),
                         Textarea::make('treatment_description')
                             ->label(__('filament.treatment_description'))
                             ->columnSpanFull(),
