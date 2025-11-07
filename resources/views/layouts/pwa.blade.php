@@ -22,6 +22,7 @@
     <meta name="description" content="@yield('description', 'Offline-first dental practice management app')">
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @laravelPWA
 </head>
 <body>
     <div id="app"></div>

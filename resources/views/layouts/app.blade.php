@@ -1310,6 +1310,8 @@
             justify-content: flex-end;
         }
     </style>
+    
+    @laravelPWA
 </head>
 
 <body>
