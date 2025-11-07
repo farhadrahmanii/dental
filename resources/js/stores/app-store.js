@@ -98,7 +98,7 @@ export const useAppStore = defineStore('app', () => {
         }
     };
 
-    const syncPendingData = async () => {
+    const syncPendingData = async (onProgress = null) => {
         if (isSyncing.value || !isOnline.value) {
             if (!isOnline.value) {
                 console.warn('Cannot sync: device is offline');
@@ -110,51 +110,102 @@ export const useAppStore = defineStore('app', () => {
         lastSyncError.value = null;
 
         try {
-            const unsyncedData = await syncQueue.getUnsynced();
+            // Get all unsynced data stats first
+            const stats = await syncQueue.getSyncStats();
+            const totalPending = stats.pending;
             
-            if (unsyncedData.length === 0) {
+            if (totalPending === 0) {
                 await updateSyncStatus();
-                return;
+                return { success: true, count: 0, message: 'No data to sync' };
             }
 
-            const response = await axios.post('/api/v1/sync', {
-                data: unsyncedData
-            }, {
-                timeout: 10000 // 10 second timeout
-            });
+            console.log(`📤 Starting sync of ${totalPending} items...`);
+            
+            // Process in batches to handle large amounts of data (30 days worth)
+            const BATCH_SIZE = 50; // Process 50 items at a time
+            let syncedCount = 0;
+            let failedCount = 0;
+            let processedCount = 0;
 
-            if (response.data.success) {
-                // Mark synced items
-                for (const item of unsyncedData) {
-                    await syncQueue.markSynced(item.client_id);
-                }
-
-                // Update sync status
-                await syncStatus.updateLastSync();
-                await updateSyncStatus();
-
-                console.log(`✅ Synced ${response.data.synced_count || unsyncedData.length} items`);
+            while (processedCount < totalPending) {
+                // Get next batch
+                const batch = await syncQueue.getUnsyncedBatch(BATCH_SIZE);
                 
-                // Trigger success notification
-                return { success: true, count: unsyncedData.length };
-            } else {
-                throw new Error(response.data.message || 'Sync failed');
+                if (batch.length === 0) break;
+
+                try {
+                    // Update progress
+                    if (onProgress) {
+                        onProgress({
+                            processed: processedCount,
+                            total: totalPending,
+                            percentage: Math.round((processedCount / totalPending) * 100)
+                        });
+                    }
+
+                    const response = await axios.post('/api/v1/sync', {
+                        data: batch
+                    }, {
+                        timeout: 60000 // 60 second timeout for large batches
+                    });
+
+                    if (response.data.success) {
+                        // Mark synced items
+                        for (const item of batch) {
+                            await syncQueue.markSynced(item.client_id);
+                        }
+
+                        syncedCount += response.data.synced_count || batch.length;
+                        processedCount += batch.length;
+
+                        console.log(`✅ Synced batch: ${syncedCount}/${totalPending} items`);
+
+                        // Small delay between batches to avoid overwhelming the server
+                        if (processedCount < totalPending) {
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                        }
+                    } else {
+                        throw new Error(response.data.message || 'Batch sync failed');
+                    }
+                } catch (error) {
+                    console.error(`❌ Batch sync error:`, error);
+                    
+                    // For network errors, don't mark as failed - will retry
+                    if (error.code === 'ECONNABORTED' || error.message.includes('timeout') || !navigator.onLine) {
+                        console.log('Network error - stopping sync, will retry later');
+                        throw error; // Stop sync, will retry when connection is stable
+                    }
+
+                    // For other errors, mark items as failed but continue with next batch
+                    for (const item of batch) {
+                        await syncQueue.markFailed(item.client_id, error.message);
+                        await syncQueue.incrementRetryCount(item.client_id);
+                    }
+                    failedCount += batch.length;
+                    processedCount += batch.length;
+                }
             }
+
+            // Update sync status
+            if (syncedCount > 0) {
+                await syncStatus.updateLastSync();
+            }
+            await updateSyncStatus();
+
+            const result = {
+                success: true,
+                synced: syncedCount,
+                failed: failedCount,
+                total: totalPending,
+                message: `Synced ${syncedCount} items${failedCount > 0 ? `, ${failedCount} failed` : ''}`
+            };
+
+            console.log(`✅ Sync complete: ${result.message}`);
+            return result;
+
         } catch (error) {
             console.error('❌ Sync error:', error);
             lastSyncError.value = error.message || 'Failed to sync. Please try again.';
-            
-            // Don't mark as failed if it's a network error - retry later
-            if (error.code === 'ECONNABORTED' || error.message.includes('timeout') || !navigator.onLine) {
-                console.log('Network error - will retry when connection is stable');
-            } else {
-                // Mark failed items for non-network errors
-                const unsyncedData = await syncQueue.getUnsynced();
-                for (const item of unsyncedData) {
-                    await syncQueue.markFailed(item.client_id, error.message);
-                }
-            }
-            
             throw error;
         } finally {
             isSyncing.value = false;
@@ -179,7 +230,16 @@ export const useAppStore = defineStore('app', () => {
 
     const updateSyncStatus = async () => {
         const pendingCount = await syncQueue.getPendingCount();
-        syncStatusData.value = await syncStatus.updateStatus(isOnline.value, pendingCount);
+        const status = await syncStatus.updateStatus(isOnline.value, pendingCount);
+        
+        // Calculate days since last sync
+        if (status.last_sync) {
+            await syncStatus.calculateDaysSinceSync();
+            const updatedStatus = await syncStatus.getStatus();
+            syncStatusData.value = updatedStatus;
+        } else {
+            syncStatusData.value = status;
+        }
     };
 
     const setOnlineStatus = async (online) => {
@@ -197,11 +257,14 @@ export const useAppStore = defineStore('app', () => {
                 setTimeout(async () => {
                     const pendingCount = await syncQueue.getPendingCount();
                     if (pendingCount > 0) {
-                        console.log(`📤 Found ${pendingCount} pending changes - syncing...`);
+                        console.log(`📤 Found ${pendingCount} pending changes - starting auto-sync...`);
                         try {
+                            // Auto-sync without progress callback (silent background sync)
                             await syncPendingData();
+                            console.log('✅ Auto-sync completed successfully');
                         } catch (error) {
-                            console.error('Auto-sync failed:', error);
+                            console.error('❌ Auto-sync failed:', error);
+                            // Don't show error to user for auto-sync, they can manually sync if needed
                         }
                     }
                 }, 2000); // Wait 2 seconds for connection to stabilize

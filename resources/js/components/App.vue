@@ -28,24 +28,73 @@
       </div>
     </div>
 
-    <!-- Online Sync Banner -->
+    <!-- Sync Progress Bar -->
+    <div 
+      v-if="isSyncing && syncProgress" 
+      class="bg-blue-600 text-white px-4 py-3 shadow-lg"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center space-x-2">
+            <svg class="h-5 w-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            <span class="font-semibold">Syncing data to server...</span>
+          </div>
+          <span class="text-sm">{{ syncProgress.percentage }}%</span>
+        </div>
+        <div class="w-full bg-blue-700 rounded-full h-2.5">
+          <div 
+            class="bg-white h-2.5 rounded-full transition-all duration-300"
+            :style="{ width: syncProgress.percentage + '%' }"
+          ></div>
+        </div>
+        <p class="text-xs mt-1 opacity-90">
+          {{ syncProgress.processed }} of {{ syncProgress.total }} items synced
+        </p>
+      </div>
+    </div>
+
+    <!-- Online Sync Banner - Large for 30-day workflow -->
     <div 
       v-if="isOnline && syncStatusData.pending_count > 0 && !isSyncing" 
-      class="bg-blue-500 text-white px-4 py-2 shadow-md"
+      class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-4 shadow-lg"
     >
-      <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <svg class="h-4 w-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-          </svg>
-          <span class="text-sm">{{ syncStatusData.pending_count }} change(s) pending sync</span>
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center justify-between">
+          <div class="flex-1">
+            <div class="flex items-center space-x-3 mb-2">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+              </svg>
+              <div>
+                <p class="font-bold text-lg">
+                  {{ syncStatusData.pending_count }} item(s) ready to sync
+                </p>
+                <p class="text-sm opacity-90 mt-1">
+                  <span v-if="syncStatusData.days_since_sync && syncStatusData.days_since_sync > 0">
+                    Last synced {{ syncStatusData.days_since_sync }} day(s) ago
+                  </span>
+                  <span v-else-if="syncStatusData.last_sync">
+                    Ready to upload your offline data
+                  </span>
+                  <span v-else>
+                    First time sync - upload all your offline data
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <button
+            @click="handleSyncClick"
+            class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-md flex items-center space-x-2"
+          >
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            <span>Sync All Data</span>
+          </button>
         </div>
-        <button
-          @click="syncPendingData"
-          class="text-sm underline hover:no-underline"
-        >
-          Sync now
-        </button>
       </div>
     </div>
 
@@ -88,7 +137,7 @@
           <div class="flex items-center space-x-4">
             <button
               v-if="!isOnline && syncStatusData.pending_count > 0"
-              @click="syncPendingData"
+              @click="handleSyncClick"
               :disabled="isSyncing"
               class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
             >
@@ -128,6 +177,42 @@
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Sync Status Dashboard -->
+      <div v-if="syncStatusData.pending_count > 0 || syncStatusData.last_sync" class="bg-white rounded-lg shadow-lg p-6 mb-8 border-l-4 border-blue-500">
+        <div class="flex items-start justify-between">
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Sync Status</h3>
+            <div class="space-y-2">
+              <div class="flex items-center space-x-4">
+                <div>
+                  <span class="text-sm text-gray-600">Pending to sync:</span>
+                  <span class="ml-2 font-bold text-blue-600">{{ syncStatusData.pending_count }} items</span>
+                </div>
+                <div v-if="syncStatusData.last_sync">
+                  <span class="text-sm text-gray-600">Last sync:</span>
+                  <span class="ml-2 font-medium">
+                    {{ formatDate(syncStatusData.last_sync) }}
+                    <span v-if="syncStatusData.days_since_sync !== null && syncStatusData.days_since_sync > 0" class="text-orange-600">
+                      ({{ syncStatusData.days_since_sync }} days ago)
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div v-if="!isOnline && syncStatusData.pending_count > 0" class="text-sm text-gray-600 mt-2">
+                ⚠️ You're offline. Data will sync automatically when you reconnect to the internet.
+              </div>
+            </div>
+          </div>
+          <button
+            v-if="isOnline && syncStatusData.pending_count > 0 && !isSyncing"
+            @click="handleSyncClick"
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Sync Now
+          </button>
+        </div>
+      </div>
+
       <!-- Stats -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow p-6">
@@ -246,6 +331,7 @@ const showAddTask = ref(false);
 const showInstallPrompt = ref(false);
 const serviceWorkerReady = ref(false);
 const showSyncSuccess = ref(false);
+const syncProgress = ref(null);
 let deferredPrompt = null;
 let syncSuccessTimeout = null;
 
@@ -282,6 +368,35 @@ const handleAddTask = async (taskData) => {
   } catch (error) {
     console.error('Error adding task:', error);
   }
+};
+
+const handleSyncClick = async () => {
+  try {
+    syncProgress.value = { processed: 0, total: syncStatusData.value.pending_count, percentage: 0 };
+    
+    const result = await syncPendingData((progress) => {
+      syncProgress.value = progress;
+    });
+    
+    syncProgress.value = null;
+    
+    if (result && result.success) {
+      showSyncSuccess.value = true;
+      if (syncSuccessTimeout) clearTimeout(syncSuccessTimeout);
+      syncSuccessTimeout = setTimeout(() => {
+        showSyncSuccess.value = false;
+      }, 5000);
+    }
+  } catch (error) {
+    syncProgress.value = null;
+    console.error('Sync failed:', error);
+  }
+};
+
+const formatDate = (dateString) => {
+  if (!dateString) return 'Never';
+  const date = new Date(dateString);
+  return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 };
 
 const installApp = async () => {
