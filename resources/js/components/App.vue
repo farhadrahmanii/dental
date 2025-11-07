@@ -1,5 +1,72 @@
 <template>
   <div id="app" class="min-h-screen bg-gray-50">
+    <!-- Offline Banner -->
+    <div 
+      v-if="!isOnline" 
+      class="bg-yellow-500 text-white px-4 py-3 shadow-lg sticky top-0 z-50"
+    >
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <svg class="h-5 w-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414"></path>
+          </svg>
+          <div>
+            <p class="font-semibold">You're currently offline</p>
+            <p class="text-sm opacity-90">
+              {{ syncStatusData.pending_count > 0 
+                ? `${syncStatusData.pending_count} change(s) will sync when you're back online` 
+                : 'All changes are saved locally and will sync automatically when connection is restored' }}
+            </p>
+          </div>
+        </div>
+        <div v-if="serviceWorkerReady" class="flex items-center space-x-2 text-sm">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <span>App ready offline</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Online Sync Banner -->
+    <div 
+      v-if="isOnline && syncStatusData.pending_count > 0 && !isSyncing" 
+      class="bg-blue-500 text-white px-4 py-2 shadow-md"
+    >
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <svg class="h-4 w-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          <span class="text-sm">{{ syncStatusData.pending_count }} change(s) pending sync</span>
+        </div>
+        <button
+          @click="syncPendingData"
+          class="text-sm underline hover:no-underline"
+        >
+          Sync now
+        </button>
+      </div>
+    </div>
+
+    <!-- Success Sync Banner -->
+    <div 
+      v-if="showSyncSuccess" 
+      class="bg-green-500 text-white px-4 py-2 shadow-md animate-slide-down"
+    >
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>All changes synced successfully!</span>
+        </div>
+        <button @click="showSyncSuccess = false" class="text-white hover:text-gray-200">
+          ✕
+        </button>
+      </div>
+    </div>
+
     <!-- Header -->
     <header class="bg-white shadow-sm border-b">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -8,11 +75,14 @@
             <h1 class="text-2xl font-bold text-gray-900">Dental Practice PWA</h1>
             <div class="ml-4 flex items-center space-x-2">
               <div 
-                class="w-3 h-3 rounded-full"
-                :class="isOnline ? 'bg-green-500' : 'bg-red-500'"
+                class="w-3 h-3 rounded-full transition-all"
+                :class="isOnline ? 'bg-green-500 animate-pulse' : 'bg-red-500'"
                 :title="isOnline ? 'Online' : 'Offline'"
               ></div>
               <span class="text-sm text-gray-600">{{ syncStatusText }}</span>
+              <span v-if="serviceWorkerReady && !isOnline" class="text-xs text-gray-500" title="Service Worker Active">
+                📦
+              </span>
             </div>
           </div>
           <div class="flex items-center space-x-4">
@@ -149,7 +219,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useAppStore } from '../stores/app-store.js';
 import TaskItem from './TaskItem.vue';
 import AddTaskModal from './AddTaskModal.vue';
@@ -174,7 +244,36 @@ const {
 
 const showAddTask = ref(false);
 const showInstallPrompt = ref(false);
+const serviceWorkerReady = ref(false);
+const showSyncSuccess = ref(false);
 let deferredPrompt = null;
+let syncSuccessTimeout = null;
+
+// Watch for sync completion
+watch([() => syncStatusData.value.pending_count, isSyncing], ([pendingCount, syncing]) => {
+  if (!syncing && pendingCount === 0 && isOnline.value && syncStatusData.value.last_sync) {
+    showSyncSuccess.value = true;
+    if (syncSuccessTimeout) clearTimeout(syncSuccessTimeout);
+    syncSuccessTimeout = setTimeout(() => {
+      showSyncSuccess.value = false;
+    }, 5000);
+  }
+});
+
+// Check service worker status
+const checkServiceWorker = async () => {
+  if ('serviceWorker' in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (registration) {
+        serviceWorkerReady.value = true;
+        console.log('Service Worker is active and ready for offline use');
+      }
+    } catch (error) {
+      console.error('Error checking service worker:', error);
+    }
+  }
+};
 
 const handleAddTask = async (taskData) => {
   try {
@@ -197,12 +296,43 @@ const installApp = async () => {
 
 onMounted(async () => {
   await initialize();
+  await checkServiceWorker();
   
   // Listen for install prompt
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
     showInstallPrompt.value = true;
+  });
+
+  // Listen for service worker updates and messages
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      serviceWorkerReady.value = true;
+    });
+
+    // Listen for messages from service worker
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'SW_READY') {
+        serviceWorkerReady.value = true;
+        console.log('✅', event.data.message);
+      }
+    });
+
+    // Check if service worker is already controlling the page
+    if (navigator.serviceWorker.controller) {
+      serviceWorkerReady.value = true;
+    }
+  }
+
+  // Show toast notification when coming back online
+  let wasOffline = !isOnline.value;
+  watch(isOnline, (online) => {
+    if (wasOffline && online) {
+      // Connection restored - sync will happen automatically
+      console.log('Connection restored - syncing pending changes...');
+    }
+    wasOffline = !online;
   });
 });
 </script>

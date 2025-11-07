@@ -99,7 +99,12 @@ export const useAppStore = defineStore('app', () => {
     };
 
     const syncPendingData = async () => {
-        if (isSyncing.value || !isOnline.value) return;
+        if (isSyncing.value || !isOnline.value) {
+            if (!isOnline.value) {
+                console.warn('Cannot sync: device is offline');
+            }
+            return;
+        }
 
         isSyncing.value = true;
         lastSyncError.value = null;
@@ -114,6 +119,8 @@ export const useAppStore = defineStore('app', () => {
 
             const response = await axios.post('/api/v1/sync', {
                 data: unsyncedData
+            }, {
+                timeout: 10000 // 10 second timeout
             });
 
             if (response.data.success) {
@@ -126,19 +133,29 @@ export const useAppStore = defineStore('app', () => {
                 await syncStatus.updateLastSync();
                 await updateSyncStatus();
 
-                console.log(`Synced ${response.data.synced_count} items`);
+                console.log(`✅ Synced ${response.data.synced_count || unsyncedData.length} items`);
+                
+                // Trigger success notification
+                return { success: true, count: unsyncedData.length };
             } else {
                 throw new Error(response.data.message || 'Sync failed');
             }
         } catch (error) {
-            console.error('Sync error:', error);
-            lastSyncError.value = error.message;
+            console.error('❌ Sync error:', error);
+            lastSyncError.value = error.message || 'Failed to sync. Please try again.';
             
-            // Mark failed items
-            const unsyncedData = await syncQueue.getUnsynced();
-            for (const item of unsyncedData) {
-                await syncQueue.markFailed(item.client_id, error.message);
+            // Don't mark as failed if it's a network error - retry later
+            if (error.code === 'ECONNABORTED' || error.message.includes('timeout') || !navigator.onLine) {
+                console.log('Network error - will retry when connection is stable');
+            } else {
+                // Mark failed items for non-network errors
+                const unsyncedData = await syncQueue.getUnsynced();
+                for (const item of unsyncedData) {
+                    await syncQueue.markFailed(item.client_id, error.message);
+                }
             }
+            
+            throw error;
         } finally {
             isSyncing.value = false;
         }
@@ -165,15 +182,32 @@ export const useAppStore = defineStore('app', () => {
         syncStatusData.value = await syncStatus.updateStatus(isOnline.value, pendingCount);
     };
 
-    const setOnlineStatus = (online) => {
+    const setOnlineStatus = async (online) => {
+        const wasOffline = !isOnline.value && online;
         isOnline.value = online;
         syncStatusData.value.is_online = online;
         
         if (online) {
-            // Try to sync when coming back online
-            setTimeout(() => {
-                syncPendingData();
-            }, 1000);
+            // Update status immediately
+            await updateSyncStatus();
+            
+            // Try to sync when coming back online (with delay to ensure connection is stable)
+            if (wasOffline) {
+                console.log('🌐 Connection restored - checking for pending sync...');
+                setTimeout(async () => {
+                    const pendingCount = await syncQueue.getPendingCount();
+                    if (pendingCount > 0) {
+                        console.log(`📤 Found ${pendingCount} pending changes - syncing...`);
+                        try {
+                            await syncPendingData();
+                        } catch (error) {
+                            console.error('Auto-sync failed:', error);
+                        }
+                    }
+                }, 2000); // Wait 2 seconds for connection to stabilize
+            }
+        } else {
+            console.log('📴 Connection lost - app will continue working offline');
         }
     };
 

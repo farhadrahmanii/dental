@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Patient Database - DentalCare Pro')
-@section('description', 'Comprehensive patient database management system with advanced search and filtering capabilities.')
+@section('title', __('dental.patient_database') . ' - ' . __('dental.app_name'))
+@section('description', __('dental.comprehensive_patient_management'))
 
 @section('content')
 <!-- Enhanced Apple-style Page Header -->
@@ -167,7 +167,7 @@
         <!-- Results Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xl);">
             <div>
-                <h2 class="headline-medium" style="margin-bottom: var(--space-sm);">{{ __('dental.patient_records') }}</h2>
+                <h2 class="headline-medium" style="margin-bottom: var(--space-sm);">{{ __('dental.patient_records_label') }}</h2>
                 <p style="color: var(--text-secondary);">{{ $patients->total() }} {{ __('dental.patients_found') }}</p>
             </div>
             <div style="display: flex; gap: var(--space-sm);">
@@ -223,7 +223,7 @@
                     </div>
                     <div class="patient-info">
                         <h5 style="margin-bottom: var(--space-xs);">{{ $patient->name }}</h5>
-                        <div class="patient-id">{{ __('dental.id') }}: {{ $patient->register_id }}</div>
+                        <div class="patient-id">{{ __('dental.id_label') }}: {{ $patient->register_id }}</div>
                         <div style="color: var(--text-tertiary); font-size: 0.75rem; margin-top: var(--space-xs);">
                             {{ __('dental.added') }} {{ $patient->created_at->diffForHumans() }}
                         </div>
@@ -236,8 +236,8 @@
                         <div class="patient-detail-value">{{ $patient->age }} {{ __('dental.years') }}</div>
                     </div>
                     <div class="patient-detail">
-                        <div class="patient-detail-label">{{ __('dental.father') }}</div>
-                        <div class="patient-detail-value">{{ $patient->father_name ?? 'N/A' }}</div>
+                        <div class="patient-detail-label">{{ __('dental.father_name') }}</div>
+                        <div class="patient-detail-value">{{ $patient->father_name ?? __('dental.n_a') }}</div>
                     </div>
                     <div class="patient-detail">
                         <div class="patient-detail-label">{{ __('dental.doctor') }}</div>
@@ -245,7 +245,7 @@
                     </div>
                     <div class="patient-detail">
                         <div class="patient-detail-label">{{ __('dental.xray_id') }}</div>
-                        <div class="patient-detail-value">{{ $patient->x_ray_id ?? 'N/A' }}</div>
+                        <div class="patient-detail-value">{{ $patient->x_ray_id ?? __('dental.n_a') }}</div>
                     </div>
                     <div class="patient-detail">
                         <div class="patient-detail-label">{{ __('dental.images') }}</div>

@@ -247,9 +247,9 @@
 <section class="section-apple">
     <div class="container-apple">
         <div class="text-center mb-6">
-            <h2 class="headline-large mb-3">Advanced Patient Management</h2>
+            <h2 class="headline-large mb-3">{{ __('dental.advanced_patient_management') }}</h2>
             <p class="body-large" style="color: var(--text-secondary);">
-                Our comprehensive patient database system ensures efficient care delivery
+                {{ __('dental.patient_management_subtitle') }}
             </p>
         </div>
         
@@ -264,22 +264,22 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="title-large">Patient Records</h3>
-                        <p class="body-medium" style="color: var(--text-secondary);">Complete digital patient profiles</p>
+                        <h3 class="title-large">{{ __('dental.patient_records_title') }}</h3>
+                        <p class="body-medium" style="color: var(--text-secondary);">{{ __('dental.patient_records_desc') }}</p>
                     </div>
                 </div>
                 <ul style="list-style: none; padding: 0;">
                     <li style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                         <div style="width: 6px; height: 6px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-medium">Medical history tracking</span>
+                        <span class="body-medium">{{ __('dental.medical_history_tracking') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                         <div style="width: 6px; height: 6px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-medium">Treatment plan management</span>
+                        <span class="body-medium">{{ __('dental.treatment_plan_management') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                         <div style="width: 6px; height: 6px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-medium">Progress monitoring</span>
+                        <span class="body-medium">{{ __('dental.progress_monitoring') }}</span>
                     </li>
                 </ul>
             </div>
@@ -294,22 +294,22 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="title-large">Digital Imaging</h3>
-                        <p class="body-medium" style="color: var(--text-secondary);">Advanced X-ray management</p>
+                        <h3 class="title-large">{{ __('dental.digital_imaging_title') }}</h3>
+                        <p class="body-medium" style="color: var(--text-secondary);">{{ __('dental.digital_imaging_desc') }}</p>
                     </div>
                 </div>
                 <ul style="list-style: none; padding: 0;">
                     <li style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                         <div style="width: 6px; height: 6px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-medium">Digital X-ray storage</span>
+                        <span class="body-medium">{{ __('dental.digital_xray_storage') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                         <div style="width: 6px; height: 6px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-medium">Unique identification system</span>
+                        <span class="body-medium">{{ __('dental.unique_identification_system') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                         <div style="width: 6px; height: 6px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-medium">Easy retrieval system</span>
+                        <span class="body-medium">{{ __('dental.easy_retrieval_system') }}</span>
                     </li>
                 </ul>
             </div>
@@ -317,7 +317,7 @@
         
         <div class="text-center mt-6">
             <a href="{{ route('patients') }}" class="btn-apple">
-                Explore Patient Database
+                {{ __('dental.explore_patient_database') }}
             </a>
         </div>
     </div>
@@ -327,9 +327,9 @@
 <section class="section-apple" style="background: var(--surface);">
     <div class="container-apple">
         <div class="text-center mb-6">
-            <h2 class="headline-large mb-3">What Our Patients Say</h2>
+            <h2 class="headline-large mb-3">{{ __('dental.what_patients_say') }}</h2>
             <p class="body-large" style="color: var(--text-secondary);">
-                Real experiences from our satisfied patients
+                {{ __('dental.testimonials_subtitle') }}
             </p>
         </div>
         
@@ -379,16 +379,16 @@
 <!-- Call to Action -->
 <section class="section-apple" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: var(--apple-white);">
     <div class="container-apple text-center">
-        <h2 class="headline-large mb-3" style="color: var(--apple-white);">Ready to Transform Your Smile?</h2>
+        <h2 class="headline-large mb-3" style="color: var(--apple-white);">{{ __('dental.ready_transform_smile') }}</h2>
         <p class="body-large mb-6" style="color: rgba(255, 255, 255, 0.9); max-width: 600px; margin-left: auto; margin-right: auto;">
-            Schedule your consultation today and let our experienced team create the perfect treatment plan for your dental needs.
+            {{ __('dental.cta_subtitle') }}
         </p>
         <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
             <a href="#appointment" class="btn-apple" style="background: var(--apple-white); color: var(--primary);">
-                Book Appointment
+                {{ __('dental.book_appointment') }}
             </a>
             <a href="{{ route('contact') }}" class="btn-apple-outline" style="border-color: var(--apple-white); color: var(--apple-white);">
-                Contact Us
+                {{ __('dental.contact_us') }}
             </a>
         </div>
     </div>
@@ -451,31 +451,31 @@ document.addEventListener('DOMContentLoaded', function() {
     function searchPatient() {
         const query = patientSearch.value.trim();
         if (!query) {
-            alert('Please enter a search query');
+            alert(@json(__('dental.please_enter_search')));
             return;
         }
 
         // Show loading state
         searchBtn.disabled = true;
-        searchBtn.textContent = 'Searching...';
+        searchBtn.textContent = @json(__('dental.searching'));
 
         fetch('{{ route("api.patient.search") }}?query=' + encodeURIComponent(query))
             .then(response => response.json())
             .then(data => {
                 searchBtn.disabled = false;
-                searchBtn.textContent = 'Search';
+                searchBtn.textContent = @json(__('dental.search'));
 
                 if (data.success) {
                     displayPatientHistory(data);
                 } else {
-                    alert(data.message || 'Patient not found');
+                    alert(data.message || @json(__('dental.patient_not_found')));
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 searchBtn.disabled = false;
-                searchBtn.textContent = 'Search';
-                alert('An error occurred while searching');
+                searchBtn.textContent = @json(__('dental.search'));
+                alert(@json(__('dental.error_occurred_searching')));
             });
     }
 
@@ -488,23 +488,23 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display patient details
         patientDetails.innerHTML = `
             <div style="text-align: center;">
-                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Patient ID</div>
+                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">${@json(__('dental.patient_id_label'))}</div>
                 <div style="font-weight: 600; color: var(--primary);">${data.patient.id}</div>
             </div>
             <div style="text-align: center;">
-                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Total Visits</div>
+                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">${@json(__('dental.total_visits'))}</div>
                 <div style="font-weight: 600;">${data.statistics.total_appointments}</div>
             </div>
             <div style="text-align: center;">
-                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Completed</div>
+                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">${@json(__('dental.completed_label'))}</div>
                 <div style="font-weight: 600; color: #34C759;">${data.statistics.completed_appointments}</div>
             </div>
             <div style="text-align: center;">
-                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Total Spent</div>
+                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">${@json(__('dental.total_spent_label'))}</div>
                 <div style="font-weight: 600; color: var(--primary);">${currencySymbol}${data.statistics.total_spent}</div>
             </div>
             <div style="text-align: center;">
-                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">Last Visit</div>
+                <div style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: var(--space-xs);">${@json(__('dental.last_visit_label'))}</div>
                 <div style="font-weight: 600;">${data.statistics.last_visit}</div>
             </div>
         `;
@@ -512,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display appointments
         if (data.appointments && data.appointments.length > 0) {
             patientAppointments.innerHTML = `
-                <h5 style="margin-bottom: var(--space-md); color: var(--text-primary);">Recent Appointments</h5>
+                <h5 style="margin-bottom: var(--space-md); color: var(--text-primary);">${@json(__('dental.recent_appointments'))}</h5>
                 <div style="max-height: 200px; overflow-y: auto;">
                     ${data.appointments.slice(0, 5).map(apt => `
                         <div style="padding: var(--space-sm); background: var(--surface); border-radius: var(--radius-sm); margin-bottom: var(--space-sm); display: flex; justify-content: space-between; align-items: center;">
@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display services/payments
         if (data.services && data.services.length > 0) {
             patientServices.innerHTML = `
-                <h5 style="margin-bottom: var(--space-md); color: var(--text-primary);">Service History</h5>
+                <h5 style="margin-bottom: var(--space-md); color: var(--text-primary);">${@json(__('dental.service_history'))}</h5>
                 <div style="max-height: 200px; overflow-y: auto;">
                     ${data.services.slice(0, 5).map(service => `
                         <div style="padding: var(--space-sm); background: var(--surface); border-radius: var(--radius-sm); margin-bottom: var(--space-sm); display: flex; justify-content: space-between; align-items: center;">
@@ -616,7 +616,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (data.success) {
                 // Show success message
-                successText.textContent = data.message + ' Your appointment number is: ' + data.appointment_number;
+                successText.textContent = data.message + ' ' + @json(__('dental.your_appointment_number_is')) + ' ' + data.appointment_number;
                 successMessage.style.display = 'block';
                 errorMessage.style.display = 'none';
                 messageContainer.style.display = 'block';
@@ -630,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 messageContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             } else {
                 // Show error message
-                errorText.textContent = data.message || 'An error occurred. Please try again.';
+                errorText.textContent = data.message || @json(__('dental.an_error_occurred'));
                 errorMessage.style.display = 'block';
                 successMessage.style.display = 'none';
                 messageContainer.style.display = 'block';
@@ -642,7 +642,7 @@ document.addEventListener('DOMContentLoaded', function() {
             submitLoading.style.display = 'none';
             
             // Show error message
-            errorText.textContent = 'An error occurred. Please try again.';
+            errorText.textContent = @json(__('dental.an_error_occurred'));
             errorMessage.style.display = 'block';
             successMessage.style.display = 'none';
             messageContainer.style.display = 'block';

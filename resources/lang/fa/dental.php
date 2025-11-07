@@ -278,6 +278,43 @@ return [
     'book_appointment' => 'رزرو نوبت',
     'contact_us' => 'تماس با ما',
     
+    // About Page - Mission Section
+    'our_mission_title' => 'ماموریت ما',
+    'mission_description' => 'در DentalCare Pro، ما متعهد به ارائه مراقبت دندانپزشکی استثنایی هستیم که فناوری پیشرفته را با خدمات شخصی‌سازی شده ترکیب می‌کند. ماموریت ما کمک به هر بیمار برای دستیابی به سلامت دهان و دندان بهینه و لبخندی زیبا است که بتوانند به آن افتخار کنند.',
+    'dental_mission_alt' => 'ماموریت دندانپزشکی',
+    'dental_technology_alt' => 'فناوری دندانپزشکی',
+    
+    // Contact Page - Additional Translations
+    'get_in_touch_title' => 'تماس بگیرید',
+    'address_title' => 'آدرس',
+    'phone_title' => 'تلفن',
+    'email_title' => 'ایمیل',
+    'office_hours_title' => 'ساعات کاری',
+    'monday_friday_hours' => 'دوشنبه - جمعه: 9:00 صبح - 5:00 عصر',
+    'saturday_hours' => 'شنبه: 10:00 صبح - 2:00 عصر',
+    'follow_us_title' => 'ما را دنبال کنید',
+    'find_us_title' => 'ما را پیدا کنید',
+    'find_us_description' => 'از کلینیک مدرن دندانپزشکی ما در قلب شهر بازدید کنید',
+    'interactive_map' => 'نقشه تعاملی',
+    'open_google_maps' => 'باز کردن در Google Maps',
+    'frequently_asked_questions' => 'سوالات متداول',
+    'faq_description' => 'سوالات رایج در مورد خدمات، بیمه و فرآیند رزرو نوبت ما.',
+    'accept_insurance' => 'آیا بیمه را می‌پذیرید؟',
+    'payment_methods' => 'چه روش‌های پرداختی را می‌پذیرید؟',
+    'schedule_appointment_question' => 'چگونه نوبت رزرو کنم؟',
+    'emergency_services_question' => 'آیا خدمات اورژانسی ارائه می‌دهید؟',
+    'first_visit_items' => 'برای اولین ویزیت چه چیزهایی باید بیاورم؟',
+    'call_us_now' => 'الان با ما تماس بگیرید',
+    'dental_emergency' => 'اورژانس دندانپزشکی؟',
+    'emergency_description' => 'ما مراقبت دندانپزشکی اورژانسی 24/7 برای موقعیت‌های اضطراری ارائه می‌دهیم. منتظر نمانید - فوراً با ما تماس بگیرید.',
+    'emergency_line' => 'خط اورژانس',
+    'emergency_label' => 'اورژانس',
+    'consultation_option' => 'مشاوره',
+    'other_option' => 'سایر',
+    'message_label' => 'پیام',
+    'message_placeholder' => 'درباره نیازهای دندانپزشکی یا نگرانی‌های خاص خود به ما بگویید...',
+    'send_message_button' => 'ارسال پیام',
+    
     // Services Page - Cosmetic Dentistry
     'cosmetic_dentistry_desc_full' => 'لبخند خود را با روش‌های پیشرفته زیبایی شامل سفید کردن، ونیرها و تغییر لبخند تغییر دهید.',
     'teeth_whitening' => 'سفید کردن دندان',
@@ -308,6 +345,7 @@ return [
     'dental_trauma' => 'تروماهای دندانپزشکی',
     
     // Services Page - Digital Imaging
+    'digital_imaging' => 'تصویربرداری دیجیتال',
     'digital_imaging_desc_full' => 'تصویربرداری دیجیتال پیشرفته X-ray و تصویربرداری 3D برای تشخیص دقیق و برنامه‌ریزی درمان با حداقل قرارگیری در معرض اشعه.',
     'digital_xrays' => 'X-Ray های دیجیتال',
     '3d_imaging' => 'تصویربرداری 3D',
@@ -339,4 +377,20 @@ return [
     'schedule_new_appointment' => 'زمان‌بندی قرار ملاقات جدید',
     'comprehensive_management' => 'مدیریت جامع سیستم',
     'access_admin_panel' => 'دسترسی به پنل مدیریت',
+    
+    // About Page - Team Members (matching about.blade.php)
+    'dr_sarah_johnson' => 'دکتر سارا جانسون',
+    'dr_sarah_johnson_title' => 'رئیس دندانپزشکی',
+    'dr_sarah_johnson_description' => 'با بیش از 15 سال تجربه در دندانپزشکی عمومی و زیبایی، دکتر جانسون تیم ما را با تخصص و دلسوزی رهبری می‌کند.',
+    'dr_michael_chen' => 'دکتر مایکل چن',
+    'dr_michael_chen_title' => 'متخصص ایمپلنت',
+    'dr_michael_chen_description' => 'تخصص در ایمپلنت دندان و جراحی دهان، دکتر چن تکنیک‌های پیشرفته و دقت را به هر روش می‌آورد.',
+    'dr_emily_rodriguez' => 'دکتر امیلی رودریگز',
+    'dr_emily_rodriguez_title' => 'ارتودنتیست',
+    'dr_emily_rodriguez_description' => 'دکتر رودریگز در درمان‌های ارتودنسی تخصص دارد و به بیماران کمک می‌کند با تکنیک‌های مدرن لبخند کاملاً صاف داشته باشند.',
+    
+    // About Page - Testimonials
+    'testimonial_1_quote' => 'DentalCare Pro لبخند من را کاملاً تغییر داد. پرسنل حرفه‌ای، فناوری شگفت‌انگیز، و نتایج فراتر از انتظارات من بود.',
+    'testimonial_2_quote' => 'روش کاشت دندان بدون درد و روان بود. تخصص تیم و تجهیزات مدرن همه تفاوت را ایجاد کرد.',
+    'testimonial_3_quote' => 'از تمیز کردن روتین تا روش‌های زیبایی، DentalCare Pro کلینیک دندانپزشکی مورد علاقه من بوده است. پرسنل دوستانه و حرفه‌ای هستند.',
 ];

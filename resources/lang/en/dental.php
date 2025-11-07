@@ -189,6 +189,8 @@ return [
     'dedicated_exceptional_care' => 'Dedicated to providing exceptional dental care with modern technology and compassionate service',
     'our_mission_title' => 'Our Mission',
     'mission_description' => 'At DentalCare Pro, we are committed to providing exceptional dental care that combines advanced technology with personalized service. Our mission is to help every patient achieve optimal oral health and a beautiful smile they can be proud of.',
+    'dental_mission_alt' => 'Dental Mission',
+    'dental_technology_alt' => 'Dental Technology',
     'years_experience' => 'Years Experience',
     'happy_patients' => 'Happy Patients',
     'our_core_values' => 'Our Core Values',
@@ -438,6 +440,7 @@ return [
     'dental_trauma' => 'Dental Trauma',
 
     // Services Page - Digital Imaging
+    'digital_imaging' => 'Digital Imaging',
     'digital_imaging_desc_full' => 'Advanced digital X-rays and 3D imaging for accurate diagnosis and treatment planning with minimal radiation exposure.',
     'digital_xrays' => 'Digital X-Rays',
     '3d_imaging' => '3D Imaging',
@@ -563,6 +566,7 @@ return [
     'dental_emergency' => 'Dental Emergency?',
     'emergency_description' => 'We provide 24/7 emergency dental care for urgent situations. Don\'t wait - call us immediately.',
     'emergency_line' => 'Emergency Line',
+    'emergency_label' => 'Emergency',
     'patient_details_title' => 'Patient Details',
     'comprehensive_patient_info' => 'Comprehensive patient information',
     'patient_id_display' => 'Patient ID',
@@ -586,10 +590,12 @@ return [
     'under_care' => 'Under Care',
     'pending_assignment' => 'Pending Assignment',
     'id_label' => 'ID',
+    'id' => 'ID',
     'added' => 'Added',
     'years' => 'years',
     'n_a' => 'N/A',
     'view_details' => 'View Details',
+    'patient_records' => 'Patient Records',
     'search_and_filter' => 'Search and Filter',
     'find_patients_quickly' => 'Find patients quickly',
     'search_placeholder' => 'Search by name, ID, phone...',
@@ -627,4 +633,21 @@ return [
     'error_occurred_searching' => 'An error occurred while searching',
     'an_error_occurred' => 'An error occurred. Please try again.',
     'your_appointment_number_is' => 'Your appointment number is:',
+    'core_values_description' => 'The principles that guide everything we do',
+    
+    // About Page - Team Members (matching about.blade.php)
+    'dr_sarah_johnson' => 'Dr. Sarah Johnson',
+    'dr_sarah_johnson_title' => 'Chief Dental Officer',
+    'dr_sarah_johnson_description' => 'With over 15 years of experience in general and cosmetic dentistry, Dr. Johnson leads our team with expertise and compassion.',
+    'dr_michael_chen' => 'Dr. Michael Chen',
+    'dr_michael_chen_title' => 'Implant Specialist',
+    'dr_michael_chen_description' => 'Specializing in dental implants and oral surgery, Dr. Chen brings advanced techniques and precision to every procedure.',
+    'dr_emily_rodriguez' => 'Dr. Emily Rodriguez',
+    'dr_emily_rodriguez_title' => 'Orthodontist',
+    'dr_emily_rodriguez_description' => 'Dr. Rodriguez specializes in orthodontic treatments, helping patients achieve perfectly aligned smiles with modern techniques.',
+    
+    // About Page - Testimonials
+    'testimonial_1_quote' => 'DentalCare Pro transformed my smile completely. The staff is professional, the technology is amazing, and the results exceeded my expectations.',
+    'testimonial_2_quote' => 'The dental implant procedure was seamless and pain-free. The team\'s expertise and modern equipment made all the difference.',
+    'testimonial_3_quote' => 'From routine cleanings to cosmetic procedures, DentalCare Pro has been my go-to dental clinic. The staff is friendly and professional.',
 ];

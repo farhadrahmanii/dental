@@ -14,27 +14,39 @@ const CACHE_FILES = [
 
 // Install event - cache essential files
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Install event');
+  console.log('🔧 Service Worker: Installing...');
   
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Service Worker: Caching files');
-        return cache.addAll(CACHE_FILES);
+        console.log('📦 Service Worker: Caching essential files...');
+        return cache.addAll(CACHE_FILES).catch((error) => {
+          // If some files fail to cache, continue anyway
+          console.warn('⚠️ Some files failed to cache:', error);
+          // Cache what we can
+          return Promise.allSettled(
+            CACHE_FILES.map(url => 
+              cache.add(url).catch(err => {
+                console.warn(`Failed to cache ${url}:`, err);
+                return null;
+              })
+            )
+          );
+        });
       })
       .then(() => {
-        console.log('Service Worker: All files cached');
+        console.log('✅ Service Worker: Installation complete - ready for offline use');
         return self.skipWaiting();
       })
       .catch((error) => {
-        console.error('Service Worker: Cache failed', error);
+        console.error('❌ Service Worker: Installation failed', error);
       })
   );
 });
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activate event');
+  console.log('🚀 Service Worker: Activating...');
   
   event.waitUntil(
     caches.keys()
@@ -42,47 +54,64 @@ self.addEventListener('activate', (event) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
             if (cacheName !== CACHE_NAME) {
-              console.log('Service Worker: Deleting old cache', cacheName);
+              console.log('🗑️ Service Worker: Cleaning up old cache:', cacheName);
               return caches.delete(cacheName);
             }
           })
         );
       })
       .then(() => {
-        console.log('Service Worker: Activated');
-        return self.clients.claim();
+        console.log('✅ Service Worker: Activated and ready');
+        // Notify all clients that service worker is ready
+        return self.clients.claim().then(() => {
+          // Send message to all clients
+          return self.clients.matchAll().then(clients => {
+            clients.forEach(client => {
+              client.postMessage({
+                type: 'SW_READY',
+                message: 'Service Worker is ready for offline use'
+              });
+            });
+          });
+        });
       })
   );
 });
 
 // Fetch event - serve from cache when offline
 self.addEventListener('fetch', (event) => {
-  console.log('Service Worker: Fetch event', event.request.url);
-  
-  // Skip non-GET requests
-  if (event.request.method !== 'GET') {
+  // Skip non-GET requests, chrome-extension requests, and data URLs
+  if (
+    event.request.method !== 'GET' || 
+    event.request.url.startsWith('chrome-extension://') ||
+    event.request.url.startsWith('data:')
+  ) {
     return;
   }
   
-  // Handle API requests
+  // Handle API requests - NetworkFirst strategy
   if (event.request.url.includes('/api/')) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          // If online, return the response
+          // If online and response is ok, cache it and return
           if (response.ok) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
             return response;
           }
           throw new Error('Network response was not ok');
         })
         .catch(() => {
-          // If offline, return cached response or offline page
+          // If offline, try to return cached response
           return caches.match(event.request)
             .then((cachedResponse) => {
               if (cachedResponse) {
                 return cachedResponse;
               }
-              // Return offline page for API requests
+              // Return offline page for failed API requests
               return caches.match(OFFLINE_URL);
             });
         })
@@ -90,13 +119,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   
-  // Handle page requests
+  // Handle page and asset requests - CacheFirst strategy for offline support
   event.respondWith(
     caches.match(event.request)
       .then((cachedResponse) => {
-        // Return cached version if available
+        // Return cached version if available (works offline)
         if (cachedResponse) {
-          console.log('Service Worker: Serving from cache', event.request.url);
           return cachedResponse;
         }
         
@@ -104,14 +132,14 @@ self.addEventListener('fetch', (event) => {
         return fetch(event.request)
           .then((response) => {
             // Check if valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
+            if (!response || response.status !== 200 || response.type === 'error') {
               return response;
             }
             
-            // Clone the response
+            // Clone the response for caching
             const responseToCache = response.clone();
             
-            // Cache the response
+            // Cache the response for future offline use
             caches.open(CACHE_NAME)
               .then((cache) => {
                 cache.put(event.request, responseToCache);
@@ -119,12 +147,38 @@ self.addEventListener('fetch', (event) => {
             
             return response;
           })
-          .catch(() => {
-            // If offline and no cache, return offline page
-            if (event.request.destination === 'document') {
-              return caches.match(OFFLINE_URL);
-            }
+        .catch((error) => {
+          // If offline and no cache available
+          console.log('📴 Offline: No cache for', event.request.url);
+          
+          if (event.request.destination === 'document') {
+            // For HTML pages, return offline page
+            return caches.match(OFFLINE_URL).then((offlinePage) => {
+              if (offlinePage) {
+                return offlinePage;
+              }
+              // Fallback if offline page not cached
+              return new Response(
+                '<!DOCTYPE html><html><head><title>Offline</title></head><body><h1>You are offline</h1><p>Please check your internet connection.</p><button onclick="location.reload()">Retry</button></body></html>',
+                {
+                  status: 200,
+                  headers: new Headers({
+                    'Content-Type': 'text/html'
+                  })
+                }
+              );
+            });
+          }
+          
+          // For other assets, return a basic response
+          return new Response('Offline', {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: new Headers({
+              'Content-Type': 'text/plain'
+            })
           });
+        });
       })
   );
 });
