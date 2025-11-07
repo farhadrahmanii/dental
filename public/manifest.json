@@ -2,7 +2,7 @@
   "name": "Dental Practice PWA",
   "short_name": "DentalPWA",
   "description": "Offline-first dental practice management app",
-  "start_url": "/pwa",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
@@ -43,7 +43,7 @@
       "name": "Add Task",
       "short_name": "Add Task",
       "description": "Quickly add a new task",
-      "url": "/pwa?action=add-task",
+      "url": "/?action=add-task",
       "icons": [
         {
           "src": "/shortcut-add-task.png",
@@ -55,7 +55,7 @@
       "name": "View Tasks",
       "short_name": "Tasks",
       "description": "View all tasks",
-      "url": "/pwa?view=tasks",
+      "url": "/?view=tasks",
       "icons": [
         {
           "src": "/shortcut-tasks.png",

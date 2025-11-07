@@ -18,15 +18,52 @@ export default defineConfig({
         vue(),
         VitePWA({
             registerType: 'autoUpdate',
+            strategies: 'generateSW',
+            injectRegister: false, // We're registering manually in layouts
             workbox: {
-                globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+                navigateFallback: '/',
+                navigateFallbackDenylist: [/^\/_/, /\/[^/?]+\.[^/]+$/],
                 runtimeCaching: [
                     {
-                        urlPattern: /^https:\/\/api\./,
+                        urlPattern: /^https:\/\/.*\/api\/.*/i,
                         handler: 'NetworkFirst',
                         options: {
                             cacheName: 'api-cache',
-                            networkTimeoutSeconds: 3,
+                            networkTimeoutSeconds: 10,
+                            cacheableResponse: {
+                                statuses: [0, 200]
+                            },
+                            expiration: {
+                                maxEntries: 50,
+                                maxAgeSeconds: 5 * 60 // 5 minutes
+                            }
+                        }
+                    },
+                    {
+                        urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/,
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'images-cache',
+                            expiration: {
+                                maxEntries: 100,
+                                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+                            }
+                        }
+                    },
+                    {
+                        urlPattern: /\.(?:js|css)$/,
+                        handler: 'StaleWhileRevalidate',
+                        options: {
+                            cacheName: 'static-resources'
+                        }
+                    },
+                    {
+                        urlPattern: ({ request }) => request.destination === 'document',
+                        handler: 'NetworkFirst',
+                        options: {
+                            cacheName: 'pages-cache',
+                            networkTimeoutSeconds: 10,
                             cacheableResponse: {
                                 statuses: [0, 200]
                             }
@@ -44,7 +81,7 @@ export default defineConfig({
                 display: 'standalone',
                 orientation: 'portrait',
                 scope: '/',
-                start_url: '/pwa',
+                start_url: '/',
                 icons: [
                     {
                         src: 'pwa-192x192.png',
