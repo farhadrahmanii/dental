@@ -192,12 +192,12 @@
 
                             <div class="form-group-apple">
                                 <label class="form-label-apple">{{ __('dental.age_min') }}</label>
-                                <input type="number" name="age_min" class="form-input-apple" value="{{ request('age_min') }}" min="0" max="120" placeholder="0">
+                                <input type="number" name="age_min" class="form-input-apple" value="{{ request('age_min') }}" min="0" max="120" placeholder="{{ __('dental.min_age_placeholder') }}">
                             </div>
 
                             <div class="form-group-apple">
                                 <label class="form-label-apple">{{ __('dental.age_max') }}</label>
-                                <input type="number" name="age_max" class="form-input-apple" value="{{ request('age_max') }}" min="0" max="120" placeholder="120">
+                                <input type="number" name="age_max" class="form-input-apple" value="{{ request('age_max') }}" min="0" max="120" placeholder="{{ __('dental.max_age_placeholder') }}">
                             </div>
 
                             <div class="form-group-apple">
@@ -259,14 +259,20 @@
                             @endif
                             @if(request('gender'))
                             <span class="filter-tag" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--apple-gray-1); border-radius: var(--radius-full); font-size: 0.875rem;">
-                                {{ __('dental.gender') }}: {{ ucfirst(request('gender')) }}
+                                {{ __('dental.gender') }}: {{ request('gender') == 'male' ? __('filament.male') : (request('gender') == 'female' ? __('filament.female') : (request('gender') == 'other' ? __('filament.other') : ucfirst(request('gender')))) }}
                                 <button type="button" onclick="removeFilter('gender')" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
                             </span>
                             @endif
                             @if(request('age_min') || request('age_max'))
                             <span class="filter-tag" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--apple-gray-1); border-radius: var(--radius-full); font-size: 0.875rem;">
-                                {{ __('dental.age') }}: {{ request('age_min', 0) }}-{{ request('age_max', '∞') }}
+                                {{ __('dental.age') }}: {{ request('age_min', 0) }}-{{ request('age_max') ?: __('dental.unlimited') }}
                                 <button type="button" onclick="removeFilter(['age_min', 'age_max'])" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
+                            </span>
+                            @endif
+                            @if(request('marital_status'))
+                            <span class="filter-tag" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--apple-gray-1); border-radius: var(--radius-full); font-size: 0.875rem;">
+                                {{ __('filament.marital_status') }}: {{ request('marital_status') == 'single' ? __('filament.single') : (request('marital_status') == 'married' ? __('filament.married') : (request('marital_status') == 'divorced' ? __('filament.divorced') : (request('marital_status') == 'widowed' ? __('filament.widowed') : ucfirst(request('marital_status'))))) }}
+                                <button type="button" onclick="removeFilter('marital_status')" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
                             </span>
                             @endif
                             @if(request('doctor'))
@@ -275,9 +281,28 @@
                                 <button type="button" onclick="removeFilter('doctor')" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
                             </span>
                             @endif
+                            @if(request('date_from') || request('date_to'))
+                            <span class="filter-tag" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--apple-gray-1); border-radius: var(--radius-full); font-size: 0.875rem;">
+                                {{ __('dental.date_range') }}: {{ request('date_from') ?: __('dental.start') }} - {{ request('date_to') ?: __('dental.end') }}
+                                <button type="button" onclick="removeFilter(['date_from', 'date_to'])" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
+                            </span>
+                            @endif
                             @if(request('quick_filter'))
                             <span class="filter-tag" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--apple-gray-1); border-radius: var(--radius-full); font-size: 0.875rem;">
-                                {{ __('dental.quick_filter') }}: {{ ucfirst(str_replace('_', ' ', request('quick_filter'))) }}
+                                {{ __('dental.quick_filter') }}: 
+                                @if(request('quick_filter') == 'recent')
+                                    {{ __('dental.recent') }}
+                                @elseif(request('quick_filter') == 'with_treatments')
+                                    {{ __('dental.with_treatments') }}
+                                @elseif(request('quick_filter') == 'with_xrays')
+                                    {{ __('dental.with_xrays') }}
+                                @elseif(request('quick_filter') == 'with_payments')
+                                    {{ __('dental.with_payments') }}
+                                @elseif(request('quick_filter') == 'no_treatments')
+                                    {{ __('dental.no_treatments') }}
+                                @else
+                                    {{ ucfirst(str_replace('_', ' ', request('quick_filter'))) }}
+                                @endif
                                 <button type="button" onclick="removeFilter('quick_filter')" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
                             </span>
                             @endif

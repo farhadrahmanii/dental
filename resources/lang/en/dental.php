@@ -650,4 +650,49 @@ return [
     'testimonial_1_quote' => 'DentalCare Pro transformed my smile completely. The staff is professional, the technology is amazing, and the results exceeded my expectations.',
     'testimonial_2_quote' => 'The dental implant procedure was seamless and pain-free. The team\'s expertise and modern equipment made all the difference.',
     'testimonial_3_quote' => 'From routine cleanings to cosmetic procedures, DentalCare Pro has been my go-to dental clinic. The staff is friendly and professional.',
+
+    // Patient Database Page - Enhanced Features
+    'quick_filters' => 'Quick Filters',
+    'recent' => 'Recent',
+    'with_treatments' => 'With Treatments',
+    'with_xrays' => 'With X-rays',
+    'with_payments' => 'With Payments',
+    'no_treatments' => 'No Treatments',
+    
+    // Sorting
+    'sort_by' => 'Sort By',
+    'order' => 'Order',
+    'date_added' => 'Date Added',
+    'name' => 'Name',
+    'descending' => 'Descending',
+    'ascending' => 'Ascending',
+    
+    // Advanced Filters
+    'advanced_filters' => 'Advanced Filters',
+    'hide_filters' => 'Hide Filters',
+    'all_genders' => 'All Genders',
+    'gender' => 'Gender',
+    'age_min' => 'Minimum Age',
+    'age_max' => 'Maximum Age',
+    'min_age_placeholder' => '0',
+    'max_age_placeholder' => '120',
+    'all_statuses' => 'All Statuses',
+    'date_from' => 'Date From',
+    'date_to' => 'Date To',
+    'date_range' => 'Date Range',
+    'start' => 'Start',
+    'end' => 'End',
+    'unlimited' => 'Unlimited',
+    
+    // Filter Display
+    'quick_filter' => 'Quick Filter',
+    'active_filters' => 'Active Filters',
+    
+    // Statistics
+    'recent_30_days' => 'Recent (30 Days)',
+    'treatments' => 'Treatments',
+    'xrays' => 'X-rays',
+    'payments' => 'Payments',
+    'phone' => 'Phone',
+    'doctor' => 'Doctor',
 ];

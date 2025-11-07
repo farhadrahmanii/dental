@@ -563,4 +563,49 @@ return [
     'an_error_occurred' => 'تېروتنه رامنځته شوه. مهرباني وکړئ بیا هڅه وکړئ.',
     'your_appointment_number_is' => 'ستاسو د نېټې شمیره:',
     'core_values_description' => 'هغه اصول چې هرڅه لارښود کوي',
+
+    // Patient Database Page - Enhanced Features
+    'quick_filters' => 'چټک فیلټرونه',
+    'recent' => 'وروستي',
+    'with_treatments' => 'د درملنو سره',
+    'with_xrays' => 'د ایکس ری سره',
+    'with_payments' => 'د تادیاتو سره',
+    'no_treatments' => 'پرته له درملنو',
+    
+    // Sorting
+    'sort_by' => 'د ترتیب اساس',
+    'order' => 'ترتیب',
+    'date_added' => 'د اضافه کولو نیټه',
+    'name' => 'نوم',
+    'descending' => 'نزولي',
+    'ascending' => 'صعودي',
+    
+    // Advanced Filters
+    'advanced_filters' => 'پرمختللي فیلټرونه',
+    'hide_filters' => 'فیلټرونه پټ کړئ',
+    'all_genders' => 'ټول جنسونه',
+    'gender' => 'جنس',
+    'age_min' => 'کم عمر',
+    'age_max' => 'زیات عمر',
+    'min_age_placeholder' => '0',
+    'max_age_placeholder' => '120',
+    'all_statuses' => 'ټول حالتونه',
+    'date_from' => 'د نیټې څخه',
+    'date_to' => 'تر نیټې',
+    'date_range' => 'د نیټې سلسله',
+    'start' => 'پیل',
+    'end' => 'پای',
+    'unlimited' => 'نامحدود',
+    
+    // Filter Display
+    'quick_filter' => 'چټک فیلټر',
+    'active_filters' => 'فعال فیلټرونه',
+    
+    // Statistics
+    'recent_30_days' => 'وروستي (30 ورځې)',
+    'treatments' => 'درملنې',
+    'xrays' => 'ایکس ری',
+    'payments' => 'تادیات',
+    'phone' => 'تلیفون',
+    'doctor' => 'ډاکټر',
 ];
