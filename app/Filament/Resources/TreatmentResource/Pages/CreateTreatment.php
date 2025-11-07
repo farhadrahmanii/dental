@@ -21,6 +21,11 @@ class CreateTreatment extends CreateRecord
             // The cast in the model should handle this, but we ensure it here
         }
 
+        // CanvasPointerField processes base64 images automatically in dehydrateStateUsing
+        // The field converts base64 to image file and returns URL
+        // Ensure body_points is preserved in the data array
+        // If it's a base64 string, the field will process it automatically
+
         // If patient_id is not set but provided in URL, use it
         if (!isset($data['patient_id']) && ($patientId = request()->query('patient_id'))) {
             $data['patient_id'] = $patientId;

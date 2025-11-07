@@ -43,22 +43,22 @@
                     
                     <!-- Patient Search Section -->
                     <div class="form-group-apple" style="margin-bottom: var(--space-2xl);">
-                        <label class="form-label-apple">Search Existing Patient (Optional)</label>
+                        <label class="form-label-apple">{{ __('dental.search_existing_patient') }}</label>
                         <div style="position: relative;">
-                            <input type="text" id="patient_search" class="form-input-apple" placeholder="Enter patient name, phone, or appointment number..." style="padding-right: 100px;">
+                            <input type="text" id="patient_search" class="form-input-apple" placeholder="{{ __('dental.enter_patient_search') }}" style="padding-right: 100px;">
                             <button type="button" id="search_btn" class="btn-apple-outline" style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); padding: 0.5rem 1rem; font-size: 0.875rem;">
-                                Search
+                                {{ __('dental.search') }}
                             </button>
                         </div>
                         <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: var(--space-sm);">
-                            Search for an existing patient to view their history and auto-fill details
+                            {{ __('dental.search_patient_description') }}
                         </p>
                     </div>
 
                     <!-- Patient History Display -->
                     <div id="patient_history" style="display: none; margin-bottom: var(--space-2xl); padding: var(--space-lg); background: var(--apple-gray-1); border-radius: var(--radius-lg); border: 1px solid var(--border-light);">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md);">
-                            <h4 style="margin: 0; color: var(--text-primary);">Patient History</h4>
+                            <h4 style="margin: 0; color: var(--text-primary);">{{ __('dental.patient_history') }}</h4>
                             <button type="button" id="clear_history" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: var(--space-xs);">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -227,17 +227,17 @@
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                     </svg>
                 </div>
-                <h3 class="title-large mb-3">Implant Dentistry</h3>
+                <h3 class="title-large mb-3">{{ __('dental.implant_dentistry') }}</h3>
                 <p class="body-medium" style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
-                    Replace missing teeth with durable, natural-looking dental implants.
+                    {{ __('dental.implant_dentistry_desc') }}
                 </p>
-                <a href="{{ route('services') }}" class="btn-apple-outline">Learn More</a>
+                <a href="{{ route('services') }}" class="btn-apple-outline">{{ __('dental.learn_more') }}</a>
             </div>
         </div>
         
         <div class="text-center mt-6">
             <a href="{{ route('services') }}" class="btn-apple">
-                View All Services
+                {{ __('dental.view_all_services') }}
             </a>
         </div>
     </div>
