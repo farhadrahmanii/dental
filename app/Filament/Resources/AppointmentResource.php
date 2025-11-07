@@ -58,29 +58,29 @@ class AppointmentResource extends Resource
     {
         return $schema
             ->schema([
-                Section::make('Patient Information')
-                    ->description('Search for existing patient or enter new patient details')
+                Section::make(__('filament.patient_information'))
+                    ->description(__('filament.search_existing_patient'))
                     ->schema([
                         Select::make('patient_id')
-                            ->label('Existing Patient (Optional)')
-                            ->placeholder('Search by name or phone...')
+                            ->label(__('filament.existing_patient_optional'))
+                            ->placeholder(__('filament.search_by_name_phone'))
                             ->preload()
                             ->searchable()
                             ->createOptionForm([
                                 TextInput::make('name')
                                     ->required()
                                     ->maxLength(255)
-                                    ->placeholder('Patient full name'),
+                                    ->placeholder(__('filament.patient_full_name')),
                                 TextInput::make('phone_number')
                                     ->tel()
                                     ->required()
                                     ->maxLength(255)
-                                    ->placeholder('Patient phone number'),
+                                    ->placeholder(__('filament.patient_phone_number')),
                                 TextInput::make('doctor_name')
-                                    ->label('Doctor Name')
+                                    ->label(__('filament.doctor_name'))
                                     ->required()
                                     ->maxLength(255)
-                                    ->placeholder('Doctor name'),
+                                    ->placeholder(__('filament.doctor_name')),
                             ])
                             ->createOptionUsing(function (array $data): string {
                                 $patient = Patient::create([
@@ -121,21 +121,21 @@ class AppointmentResource extends Resource
                                 }
                             })
                             ->autofocus(fn ($get) => $get('patient_id') !== null)
-                            ->helperText('Select an existing patient to auto-fill their details')
+                            ->helperText(__('filament.select_existing_patient_auto_fill'))
                             ->columnSpanFull(),
 
                         Grid::make(3)
                             ->schema([
                                 TextInput::make('patient_name')
-                                    ->label('Patient Name')
+                                    ->label(__('filament.patient'))
                                     ->required()
                                     ->maxLength(255),
                                 TextInput::make('patient_email')
-                                    ->label('Email Address')
+                                    ->label(__('filament.email'))
                                     ->email()
                                     ->maxLength(255),
                                 TextInput::make('patient_phone')
-                                    ->label('Phone Number')
+                                    ->label(__('filament.phone_number'))
                                     ->tel()
                                     ->required()
                                     ->maxLength(255),
@@ -143,13 +143,13 @@ class AppointmentResource extends Resource
                     ])
                     ->collapsible(),
 
-                Section::make('Appointment Details')
-                    ->description('Select service, date, and time for the appointment')
+                Section::make(__('filament.appointment_details'))
+                    ->description(__('filament.select_service_date_time'))
                     ->schema([
                         Grid::make(2)
                             ->schema([
                                 Select::make('service_id')
-                                    ->label('Service')
+                                    ->label(__('filament.service'))
                                     ->options(function () {
                                         return Service::active()
                                             ->get()
@@ -180,26 +180,26 @@ class AppointmentResource extends Resource
                                 Hidden::make('service_name'),
 
                                 DatePicker::make('appointment_date')
-                                    ->label('Appointment Date')
+                                    ->label(__('filament.appointment_date'))
                                     ->required()
                                     ->native(false)
                                     ->minDate(now())
                                     ->displayFormat('M d, Y'),
 
                                 TimePicker::make('appointment_time')
-                                    ->label('Appointment Time')
+                                    ->label(__('filament.appointment_time'))
                                     ->required()
                                     ->seconds(false)
                                     ->minutesStep(30),
 
                                 Select::make('status')
-                                    ->label('Status')
+                                    ->label(__('filament.status'))
                                     ->options([
-                                        'pending' => 'Pending',
-                                        'confirmed' => 'Confirmed',
-                                        'completed' => 'Completed',
-                                        'cancelled' => 'Cancelled',
-                                        'no_show' => 'No Show',
+                                        'pending' => __('filament.pending'),
+                                        'confirmed' => __('filament.confirmed'),
+                                        'completed' => __('filament.completed'),
+                                        'cancelled' => __('filament.cancelled'),
+                                        'no_show' => __('filament.no_show'),
                                     ])
                                     ->default('pending')
                                     ->required()
@@ -207,17 +207,17 @@ class AppointmentResource extends Resource
                             ]),
 
                         Textarea::make('message')
-                            ->label('Patient Message')
-                            ->placeholder('Any message or special requests from the patient...')
+                            ->label(__('filament.appointment_notes'))
+                            ->placeholder(__('filament.appointment_notes_placeholder'))
                             ->rows(3)
                             ->columnSpanFull(),
 
                         Textarea::make('notes')
-                            ->label('Internal Notes (Staff Only)')
-                            ->placeholder('Internal notes visible only to staff...')
+                            ->label(__('filament.internal_notes'))
+                            ->placeholder(__('filament.internal_notes_placeholder'))
                             ->rows(3)
                             ->columnSpanFull()
-                            ->helperText('These notes are only visible to staff members'),
+                            ->helperText(__('filament.internal_notes_helper')),
                     ])
                     ->collapsible(),
             ]);
@@ -304,9 +304,9 @@ class AppointmentResource extends Resource
                 Filter::make('appointment_date')
                     ->form([
                         DatePicker::make('from')
-                            ->label('From Date'),
+                            ->label(__('filament.from_date')),
                         DatePicker::make('until')
-                            ->label('Until Date'),
+                            ->label(__('filament.until_date')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -324,14 +324,14 @@ class AppointmentResource extends Resource
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Action::make('confirm')
-                    ->label('Confirm')
+                    ->label(__('filament.confirmed'))
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
                     ->action(fn($record) => $record->update(['status' => 'confirmed']))
                     ->visible(fn($record) => $record->status === 'pending'),
                 Action::make('complete')
-                    ->label('Complete')
+                    ->label(__('filament.completed'))
                     ->icon('heroicon-o-check-badge')
                     ->color('success')
                     ->requiresConfirmation()

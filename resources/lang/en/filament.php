@@ -202,6 +202,13 @@ return [
     'cancelled' => 'Cancelled',
     'no_show' => 'No Show',
     'appointment_notes' => 'Appointment Notes',
+    'appointment_notes_placeholder' => 'Any message or special requests from the patient...',
+    'internal_notes' => 'Internal Notes (Staff Only)',
+    'internal_notes_placeholder' => 'Internal notes visible only to staff...',
+    'internal_notes_helper' => 'These notes are only visible to staff members',
+    'appointment_details' => 'Appointment Details',
+    'select_service_date_time' => 'Select service, date, and time for the appointment',
+    'select_existing_patient_auto_fill' => 'Select an existing patient to auto-fill their details',
     
     // Service Resource
     'basic_information' => 'Basic Information',
@@ -235,9 +242,11 @@ return [
     'select_payment_method' => 'Select payment method',
     
     // Expense Resource
+    'expense_information' => 'Expense Information',
     'expense_type' => 'Expense Type',
     'expense_type_name' => 'Expense Type Name',
     'enter_expense_type_name' => 'Enter expense type name',
+    'select_or_create_expense_type' => 'Select an existing type or create a new one using the + button',
     'expense_description' => 'Description',
     'enter_expense_description' => 'Enter expense description',
     'expense_amount' => 'Amount',
@@ -247,10 +256,16 @@ return [
     'recorded_by' => 'Recorded By',
     'upload_receipt_image' => 'Upload receipt image (optional)',
     'receipt_image' => 'Receipt Image',
+    'receipt' => 'Receipt',
+    'upload_receipt_max_size' => 'Upload receipt image (max 5MB)',
     'expense_id' => 'Expense ID',
     'record_clinic_expenses' => 'Record clinic expenses and transactions',
-    
-    // Table Columns
+    'treatment_information' => 'Treatment Information',
+    'select_body_parts_pain' => 'Select body parts that are in pain',
+    'service_name_english_placeholder' => 'e.g., Dental Cleaning',
+    'payment_notes' => 'Payment Notes',
+    'payment_notes_placeholder' => 'Add any additional notes about this payment',
+    'reference_number_placeholder' => 'Transaction ID, check number, etc.',
     'phone' => 'Phone',
     'total_spent' => 'Total Spent',
     'outstanding_balance' => 'Outstanding Balance',

@@ -58,12 +58,12 @@ class ExpenseResource extends Resource
     {
         return $schema
             ->schema([
-                Section::make('Expense Information')
-                    ->description('Record clinic expenses and transactions')
+                Section::make(__('filament.expense_information'))
+                    ->description(__('filament.record_clinic_expenses'))
                     ->icon('heroicon-o-currency-dollar')
                     ->schema([
                         Select::make('expense_type')
-                            ->label('Expense Type')
+                            ->label(__('filament.expense_type'))
                             ->options(function () {
                                 // Get predefined expense types
                                 $predefined = [
@@ -98,10 +98,10 @@ class ExpenseResource extends Resource
                             ->preload()
                             ->createOptionForm([
                                 TextInput::make('name')
-                                    ->label('Expense Type Name')
+                                    ->label(__('filament.expense_type_name'))
                                     ->required()
                                     ->maxLength(255)
-                                    ->placeholder('Enter expense type name')
+                                    ->placeholder(__('filament.enter_expense_type_name'))
                                     ->rules(['required', 'string', 'max:255']),
                             ])
                             ->createOptionUsing(function (array $data): string {
@@ -118,18 +118,18 @@ class ExpenseResource extends Resource
                             ->native(false)
                             ->rules(['required', 'string', 'max:255'])
                             ->prefixIcon('heroicon-o-tag')
-                            ->helperText('Select an existing type or create a new one using the + button'),
+                            ->helperText(__('filament.select_or_create_expense_type')),
 
                         Textarea::make('description')
-                            ->label('Description')
+                            ->label(__('filament.expense_description'))
                             ->required()
                             ->rows(3)
                             ->maxLength(1000)
-                            ->placeholder('Enter expense description')
+                            ->placeholder(__('filament.enter_expense_description'))
                             ->columnSpanFull(),
 
                         TextInput::make('amount')
-                            ->label('Amount')
+                            ->label(__('filament.expense_amount'))
                             ->numeric()
                             ->required()
                             ->prefix(CurrencyHelper::symbol())
@@ -138,12 +138,12 @@ class ExpenseResource extends Resource
                             ->step(0.01),
 
                         Select::make('payment_method')
-                            ->label('Payment Method')
+                            ->label(__('filament.payment_method'))
                             ->options([
-                                'Cash' => 'Cash',
-                                'Bank' => 'Bank',
-                                'Credit' => 'Credit',
-                                'Mobile Payment' => 'Mobile Payment',
+                                'Cash' => __('filament.cash'),
+                                'Bank' => __('filament.bank_transfer'),
+                                'Credit' => __('filament.card'),
+                                'Mobile Payment' => __('filament.other'),
                             ])
                             ->required()
                             ->default('Cash')
@@ -151,7 +151,7 @@ class ExpenseResource extends Resource
                             ->prefixIcon('heroicon-o-credit-card'),
 
                         DatePicker::make('expense_date')
-                            ->label('Expense Date')
+                            ->label(__('filament.expense_date'))
                             ->required()
                             ->default(now())
                             ->native(false)
@@ -159,14 +159,14 @@ class ExpenseResource extends Resource
                             ->prefixIcon('heroicon-o-calendar'),
 
                         TextInput::make('paid_to')
-                            ->label('Paid To')
+                            ->label(__('filament.paid_to'))
                             ->maxLength(255)
-                            ->placeholder('Person or company name (optional)')
+                            ->placeholder(__('filament.person_company_name_optional'))
                             ->prefixIcon('heroicon-o-user'),
 
                         TextInput::make('recorded_by')
-                            ->label('Recorded By')
-                            ->default(fn() => Auth::user()?->name ?? 'System')
+                            ->label(__('filament.recorded_by'))
+                            ->default(fn() => Auth::user()?->name ?? __('filament.system'))
                             ->disabled()
                             ->dehydrated()
                             ->prefixIcon('heroicon-o-user-circle'),
@@ -174,12 +174,12 @@ class ExpenseResource extends Resource
                     ->columns(2)
                     ->collapsible(),
 
-                Section::make('Receipt')
-                    ->description('Upload receipt image (optional)')
+                Section::make(__('filament.receipt'))
+                    ->description(__('filament.upload_receipt_image'))
                     ->icon('heroicon-o-document')
                     ->schema([
                         FileUpload::make('receipt_image')
-                            ->label('Receipt Image')
+                            ->label(__('filament.receipt_image'))
                             ->disk('public')
                             ->directory('receipts')
                             ->image()
@@ -187,7 +187,7 @@ class ExpenseResource extends Resource
                             ->downloadable()
                             ->openable()
                             ->maxSize(5120)
-                            ->helperText('Upload receipt image (max 5MB)')
+                            ->helperText(__('filament.upload_receipt_max_size'))
                             ->columnSpanFull(),
                     ])
                     ->collapsible()

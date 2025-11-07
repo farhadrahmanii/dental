@@ -139,51 +139,51 @@ class ServicesTable
                     ->modalCancelActionLabel(__('filament.cancel'))
                     ->form([
                         \Filament\Forms\Components\TextInput::make('name_en')
-                            ->label('Service Name (English)')
+                            ->label(__('filament.service_name_english'))
                             ->required()
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_en')
-                            ->label('Description (English)')
+                            ->label(__('filament.description_english'))
                             ->rows(3)
                             ->columnSpanFull(),
                         
                         \Filament\Forms\Components\TextInput::make('price')
-                            ->label('Price')
+                            ->label(__('filament.price'))
                             ->numeric()
                             ->prefix('؋')
                             ->required(),
                         
                         \Filament\Forms\Components\Select::make('category')
-                            ->label('Category')
+                            ->label(__('filament.category'))
                             ->options([
-                                'preventive' => 'Preventive Care',
-                                'restorative' => 'Restorative',
-                                'cosmetic' => 'Cosmetic',
-                                'surgical' => 'Surgical',
-                                'diagnostic' => 'Diagnostic',
-                                'anesthesia' => 'Anesthesia',
+                                'preventive' => __('filament.preventive_care'),
+                                'restorative' => __('filament.restorative'),
+                                'cosmetic' => __('filament.cosmetic'),
+                                'surgical' => __('filament.surgical'),
+                                'diagnostic' => __('filament.diagnostic'),
+                                'anesthesia' => __('filament.anesthesia'),
                             ])
                             ->required(),
                         
                         \Filament\Forms\Components\Toggle::make('is_active')
-                            ->label('Active'),
+                            ->label(__('filament.active')),
                         
                         \Filament\Forms\Components\TextInput::make('name_ps')
-                            ->label('Service Name (Pashto)')
+                            ->label(__('filament.service_name_pashto'))
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_ps')
-                            ->label('Description (Pashto)')
+                            ->label(__('filament.description_pashto'))
                             ->rows(3)
                             ->columnSpanFull(),
                         
                         \Filament\Forms\Components\TextInput::make('name_fa')
-                            ->label('Service Name (Farsi)')
+                            ->label(__('filament.service_name_dari'))
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_fa')
-                            ->label('Description (Farsi)')
+                            ->label(__('filament.description_dari'))
                             ->rows(3)
                             ->columnSpanFull(),
                     ]),
@@ -200,52 +200,52 @@ class ServicesTable
                     ->modalCancelActionLabel(__('filament.cancel'))
                     ->form([
                         \Filament\Forms\Components\TextInput::make('name_en')
-                            ->label('Service Name (English)')
+                            ->label(__('filament.service_name_english'))
                             ->required()
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_en')
-                            ->label('Description (English)')
+                            ->label(__('filament.description_english'))
                             ->rows(3)
                             ->columnSpanFull(),
                         
                         \Filament\Forms\Components\TextInput::make('price')
-                            ->label('Price')
+                            ->label(__('filament.price'))
                             ->numeric()
                             ->prefix('؋')
                             ->required(),
                         
                         \Filament\Forms\Components\Select::make('category')
-                            ->label('Category')
+                            ->label(__('filament.category'))
                             ->options([
-                                'preventive' => 'Preventive Care',
-                                'restorative' => 'Restorative',
-                                'cosmetic' => 'Cosmetic',
-                                'surgical' => 'Surgical',
-                                'diagnostic' => 'Diagnostic',
-                                'anesthesia' => 'Anesthesia',
+                                'preventive' => __('filament.preventive_care'),
+                                'restorative' => __('filament.restorative'),
+                                'cosmetic' => __('filament.cosmetic'),
+                                'surgical' => __('filament.surgical'),
+                                'diagnostic' => __('filament.diagnostic'),
+                                'anesthesia' => __('filament.anesthesia'),
                             ])
                             ->required(),
                         
                         \Filament\Forms\Components\Toggle::make('is_active')
-                            ->label('Active')
+                            ->label(__('filament.active'))
                             ->default(true),
                         
                         \Filament\Forms\Components\TextInput::make('name_ps')
-                            ->label('Service Name (Pashto)')
+                            ->label(__('filament.service_name_pashto'))
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_ps')
-                            ->label('Description (Pashto)')
+                            ->label(__('filament.description_pashto'))
                             ->rows(3)
                             ->columnSpanFull(),
                         
                         \Filament\Forms\Components\TextInput::make('name_fa')
-                            ->label('Service Name (Farsi)')
+                            ->label(__('filament.service_name_dari'))
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_fa')
-                            ->label('Description (Farsi)')
+                            ->label(__('filament.description_dari'))
                             ->rows(3)
                             ->columnSpanFull(),
                     ]),

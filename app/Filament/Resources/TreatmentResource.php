@@ -25,6 +25,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Illuminate\Database\Eloquent\Model;
+use RuelLuna\CanvasPointer\Forms\Components\CanvasPointerField;
 
 class TreatmentResource extends Resource
 {
@@ -61,18 +62,18 @@ class TreatmentResource extends Resource
     {
         return $schema
             ->schema([
-                Section::make('Treatment Information')
+                Section::make(__('filament.treatment_information'))
                     ->columns(2)
                     ->schema([
                         Select::make('patient_id')
-                            ->label('Patient')
+                            ->label(__('filament.patient'))
                             ->relationship('patient', 'name')
                             ->getOptionLabelFromRecordUsing(fn ($record) => (string) ($record->name ?: "Patient #{$record->register_id}"))
                             ->searchable()
                             ->required()
                             ->visible(fn () => !request()->query('patient_id')),
                         TextInput::make('patient_name')
-                            ->label('Patient')
+                            ->label(__('filament.patient'))
                             ->visible(fn () => request()->query('patient_id'))
                             ->disabled()
                             ->dehydrated(false)
@@ -87,7 +88,7 @@ class TreatmentResource extends Resource
                             ->visible(fn () => request()->query('patient_id'))
                             ->dehydrated(true),
                         Select::make('service_id')
-                            ->label('Service')
+                            ->label(__('filament.service'))
                             ->relationship('service', 'name')
                             ->getOptionLabelFromRecordUsing(function ($record) {
                                 $name = $record->name;
@@ -106,10 +107,10 @@ class TreatmentResource extends Resource
                             ->preload()
                             ->required(),
                         DatePicker::make('treatment_date')
-                            ->label('Treatment Date')
+                            ->label(__('filament.treatment_date'))
                             ->required(),
                         Select::make('tooth_numbers')
-                            ->label('Tooth Numbers')
+                            ->label(__('filament.tooth_numbers'))
                             ->options(array_combine(ToothNumber::values(), ToothNumber::values()))
                             ->multiple()
                             ->required()
@@ -118,8 +119,17 @@ class TreatmentResource extends Resource
                         ViewField::make('dental_chart')
                             ->view('filament.forms.components.dental-chart')
                             ->columnSpanFull(),
+                        CanvasPointerField::make('body-points')
+                            ->pointRadius(15)
+                            ->imageUrl('/images/dental-chart.jpg')
+                            ->width(800)
+                            ->height(800)
+                            ->storageDisk('public')
+                            ->storageDirectory('canvas-pointer')
+                            ->label(__('filament.select_body_parts_pain'))
+                            ->columnSpanFull(),
                         Textarea::make('treatment_description')
-                            ->label('Treatment Description')
+                            ->label(__('filament.treatment_description'))
                             ->columnSpanFull(),
                     ]),
             ]);
