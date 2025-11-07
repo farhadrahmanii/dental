@@ -395,4 +395,49 @@ return [
     'testimonial_1_quote' => 'DentalCare Pro لبخند من را کاملاً تغییر داد. پرسنل حرفه‌ای، فناوری شگفت‌انگیز، و نتایج فراتر از انتظارات من بود.',
     'testimonial_2_quote' => 'روش کاشت دندان بدون درد و روان بود. تخصص تیم و تجهیزات مدرن همه تفاوت را ایجاد کرد.',
     'testimonial_3_quote' => 'از تمیز کردن روتین تا روش‌های زیبایی، DentalCare Pro کلینیک دندانپزشکی مورد علاقه من بوده است. پرسنل دوستانه و حرفه‌ای هستند.',
+
+    // Patient Database Page - Enhanced Features
+    'quick_filters' => 'فیلترهای سریع',
+    'recent' => 'اخیر',
+    'with_treatments' => 'با درمان',
+    'with_xrays' => 'با عکس‌برداری',
+    'with_payments' => 'با پرداخت',
+    'no_treatments' => 'بدون درمان',
+    
+    // Sorting
+    'sort_by' => 'مرتب‌سازی بر اساس',
+    'order' => 'ترتیب',
+    'date_added' => 'تاریخ افزودن',
+    'name' => 'نام',
+    'descending' => 'نزولی',
+    'ascending' => 'صعودی',
+    
+    // Advanced Filters
+    'advanced_filters' => 'فیلترهای پیشرفته',
+    'hide_filters' => 'پنهان کردن فیلترها',
+    'all_genders' => 'همه جنسیت‌ها',
+    'gender' => 'جنسیت',
+    'age_min' => 'حداقل سن',
+    'age_max' => 'حداکثر سن',
+    'min_age_placeholder' => '0',
+    'max_age_placeholder' => '120',
+    'all_statuses' => 'همه وضعیت‌ها',
+    'date_from' => 'از تاریخ',
+    'date_to' => 'تا تاریخ',
+    'date_range' => 'محدوده تاریخ',
+    'start' => 'شروع',
+    'end' => 'پایان',
+    'unlimited' => 'نامحدود',
+    
+    // Filter Display
+    'quick_filter' => 'فیلتر سریع',
+    'active_filters' => 'فیلترهای فعال',
+    
+    // Statistics
+    'recent_30_days' => 'اخیر (30 روز)',
+    'treatments' => 'درمان‌ها',
+    'xrays' => 'عکس‌برداری',
+    'payments' => 'پرداخت‌ها',
+    'phone' => 'تلفن',
+    'doctor' => 'دکتر',
 ];
