@@ -23,47 +23,47 @@
             <!-- Contact Form -->
             <div class="card-apple-elevated">
                 <div style="padding: var(--space-2xl);">
-                    <h2 class="headline-medium mb-5">Send us a Message</h2>
+                    <h2 class="headline-medium mb-5">{{ __('dental.send_us_message') }}</h2>
                     <form id="contactForm" action="#" method="post">
                         @csrf
                         <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
                             <div class="form-group-apple">
-                                <label class="form-label-apple">Full Name</label>
-                                <input type="text" name="name" class="form-input-apple" placeholder="Enter your full name" required>
+                                <label class="form-label-apple">{{ __('dental.full_name') }}</label>
+                                <input type="text" name="name" class="form-input-apple" placeholder="{{ __('dental.enter_full_name') }}" required>
                             </div>
                             <div class="form-group-apple">
-                                <label class="form-label-apple">Email Address</label>
-                                <input type="email" name="email" class="form-input-apple" placeholder="Enter your email address" required>
+                                <label class="form-label-apple">{{ __('dental.email_address') }}</label>
+                                <input type="email" name="email" class="form-input-apple" placeholder="{{ __('dental.enter_email_address') }}" required>
                             </div>
                         </div>
                         
                         <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
                             <div class="form-group-apple">
-                                <label class="form-label-apple">Phone Number</label>
-                                <input type="tel" name="phone" class="form-input-apple" placeholder="Enter your phone number" required>
+                                <label class="form-label-apple">{{ __('dental.phone_number') }}</label>
+                                <input type="tel" name="phone" class="form-input-apple" placeholder="{{ __('dental.enter_phone_number') }}" required>
                             </div>
                             <div class="form-group-apple">
-                                <label class="form-label-apple">Service</label>
+                                <label class="form-label-apple">{{ __('dental.service_selection') }}</label>
                                 <select name="service" class="form-select-apple" required>
-                                    <option value="">Select a service</option>
-                                    <option value="general">General Dentistry</option>
-                                    <option value="cosmetic">Cosmetic Dentistry</option>
-                                    <option value="implant">Implant Dentistry</option>
-                                    <option value="orthodontic">Orthodontic Treatment</option>
-                                    <option value="emergency">Emergency Care</option>
-                                    <option value="consultation">Consultation</option>
-                                    <option value="other">Other</option>
+                                    <option value="">{{ __('dental.select_service') }}</option>
+                                    <option value="general">{{ __('dental.general_dentistry') }}</option>
+                                    <option value="cosmetic">{{ __('dental.cosmetic_dentistry') }}</option>
+                                    <option value="implant">{{ __('dental.implant_dentistry') }}</option>
+                                    <option value="orthodontic">{{ __('dental.orthodontic_treatment') }}</option>
+                                    <option value="emergency">{{ __('dental.emergency_care') }}</option>
+                                    <option value="consultation">{{ __('dental.consultation_option') }}</option>
+                                    <option value="other">{{ __('dental.other_option') }}</option>
                                 </select>
                             </div>
                         </div>
                         
                         <div class="form-group-apple">
-                            <label class="form-label-apple">Message</label>
-                            <textarea name="message" class="form-textarea-apple" placeholder="Tell us about your dental needs or any specific concerns..." required></textarea>
+                            <label class="form-label-apple">{{ __('dental.message_label') }}</label>
+                            <textarea name="message" class="form-textarea-apple" placeholder="{{ __('dental.message_placeholder') }}" required></textarea>
                         </div>
                         
                         <button type="submit" class="btn-apple" style="width: 100%; padding: var(--space-md); font-size: 1rem;">
-                            Send Message
+                            {{ __('dental.send_message_button') }}
                         </button>
                     </form>
                 </div>
@@ -72,7 +72,7 @@
             <!-- Contact Information -->
             <div>
                 <div class="card-apple" style="padding: var(--space-xl); margin-bottom: var(--space-lg);">
-                    <h3 class="title-large mb-4">Get in Touch</h3>
+                    <h3 class="title-large mb-4">{{ __('dental.get_in_touch_title') }}</h3>
                     
                     <div style="margin-bottom: var(--space-lg);">
                         <div style="display: flex; align-items: start; gap: var(--space-md);">
@@ -83,11 +83,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="title-medium mb-1">Address</h4>
+                                <h4 class="title-medium mb-1">{{ __('dental.address_title') }}</h4>
                                 <p class="body-medium" style="color: var(--text-secondary);">
-                                    123 Dental Street<br>
-                                    Health City, HC 12345<br>
-                                    United States
+                                    {{ __('dental.clinic_address') }}
                                 </p>
                             </div>
                         </div>
@@ -101,10 +99,10 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="title-medium mb-1">Phone</h4>
+                                <h4 class="title-medium mb-1">{{ __('dental.phone_title') }}</h4>
                                 <p class="body-medium" style="color: var(--text-secondary);">
-                                    <a href="tel:+15551234567" style="color: var(--primary); text-decoration: none;">+1 (555) 123-4567</a><br>
-                                    <small style="color: var(--text-tertiary);">Emergency: +1 (555) 123-4568</small>
+                                    <a href="tel:{{ __('dental.phone_main') }}" style="color: var(--primary); text-decoration: none;">{{ __('dental.phone_main') }}</a><br>
+                                    <small style="color: var(--text-tertiary);">{{ __('dental.emergency_label') }}: {{ __('dental.phone_emergency') }}</small>
                                 </p>
                             </div>
                         </div>
@@ -119,10 +117,10 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="title-medium mb-1">Email</h4>
+                                <h4 class="title-medium mb-1">{{ __('dental.email_title') }}</h4>
                                 <p class="body-medium" style="color: var(--text-secondary);">
-                                    <a href="mailto:info@dentalcarepro.com" style="color: var(--primary); text-decoration: none;">info@dentalcarepro.com</a><br>
-                                    <a href="mailto:emergency@dentalcarepro.com" style="color: var(--primary); text-decoration: none;">emergency@dentalcarepro.com</a>
+                                    <a href="mailto:{{ __('dental.email_main') }}" style="color: var(--primary); text-decoration: none;">{{ __('dental.email_main') }}</a><br>
+                                    <a href="mailto:{{ __('dental.email_support') }}" style="color: var(--primary); text-decoration: none;">{{ __('dental.email_support') }}</a>
                                 </p>
                             </div>
                         </div>
@@ -137,19 +135,19 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="title-medium mb-1">Office Hours</h4>
+                                <h4 class="title-medium mb-1">{{ __('dental.office_hours_title') }}</h4>
                                 <div class="body-medium" style="color: var(--text-secondary);">
                                     <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
-                                        <span>Monday - Friday:</span>
-                                        <span>9:00 AM - 5:00 PM</span>
+                                        <span>{{ __('dental.monday_friday') }}:</span>
+                                        <span>{{ __('dental.monday_friday_hours') }}</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
-                                        <span>Saturday:</span>
-                                        <span>10:00 AM - 2:00 PM</span>
+                                        <span>{{ __('dental.saturday') }}:</span>
+                                        <span>{{ __('dental.saturday_hours') }}</span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between;">
-                                        <span>Sunday:</span>
-                                        <span>Closed</span>
+                                        <span>{{ __('dental.sunday') }}:</span>
+                                        <span>{{ __('dental.closed') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -159,7 +157,7 @@
 
                 <!-- Social Media -->
                 <div class="card-apple" style="padding: var(--space-xl);">
-                    <h3 class="title-large mb-4">Follow Us</h3>
+                    <h3 class="title-large mb-4">{{ __('dental.follow_us_title') }}</h3>
                     <div style="display: flex; gap: var(--space-md);">
                         <a href="#" style="width: 40px; height: 40px; background: var(--primary); color: var(--apple-white); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s ease;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -187,9 +185,9 @@
 <section class="section-apple" style="background: var(--surface);">
     <div class="container-apple">
         <div class="text-center mb-6">
-            <h2 class="headline-large mb-3">Find Us</h2>
+            <h2 class="headline-large mb-3">{{ __('dental.find_us_title') }}</h2>
             <p class="body-large" style="color: var(--text-secondary);">
-                Visit our modern dental clinic in the heart of the city
+                {{ __('dental.find_us_description') }}
             </p>
         </div>
         
@@ -201,16 +199,16 @@
                         <circle cx="12" cy="10" r="3"/>
                     </svg>
                 </div>
-                <h3 class="headline-medium mb-3">Interactive Map</h3>
+                <h3 class="headline-medium mb-3">{{ __('dental.interactive_map') }}</h3>
                 <p class="body-large mb-6" style="color: var(--text-secondary);">
-                    123 Dental Street, Health City, HC 12345
+                    {{ __('dental.clinic_address') }}
                 </p>
                 <a href="https://maps.google.com" target="_blank" class="btn-apple">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                         <circle cx="12" cy="10" r="3"/>
                     </svg>
-                    Open in Google Maps
+                    {{ __('dental.open_google_maps') }}
                 </a>
             </div>
         </div>
@@ -222,38 +220,38 @@
     <div class="container-apple">
         <div class="grid-apple" style="grid-template-columns: 1fr 1fr; gap: var(--space-2xl); align-items: center;">
             <div>
-                <h2 class="headline-large mb-3">Frequently Asked Questions</h2>
+                <h2 class="headline-large mb-3">{{ __('dental.frequently_asked_questions') }}</h2>
                 <p class="body-large mb-5" style="color: var(--text-secondary);">
-                    Common questions about our services, insurance, and appointment process.
+                    {{ __('dental.faq_description') }}
                 </p>
                 <ul style="list-style: none; padding: 0;">
                     <li style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg);">
                         <div style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-large">Do you accept insurance?</span>
+                        <span class="body-large">{{ __('dental.accept_insurance') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg);">
                         <div style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-large">What payment methods do you accept?</span>
+                        <span class="body-large">{{ __('dental.payment_methods') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg);">
                         <div style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-large">How do I schedule an appointment?</span>
+                        <span class="body-large">{{ __('dental.schedule_appointment_question') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg);">
                         <div style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-large">Do you offer emergency services?</span>
+                        <span class="body-large">{{ __('dental.emergency_services_question') }}</span>
                     </li>
                     <li style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg);">
                         <div style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;"></div>
-                        <span class="body-large">What should I bring to my first visit?</span>
+                        <span class="body-large">{{ __('dental.first_visit_items') }}</span>
                     </li>
                 </ul>
                 <div class="mt-5">
-                    <a href="tel:+15551234567" class="btn-apple">
+                    <a href="tel:{{ __('dental.phone_main') }}" class="btn-apple">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                         </svg>
-                        Call Us Now
+                        {{ __('dental.call_us_now') }}
                     </a>
                 </div>
             </div>
@@ -267,19 +265,19 @@
 <!-- Emergency Contact -->
 <section class="section-apple" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: var(--apple-white);">
     <div class="container-apple text-center">
-        <h2 class="headline-large mb-3" style="color: var(--apple-white);">Dental Emergency?</h2>
+        <h2 class="headline-large mb-3" style="color: var(--apple-white);">{{ __('dental.dental_emergency') }}</h2>
         <p class="body-large mb-6" style="color: rgba(255, 255, 255, 0.9); max-width: 600px; margin-left: auto; margin-right: auto;">
-            We provide 24/7 emergency dental care for urgent situations. Don't wait - call us immediately.
+            {{ __('dental.emergency_description') }}
         </p>
         <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
-            <a href="tel:+15551234568" class="btn-apple" style="background: var(--apple-white); color: #dc3545;">
+            <a href="tel:{{ __('dental.phone_emergency') }}" class="btn-apple" style="background: var(--apple-white); color: #dc3545;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                 </svg>
-                Emergency Line
+                {{ __('dental.emergency_line') }}
             </a>
             <a href="{{ route('home') }}#appointment" class="btn-apple-outline" style="border-color: var(--apple-white); color: var(--apple-white);">
-                Book Appointment
+                {{ __('dental.book_appointment') }}
             </a>
         </div>
     </div>

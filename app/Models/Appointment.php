@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class Appointment extends Model
@@ -95,8 +97,27 @@ class Appointment extends Model
 
         static::creating(function ($appointment) {
             if (empty($appointment->appointment_number)) {
-                $appointment->appointment_number = 'APT-' . strtoupper(uniqid());
+                $appointment->appointment_number = static::generateSequentialNumber();
             }
+        });
+    }
+
+    protected static function generateSequentialNumber(): string
+    {
+        return DB::transaction(function () {
+            $latestNumber = static::where('appointment_number', 'like', 'A-%')
+                ->lockForUpdate()
+                ->orderBy('appointment_number', 'desc')
+                ->value('appointment_number');
+
+            $next = 1;
+
+            if ($latestNumber) {
+                $numericPart = (int) Str::after($latestNumber, 'A-');
+                $next = $numericPart + 1;
+            }
+
+            return 'A-' . str_pad((string) $next, 4, '0', STR_PAD_LEFT);
         });
     }
 }

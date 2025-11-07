@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PatientResource\RelationManagers;
 
+use App\Helpers\CurrencyHelper;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
@@ -37,7 +38,7 @@ class PaymentsRelationManager extends RelationManager
                     ->default('treatment'),
                 TextInput::make('amount')
                     ->numeric()
-                    ->prefix('$')
+                    ->prefix(CurrencyHelper::symbol())
                     ->required(),
                 Select::make('payment_method')
                     ->options([
@@ -79,7 +80,7 @@ class PaymentsRelationManager extends RelationManager
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
-                    ->money('USD')
+                    ->money('AFN')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_method')
                     ->badge()

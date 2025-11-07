@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Helpers\CurrencyHelper;
 use App\Models\Payment;
 use App\Models\Appointment;
 use Filament\Widgets\StatsOverviewWidget;
@@ -55,26 +56,28 @@ class RevenueStatsWidget extends StatsOverviewWidget
             $chartData[] = $amount;
         }
 
+        $currencySymbol = CurrencyHelper::symbol();
+
         return [
-            Stat::make('Total Revenue', '$' . number_format($totalRevenue, 2))
+            Stat::make('Total Revenue', $currencySymbol . number_format($totalRevenue, 2))
                 ->description('All time earnings')
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('success')
                 ->chart($chartData),
 
-            Stat::make('Monthly Revenue', '$' . number_format($monthlyRevenue, 2))
+            Stat::make('Monthly Revenue', $currencySymbol . number_format($monthlyRevenue, 2))
                 ->description($revenueGrowth >= 0 ? "+{$revenueGrowth}% from last month" : "{$revenueGrowth}% from last month")
                 ->descriptionIcon($revenueGrowth >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->color($revenueGrowth >= 0 ? 'success' : 'danger')
                 ->chart(array_slice($chartData, -5)),
 
-            Stat::make('Today\'s Revenue', '$' . number_format($todayRevenue, 2))
+            Stat::make('Today\'s Revenue', $currencySymbol . number_format($todayRevenue, 2))
                 ->description('Collected today')
                 ->descriptionIcon('heroicon-m-currency-dollar')
                 ->color('primary')
                 ->chart(array_reverse($chartData)),
 
-            Stat::make('Expected Revenue', '$' . number_format($expectedRevenue, 2))
+            Stat::make('Expected Revenue', $currencySymbol . number_format($expectedRevenue, 2))
                 ->description('From upcoming appointments')
                 ->descriptionIcon('heroicon-m-chart-bar')
                 ->color('info')

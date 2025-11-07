@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Patient Database - DentalCare Pro')
-@section('description', 'Comprehensive patient database management system with advanced search and filtering capabilities.')
+@section('title', __('dental.patient_database') . ' - ' . __('dental.app_name'))
+@section('description', __('dental.comprehensive_patient_management'))
 
 @section('content')
 <!-- Enhanced Apple-style Page Header -->
@@ -59,23 +59,76 @@
 <!-- Enhanced Search and Filter Section -->
 <section class="section-apple-sm">
     <div class="container-apple">
+        <!-- Quick Filter Buttons -->
+        <div style="margin-bottom: var(--space-lg);">
+            <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap; align-items: center;">
+                <span style="color: var(--text-secondary); font-size: 0.875rem; font-weight: 500; margin-right: var(--space-sm);">{{ __('dental.quick_filters') }}:</span>
+                <a href="{{ route('patients', array_merge(request()->except('quick_filter'), ['quick_filter' => 'recent'])) }}" 
+                   class="btn-apple-outline {{ request('quick_filter') == 'recent' ? 'active' : '' }}" 
+                   style="padding: var(--space-sm) var(--space-md); font-size: 0.875rem; border-radius: var(--radius-full); text-decoration: none; display: inline-flex; align-items: center; gap: var(--space-xs);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12,6 12,12 16,14"/>
+                    </svg>
+                    {{ __('dental.recent') }} ({{ $stats['recent'] ?? 0 }})
+                </a>
+                <a href="{{ route('patients', array_merge(request()->except('quick_filter'), ['quick_filter' => 'with_treatments'])) }}" 
+                   class="btn-apple-outline {{ request('quick_filter') == 'with_treatments' ? 'active' : '' }}" 
+                   style="padding: var(--space-sm) var(--space-md); font-size: 0.875rem; border-radius: var(--radius-full); text-decoration: none; display: inline-flex; align-items: center; gap: var(--space-xs);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14,2 14,8 20,8"/>
+                    </svg>
+                    {{ __('dental.with_treatments') }} ({{ $stats['with_treatments'] ?? 0 }})
+                </a>
+                <a href="{{ route('patients', array_merge(request()->except('quick_filter'), ['quick_filter' => 'with_xrays'])) }}" 
+                   class="btn-apple-outline {{ request('quick_filter') == 'with_xrays' ? 'active' : '' }}" 
+                   style="padding: var(--space-sm) var(--space-md); font-size: 0.875rem; border-radius: var(--radius-full); text-decoration: none; display: inline-flex; align-items: center; gap: var(--space-xs);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21,15 16,10 5,21"/>
+                    </svg>
+                    {{ __('dental.with_xrays') }} ({{ $stats['with_xrays'] ?? 0 }})
+                </a>
+                <a href="{{ route('patients', array_merge(request()->except('quick_filter'), ['quick_filter' => 'with_payments'])) }}" 
+                   class="btn-apple-outline {{ request('quick_filter') == 'with_payments' ? 'active' : '' }}" 
+                   style="padding: var(--space-sm) var(--space-md); font-size: 0.875rem; border-radius: var(--radius-full); text-decoration: none; display: inline-flex; align-items: center; gap: var(--space-xs);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    {{ __('dental.with_payments') }} ({{ $stats['with_payments'] ?? 0 }})
+                </a>
+            </div>
+        </div>
+
         <div class="card-apple-elevated" style="margin-bottom: var(--space-xl); border: 1px solid var(--border-light);">
             <div style="padding: var(--space-xl);">
-                <div style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg);">
-                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
-                            <circle cx="11" cy="11" r="8"/>
-                            <path d="M21 21l-4.35-4.35"/>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-lg); flex-wrap: wrap; gap: var(--space-md);">
+                    <div style="display: flex; align-items: center; gap: var(--space-md);">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--apple-white);">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="title-large" style="margin-bottom: var(--space-xs);">{{ __('dental.search_and_filter') }}</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem;">{{ __('dental.find_patients_quickly') }}</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="toggleAdvancedFilters()" class="btn-apple-outline" style="padding: var(--space-sm) var(--space-md); font-size: 0.875rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46 22,3"/>
                         </svg>
-                    </div>
-                    <div>
-                        <h3 class="title-large" style="margin-bottom: var(--space-xs);">{{ __('dental.search_and_filter') }}</h3>
-                        <p style="color: var(--text-secondary); font-size: 0.875rem;">{{ __('dental.find_patients_quickly') }}</p>
-                    </div>
+                        <span id="filterToggleText">{{ __('dental.advanced_filters') }}</span>
+                    </button>
                 </div>
 
                 <form method="GET" action="{{ route('patients') }}" id="searchForm">
-                    <div class="grid-apple" style="grid-template-columns: 2fr 1fr auto; gap: var(--space-lg); align-items: end;">
+                    <!-- Basic Search Row -->
+                    <div class="grid-apple" style="grid-template-columns: 2fr 1fr 1fr auto; gap: var(--space-lg); align-items: end; margin-bottom: var(--space-lg);">
                         <div class="form-group-apple">
                             <label class="form-label-apple">{{ __('dental.search_patients') }}</label>
                             <div class="search-apple" style="position: relative;">
@@ -96,12 +149,20 @@
                         </div>
 
                         <div class="form-group-apple">
-                            <label class="form-label-apple">{{ __('dental.doctor') }}</label>
-                            <select name="doctor" class="form-select-apple">
-                                <option value="">{{ __('dental.all_doctors') }}</option>
-                                <option value="Dr. Smith" {{ request('doctor') == 'Dr. Smith' ? 'selected' : '' }}>Dr. Smith</option>
-                                <option value="Dr. Johnson" {{ request('doctor') == 'Dr. Johnson' ? 'selected' : '' }}>Dr. Johnson</option>
-                                <option value="Dr. Williams" {{ request('doctor') == 'Dr. Williams' ? 'selected' : '' }}>Dr. Williams</option>
+                            <label class="form-label-apple">{{ __('dental.sort_by') }}</label>
+                            <select name="sort_by" class="form-select-apple">
+                                <option value="created_at" {{ request('sort_by', 'created_at') == 'created_at' ? 'selected' : '' }}>{{ __('dental.date_added') }}</option>
+                                <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>{{ __('dental.name') }}</option>
+                                <option value="age" {{ request('sort_by') == 'age' ? 'selected' : '' }}>{{ __('dental.age') }}</option>
+                                <option value="register_id" {{ request('sort_by') == 'register_id' ? 'selected' : '' }}>{{ __('dental.register_id') }}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group-apple">
+                            <label class="form-label-apple">{{ __('dental.order') }}</label>
+                            <select name="sort_order" class="form-select-apple">
+                                <option value="desc" {{ request('sort_order', 'desc') == 'desc' ? 'selected' : '' }}>{{ __('dental.descending') }}</option>
+                                <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>{{ __('dental.ascending') }}</option>
                             </select>
                         </div>
 
@@ -116,21 +177,108 @@
                         </div>
                     </div>
 
+                    <!-- Advanced Filters (Collapsible) -->
+                    <div id="advancedFilters" style="display: none; margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--border-light);">
+                        <div class="grid-apple" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg);">
+                            <div class="form-group-apple">
+                                <label class="form-label-apple">{{ __('dental.gender') }}</label>
+                                <select name="gender" class="form-select-apple">
+                                    <option value="">{{ __('dental.all_genders') }}</option>
+                                    <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>{{ __('filament.male') }}</option>
+                                    <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>{{ __('filament.female') }}</option>
+                                    <option value="other" {{ request('gender') == 'other' ? 'selected' : '' }}>{{ __('filament.other') }}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group-apple">
+                                <label class="form-label-apple">{{ __('dental.age_min') }}</label>
+                                <input type="number" name="age_min" class="form-input-apple" value="{{ request('age_min') }}" min="0" max="120" placeholder="0">
+                            </div>
+
+                            <div class="form-group-apple">
+                                <label class="form-label-apple">{{ __('dental.age_max') }}</label>
+                                <input type="number" name="age_max" class="form-input-apple" value="{{ request('age_max') }}" min="0" max="120" placeholder="120">
+                            </div>
+
+                            <div class="form-group-apple">
+                                <label class="form-label-apple">{{ __('filament.marital_status') }}</label>
+                                <select name="marital_status" class="form-select-apple">
+                                    <option value="">{{ __('dental.all_statuses') }}</option>
+                                    <option value="single" {{ request('marital_status') == 'single' ? 'selected' : '' }}>{{ __('filament.single') }}</option>
+                                    <option value="married" {{ request('marital_status') == 'married' ? 'selected' : '' }}>{{ __('filament.married') }}</option>
+                                    <option value="divorced" {{ request('marital_status') == 'divorced' ? 'selected' : '' }}>{{ __('filament.divorced') }}</option>
+                                    <option value="widowed" {{ request('marital_status') == 'widowed' ? 'selected' : '' }}>{{ __('filament.widowed') }}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group-apple">
+                                <label class="form-label-apple">{{ __('dental.doctor') }}</label>
+                                <select name="doctor" class="form-select-apple">
+                                    <option value="">{{ __('dental.all_doctors') }}</option>
+                                    @foreach($doctors as $doctor)
+                                        <option value="{{ $doctor }}" {{ request('doctor') == $doctor ? 'selected' : '' }}>{{ $doctor }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group-apple">
+                                <label class="form-label-apple">{{ __('dental.date_from') }}</label>
+                                <input type="date" name="date_from" class="form-input-apple" value="{{ request('date_from') }}">
+                            </div>
+
+                            <div class="form-group-apple">
+                                <label class="form-label-apple">{{ __('dental.date_to') }}</label>
+                                <input type="date" name="date_to" class="form-input-apple" value="{{ request('date_to') }}">
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Active Filters Display -->
-                    @if(request('search') || request('doctor'))
+                    @php
+                        $activeFilters = array_filter([
+                            'search' => request('search'),
+                            'gender' => request('gender'),
+                            'age_min' => request('age_min'),
+                            'age_max' => request('age_max'),
+                            'marital_status' => request('marital_status'),
+                            'doctor' => request('doctor'),
+                            'date_from' => request('date_from'),
+                            'date_to' => request('date_to'),
+                            'quick_filter' => request('quick_filter'),
+                        ]);
+                    @endphp
+                    @if(count($activeFilters) > 0)
                     <div style="margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--border-light);">
                         <div style="display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap;">
                             <span style="color: var(--text-secondary); font-size: 0.875rem; font-weight: 500;">{{ __('dental.active_filters') }}:</span>
                             @if(request('search'))
-                            <span class="filter-tag">
+                            <span class="filter-tag" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--apple-gray-1); border-radius: var(--radius-full); font-size: 0.875rem;">
                                 {{ __('dental.search') }}: "{{ request('search') }}"
-                                <button type="button" onclick="removeFilter('search')" style="margin-left: var(--space-xs); background: none; border: none; color: inherit; cursor: pointer;">×</button>
+                                <button type="button" onclick="removeFilter('search')" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
+                            </span>
+                            @endif
+                            @if(request('gender'))
+                            <span class="filter-tag" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--apple-gray-1); border-radius: var(--radius-full); font-size: 0.875rem;">
+                                {{ __('dental.gender') }}: {{ ucfirst(request('gender')) }}
+                                <button type="button" onclick="removeFilter('gender')" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
+                            </span>
+                            @endif
+                            @if(request('age_min') || request('age_max'))
+                            <span class="filter-tag" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--apple-gray-1); border-radius: var(--radius-full); font-size: 0.875rem;">
+                                {{ __('dental.age') }}: {{ request('age_min', 0) }}-{{ request('age_max', '∞') }}
+                                <button type="button" onclick="removeFilter(['age_min', 'age_max'])" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
                             </span>
                             @endif
                             @if(request('doctor'))
-                            <span class="filter-tag">
+                            <span class="filter-tag" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--apple-gray-1); border-radius: var(--radius-full); font-size: 0.875rem;">
                                 {{ __('dental.doctor') }}: {{ request('doctor') }}
-                                <button type="button" onclick="removeFilter('doctor')" style="margin-left: var(--space-xs); background: none; border: none; color: inherit; cursor: pointer;">×</button>
+                                <button type="button" onclick="removeFilter('doctor')" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
+                            </span>
+                            @endif
+                            @if(request('quick_filter'))
+                            <span class="filter-tag" style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--apple-gray-1); border-radius: var(--radius-full); font-size: 0.875rem;">
+                                {{ __('dental.quick_filter') }}: {{ ucfirst(str_replace('_', ' ', request('quick_filter'))) }}
+                                <button type="button" onclick="removeFilter('quick_filter')" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; line-height: 1;">×</button>
                             </span>
                             @endif
                             <a href="{{ route('patients') }}" class="btn-apple-outline" style="padding: var(--space-xs) var(--space-sm); font-size: 0.75rem;">
@@ -143,19 +291,31 @@
             </div>
         </div>
 
-        <!-- Stats Overview -->
-        <div class="grid-apple grid-apple-4" style="margin-bottom: var(--space-xl);">
-            <div class="stat-apple">
-                <div class="stat-number">{{ $patients->total() }}</div>
-                <div class="stat-label">{{ __('dental.total_patients') }}</div>
+        <!-- Enhanced Stats Overview -->
+        <div class="grid-apple" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-xl);">
+            <div class="stat-apple" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: var(--apple-white);">
+                <div class="stat-number" style="color: var(--apple-white);">{{ number_format($stats['total'] ?? 0) }}</div>
+                <div class="stat-label" style="color: rgba(255,255,255,0.9);">{{ __('dental.total_patients') }}</div>
             </div>
             <div class="stat-apple">
-                <div class="stat-number">{{ $patients->where('doctor_name', '!=', null)->count() }}</div>
-                <div class="stat-label">{{ __('dental.with_doctor') }}</div>
+                <div class="stat-number">{{ number_format($stats['male'] ?? 0) }}</div>
+                <div class="stat-label">{{ __('filament.male') }}</div>
             </div>
             <div class="stat-apple">
-                <div class="stat-number">{{ $patients->where('x_ray_id', '!=', null)->count() }}</div>
+                <div class="stat-number">{{ number_format($stats['female'] ?? 0) }}</div>
+                <div class="stat-label">{{ __('filament.female') }}</div>
+            </div>
+            <div class="stat-apple">
+                <div class="stat-number">{{ number_format($stats['with_treatments'] ?? 0) }}</div>
+                <div class="stat-label">{{ __('dental.with_treatments') }}</div>
+            </div>
+            <div class="stat-apple">
+                <div class="stat-number">{{ number_format($stats['with_xrays'] ?? 0) }}</div>
                 <div class="stat-label">{{ __('dental.with_xrays') }}</div>
+            </div>
+            <div class="stat-apple">
+                <div class="stat-number">{{ number_format($stats['recent'] ?? 0) }}</div>
+                <div class="stat-label">{{ __('dental.recent_30_days') }}</div>
             </div>
         </div>
     </div>
@@ -167,7 +327,7 @@
         <!-- Results Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xl);">
             <div>
-                <h2 class="headline-medium" style="margin-bottom: var(--space-sm);">{{ __('dental.patient_records') }}</h2>
+                <h2 class="headline-medium" style="margin-bottom: var(--space-sm);">{{ __('dental.patient_records_label') }}</h2>
                 <p style="color: var(--text-secondary);">{{ $patients->total() }} {{ __('dental.patients_found') }}</p>
             </div>
             <div style="display: flex; gap: var(--space-sm);">
@@ -223,34 +383,90 @@
                     </div>
                     <div class="patient-info">
                         <h5 style="margin-bottom: var(--space-xs);">{{ $patient->name }}</h5>
-                        <div class="patient-id">{{ __('dental.id') }}: {{ $patient->register_id }}</div>
+                        <div class="patient-id">{{ __('dental.id_label') }}: {{ $patient->register_id }}</div>
                         <div style="color: var(--text-tertiary); font-size: 0.75rem; margin-top: var(--space-xs);">
                             {{ __('dental.added') }} {{ $patient->created_at->diffForHumans() }}
                         </div>
                     </div>
                 </div>
 
+                <!-- Quick Stats Badges -->
+                <div style="display: flex; gap: var(--space-sm); margin-bottom: var(--space-md); flex-wrap: wrap;">
+                    @if($patient->treatments_count > 0)
+                    <div style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: rgba(0, 122, 255, 0.1); border-radius: var(--radius-full); font-size: 0.75rem; color: var(--primary);">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                        </svg>
+                        {{ $patient->treatments_count }} {{ __('dental.treatments') }}
+                    </div>
+                    @endif
+                    @if($patient->xrays_count > 0)
+                    <div style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: rgba(52, 199, 89, 0.1); border-radius: var(--radius-full); font-size: 0.75rem; color: #34C759;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21,15 16,10 5,21"/>
+                        </svg>
+                        {{ $patient->xrays_count }} {{ __('dental.xrays') }}
+                    </div>
+                    @endif
+                    @if($patient->payments_count > 0)
+                    <div style="display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: rgba(255, 149, 0, 0.1); border-radius: var(--radius-full); font-size: 0.75rem; color: #FF9500;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"/>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                        {{ $patient->payments_count }} {{ __('dental.payments') }}
+                    </div>
+                    @endif
+                </div>
+
                 <div class="patient-details">
                     <div class="patient-detail">
                         <div class="patient-detail-label">{{ __('dental.age') }}</div>
-                        <div class="patient-detail-value">{{ $patient->age }} {{ __('dental.years') }}</div>
+                        <div class="patient-detail-value">{{ $patient->age ?? __('dental.n_a') }} @if($patient->age){{ __('dental.years') }}@endif</div>
                     </div>
                     <div class="patient-detail">
-                        <div class="patient-detail-label">{{ __('dental.father') }}</div>
-                        <div class="patient-detail-value">{{ $patient->father_name ?? 'N/A' }}</div>
+                        <div class="patient-detail-label">{{ __('dental.gender') }}</div>
+                        <div class="patient-detail-value">
+                            @if($patient->sex == 'male')
+                                <span style="color: #007AFF;">{{ __('filament.male') }}</span>
+                            @elseif($patient->sex == 'female')
+                                <span style="color: #FF69B4;">{{ __('filament.female') }}</span>
+                            @else
+                                {{ $patient->sex ?? __('dental.n_a') }}
+                            @endif
+                        </div>
+                    </div>
+                    <div class="patient-detail">
+                        <div class="patient-detail-label">{{ __('dental.father_name') }}</div>
+                        <div class="patient-detail-value">{{ $patient->father_name ?? __('dental.n_a') }}</div>
                     </div>
                     <div class="patient-detail">
                         <div class="patient-detail-label">{{ __('dental.doctor') }}</div>
                         <div class="patient-detail-value">{{ $patient->doctor_name ?? __('dental.not_assigned') }}</div>
                     </div>
+                    @if($patient->phone_number)
                     <div class="patient-detail">
-                        <div class="patient-detail-label">{{ __('dental.xray_id') }}</div>
-                        <div class="patient-detail-value">{{ $patient->x_ray_id ?? 'N/A' }}</div>
+                        <div class="patient-detail-label">{{ __('dental.phone') }}</div>
+                        <div class="patient-detail-value">{{ $patient->phone_number }}</div>
                     </div>
+                    @endif
+                    @if($patient->marital_status)
                     <div class="patient-detail">
-                        <div class="patient-detail-label">{{ __('dental.images') }}</div>
-                        <div class="patient-detail-value">{{ is_array($patient->images) ? count($patient->images) : 0 }}</div>
+                        <div class="patient-detail-label">{{ __('filament.marital_status') }}</div>
+                        <div class="patient-detail-value">
+                            @if($patient->marital_status == 'single')
+                                <span style="color: #007AFF;">{{ __('filament.single') }}</span>
+                            @elseif($patient->marital_status == 'married')
+                                <span style="color: #34C759;">{{ __('filament.married') }}</span>
+                            @else
+                                {{ ucfirst($patient->marital_status) }}
+                            @endif
+                        </div>
                     </div>
+                    @endif
                 </div>
 
                 @if($patient->diagnosis)
@@ -447,4 +663,149 @@
         </div>
     </div>
 </section>
+
+@push('scripts')
+<script>
+    // Toggle advanced filters
+    function toggleAdvancedFilters() {
+        const filters = document.getElementById('advancedFilters');
+        const toggleText = document.getElementById('filterToggleText');
+        if (filters.style.display === 'none' || filters.style.display === '') {
+            filters.style.display = 'block';
+            toggleText.textContent = '{{ __('dental.hide_filters') }}';
+        } else {
+            filters.style.display = 'none';
+            toggleText.textContent = '{{ __('dental.advanced_filters') }}';
+        }
+    }
+
+    // Show advanced filters if any advanced filter is active
+    @if(request('gender') || request('age_min') || request('age_max') || request('marital_status') || request('date_from') || request('date_to'))
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleAdvancedFilters();
+    });
+    @endif
+
+    // Clear search
+    function clearSearch() {
+        const searchInput = document.querySelector('input[name="search"]');
+        if (searchInput) {
+            searchInput.value = '';
+            document.getElementById('searchForm').submit();
+        }
+    }
+
+    // Remove filter
+    function removeFilter(filterName) {
+        const url = new URL(window.location.href);
+        if (Array.isArray(filterName)) {
+            filterName.forEach(name => url.searchParams.delete(name));
+        } else {
+            url.searchParams.delete(filterName);
+        }
+        window.location.href = url.toString();
+    }
+
+    // Toggle view (grid/list)
+    let currentView = localStorage.getItem('patientView') || 'grid';
+    
+    function toggleView(view) {
+        currentView = view;
+        localStorage.setItem('patientView', view);
+        const grid = document.getElementById('patientsGrid');
+        const gridBtn = document.getElementById('gridViewBtn');
+        const listBtn = document.getElementById('listViewBtn');
+        
+        if (view === 'list') {
+            grid.style.display = 'block';
+            grid.className = 'patients-list';
+            gridBtn.classList.remove('active');
+            gridBtn.style.background = 'var(--surface)';
+            gridBtn.style.color = 'var(--text-secondary)';
+            listBtn.classList.add('active');
+            listBtn.style.background = 'var(--primary)';
+            listBtn.style.color = 'var(--apple-white)';
+            
+            // Convert cards to list items
+            const cards = grid.querySelectorAll('.patient-card-apple');
+            cards.forEach(card => {
+                card.style.display = 'flex';
+                card.style.flexDirection = 'row';
+                card.style.alignItems = 'center';
+                card.style.gap = 'var(--space-lg)';
+                card.style.padding = 'var(--space-lg)';
+            });
+        } else {
+            grid.style.display = 'grid';
+            grid.className = 'patients-grid';
+            listBtn.classList.remove('active');
+            listBtn.style.background = 'var(--surface)';
+            listBtn.style.color = 'var(--text-secondary)';
+            gridBtn.classList.add('active');
+            gridBtn.style.background = 'var(--primary)';
+            gridBtn.style.color = 'var(--apple-white)';
+            
+            // Convert list items back to cards
+            const cards = grid.querySelectorAll('.patient-card-apple');
+            cards.forEach(card => {
+                card.style.display = 'block';
+                card.style.flexDirection = '';
+                card.style.alignItems = '';
+                card.style.gap = '';
+                card.style.padding = '';
+            });
+        }
+    }
+
+    // Initialize view on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleView(currentView);
+    });
+
+    // Auto-submit form on filter change (optional - can be enabled if desired)
+    // document.querySelectorAll('select[name="sort_by"], select[name="sort_order"]').forEach(select => {
+    //     select.addEventListener('change', function() {
+    //         document.getElementById('searchForm').submit();
+    //     });
+    // });
+</script>
+
+<style>
+    .patients-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: var(--space-lg);
+    }
+
+    .patients-list {
+        display: block;
+    }
+
+    .patients-list .patient-card-apple {
+        margin-bottom: var(--space-md);
+    }
+
+    .view-toggle-btn.active {
+        background: var(--primary) !important;
+        color: var(--apple-white) !important;
+    }
+
+    .btn-apple-outline.active {
+        background: var(--primary) !important;
+        color: var(--apple-white) !important;
+        border-color: var(--primary) !important;
+    }
+
+    @media (max-width: 768px) {
+        .patients-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .patients-list .patient-card-apple {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+        }
+    }
+</style>
+@endpush
 @endsection

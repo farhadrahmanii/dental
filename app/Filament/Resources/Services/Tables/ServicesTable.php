@@ -23,15 +23,15 @@ class ServicesTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Service Name')
+                    ->label(__('filament.service_name'))
                     ->searchable()
                     ->sortable()
                     ->weight('bold')
                     ->copyable()
-                    ->tooltip('Click to copy service name'),
+                    ->tooltip(__('filament.service_name')),
                 
                 TextColumn::make('description')
-                    ->label('Description')
+                    ->label(__('filament.description'))
                     ->limit(50)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
@@ -43,14 +43,14 @@ class ServicesTable
                     ->wrap(),
                 
                 TextColumn::make('price')
-                    ->label('Price')
+                    ->label(__('filament.price'))
                     ->formatStateUsing(fn ($state) => CurrencyHelper::format($state))
                     ->sortable()
                     ->weight('bold')
                     ->color('success'),
                 
                 BadgeColumn::make('category')
-                    ->label('Category')
+                    ->label(__('filament.category'))
                     ->colors([
                         'primary' => 'preventive',
                         'success' => 'restorative', 
@@ -60,18 +60,18 @@ class ServicesTable
                         'secondary' => 'anesthesia',
                     ])
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'preventive' => 'Preventive Care',
-                        'restorative' => 'Restorative',
-                        'cosmetic' => 'Cosmetic',
-                        'surgical' => 'Surgical',
-                        'diagnostic' => 'Diagnostic',
-                        'anesthesia' => 'Anesthesia',
+                        'preventive' => __('filament.preventive_care'),
+                        'restorative' => __('filament.restorative'),
+                        'cosmetic' => __('filament.cosmetic'),
+                        'surgical' => __('filament.surgical'),
+                        'diagnostic' => __('filament.diagnostic'),
+                        'anesthesia' => __('filament.anesthesia'),
                         default => ucfirst($state),
                     })
                     ->sortable(),
                 
                 IconColumn::make('is_active')
-                    ->label('Status')
+                    ->label(__('filament.status'))
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
@@ -79,38 +79,38 @@ class ServicesTable
                     ->falseColor('danger'),
                 
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('filament.created_at'))
                     ->dateTime('M d, Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label(__('filament.updated_at'))
                     ->dateTime('M d, Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('category')
-                    ->label('Category')
+                    ->label(__('filament.category'))
                     ->options([
-                        'preventive' => 'Preventive Care',
-                        'restorative' => 'Restorative',
-                        'cosmetic' => 'Cosmetic',
-                        'surgical' => 'Surgical',
-                        'diagnostic' => 'Diagnostic',
-                        'anesthesia' => 'Anesthesia',
+                        'preventive' => __('filament.preventive_care'),
+                        'restorative' => __('filament.restorative'),
+                        'cosmetic' => __('filament.cosmetic'),
+                        'surgical' => __('filament.surgical'),
+                        'diagnostic' => __('filament.diagnostic'),
+                        'anesthesia' => __('filament.anesthesia'),
                     ])
                     ->multiple(),
                 
                 TernaryFilter::make('is_active')
-                    ->label('Status')
-                    ->placeholder('All services')
-                    ->trueLabel('Active only')
-                    ->falseLabel('Inactive only'),
+                    ->label(__('filament.status'))
+                    ->placeholder(__('filament.all_services'))
+                    ->trueLabel(__('filament.active_only'))
+                    ->falseLabel(__('filament.inactive_only')),
                 
                 SelectFilter::make('price_range')
-                    ->label('Price Range')
+                    ->label(__('filament.price_range'))
                     ->options([
                         '0-100' => '؋0 - ؋100',
                         '100-500' => '؋100 - ؋500',
@@ -130,128 +130,128 @@ class ServicesTable
             ])
             ->recordActions([
                 ViewAction::make()
-                    ->label('View Details'),
+                    ->label(__('filament.view_details')),
                 EditAction::make()
-                    ->label('Edit Service')
+                    ->label(__('filament.edit_service'))
                     ->modalWidth('lg')
-                    ->modalHeading('Edit Service')
-                    ->modalSubmitActionLabel('Update Service')
-                    ->modalCancelActionLabel('Cancel')
+                    ->modalHeading(__('filament.edit_service'))
+                    ->modalSubmitActionLabel(__('filament.update_service'))
+                    ->modalCancelActionLabel(__('filament.cancel'))
                     ->form([
                         \Filament\Forms\Components\TextInput::make('name_en')
-                            ->label('Service Name (English)')
+                            ->label(__('filament.service_name_english'))
                             ->required()
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_en')
-                            ->label('Description (English)')
+                            ->label(__('filament.description_english'))
                             ->rows(3)
                             ->columnSpanFull(),
                         
                         \Filament\Forms\Components\TextInput::make('price')
-                            ->label('Price')
+                            ->label(__('filament.price'))
                             ->numeric()
                             ->prefix('؋')
                             ->required(),
                         
                         \Filament\Forms\Components\Select::make('category')
-                            ->label('Category')
+                            ->label(__('filament.category'))
                             ->options([
-                                'preventive' => 'Preventive Care',
-                                'restorative' => 'Restorative',
-                                'cosmetic' => 'Cosmetic',
-                                'surgical' => 'Surgical',
-                                'diagnostic' => 'Diagnostic',
-                                'anesthesia' => 'Anesthesia',
+                                'preventive' => __('filament.preventive_care'),
+                                'restorative' => __('filament.restorative'),
+                                'cosmetic' => __('filament.cosmetic'),
+                                'surgical' => __('filament.surgical'),
+                                'diagnostic' => __('filament.diagnostic'),
+                                'anesthesia' => __('filament.anesthesia'),
                             ])
                             ->required(),
                         
                         \Filament\Forms\Components\Toggle::make('is_active')
-                            ->label('Active'),
+                            ->label(__('filament.active')),
                         
                         \Filament\Forms\Components\TextInput::make('name_ps')
-                            ->label('Service Name (Pashto)')
+                            ->label(__('filament.service_name_pashto'))
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_ps')
-                            ->label('Description (Pashto)')
+                            ->label(__('filament.description_pashto'))
                             ->rows(3)
                             ->columnSpanFull(),
                         
                         \Filament\Forms\Components\TextInput::make('name_fa')
-                            ->label('Service Name (Farsi)')
+                            ->label(__('filament.service_name_dari'))
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_fa')
-                            ->label('Description (Farsi)')
+                            ->label(__('filament.description_dari'))
                             ->rows(3)
                             ->columnSpanFull(),
                     ]),
                 DeleteAction::make()
-                    ->label('Delete Service')
+                    ->label(__('filament.delete_service'))
                     ->requiresConfirmation(),
             ])
             ->toolbarActions([
                 CreateAction::make()
-                    ->label('Add New Service')
+                    ->label(__('filament.add_new_service'))
                     ->modalWidth('lg')
-                    ->modalHeading('Create New Service')
-                    ->modalSubmitActionLabel('Create Service')
-                    ->modalCancelActionLabel('Cancel')
+                    ->modalHeading(__('filament.create_new_service'))
+                    ->modalSubmitActionLabel(__('filament.create_service'))
+                    ->modalCancelActionLabel(__('filament.cancel'))
                     ->form([
                         \Filament\Forms\Components\TextInput::make('name_en')
-                            ->label('Service Name (English)')
+                            ->label(__('filament.service_name_english'))
                             ->required()
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_en')
-                            ->label('Description (English)')
+                            ->label(__('filament.description_english'))
                             ->rows(3)
                             ->columnSpanFull(),
                         
                         \Filament\Forms\Components\TextInput::make('price')
-                            ->label('Price')
+                            ->label(__('filament.price'))
                             ->numeric()
                             ->prefix('؋')
                             ->required(),
                         
                         \Filament\Forms\Components\Select::make('category')
-                            ->label('Category')
+                            ->label(__('filament.category'))
                             ->options([
-                                'preventive' => 'Preventive Care',
-                                'restorative' => 'Restorative',
-                                'cosmetic' => 'Cosmetic',
-                                'surgical' => 'Surgical',
-                                'diagnostic' => 'Diagnostic',
-                                'anesthesia' => 'Anesthesia',
+                                'preventive' => __('filament.preventive_care'),
+                                'restorative' => __('filament.restorative'),
+                                'cosmetic' => __('filament.cosmetic'),
+                                'surgical' => __('filament.surgical'),
+                                'diagnostic' => __('filament.diagnostic'),
+                                'anesthesia' => __('filament.anesthesia'),
                             ])
                             ->required(),
                         
                         \Filament\Forms\Components\Toggle::make('is_active')
-                            ->label('Active')
+                            ->label(__('filament.active'))
                             ->default(true),
                         
                         \Filament\Forms\Components\TextInput::make('name_ps')
-                            ->label('Service Name (Pashto)')
+                            ->label(__('filament.service_name_pashto'))
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_ps')
-                            ->label('Description (Pashto)')
+                            ->label(__('filament.description_pashto'))
                             ->rows(3)
                             ->columnSpanFull(),
                         
                         \Filament\Forms\Components\TextInput::make('name_fa')
-                            ->label('Service Name (Farsi)')
+                            ->label(__('filament.service_name_dari'))
                             ->maxLength(255),
                         
                         \Filament\Forms\Components\Textarea::make('description_fa')
-                            ->label('Description (Farsi)')
+                            ->label(__('filament.description_dari'))
                             ->rows(3)
                             ->columnSpanFull(),
                     ]),
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('filament.delete_selected'))
                         ->requiresConfirmation(),
                 ]),
             ])

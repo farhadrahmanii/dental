@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Helpers\CurrencyHelper;
 use App\Models\Service;
 use App\Models\Appointment;
 use App\Models\Payment;
@@ -19,6 +20,7 @@ class ServiceStatsWidget extends StatsOverviewWidget
         
         // Average service price
         $averageServicePrice = Service::active()->avg('price');
+        $averagePriceValue = $averageServicePrice ?? 0;
         
         // Most popular service this month
         $mostPopularService = Service::withCount(['appointments' => function ($query) {
@@ -32,6 +34,7 @@ class ServiceStatsWidget extends StatsOverviewWidget
         $serviceRevenue = Payment::whereNotNull('service_id')
             ->whereMonth('payment_date', now()->month)
             ->sum('amount');
+        $serviceRevenueValue = $serviceRevenue ?? 0;
 
         return [
             Stat::make('Total Services', $totalServices)
@@ -40,11 +43,19 @@ class ServiceStatsWidget extends StatsOverviewWidget
                 ->color('primary')
                 ->chart([5, 3, 7, 4, 8, 6, $totalServices]),
 
-            Stat::make('Average Price', '$' . number_format($averageServicePrice ?? 0, 2))
+            Stat::make('Average Price', CurrencyHelper::symbol() . number_format($averagePriceValue, 2))
                 ->description('Per service')
                 ->descriptionIcon('heroicon-m-currency-dollar')
                 ->color('info')
-                ->chart([$averageServicePrice * 0.8, $averageServicePrice * 0.9, $averageServicePrice, $averageServicePrice * 1.1, $averageServicePrice * 1.05, $averageServicePrice * 1.15, $averageServicePrice]),
+                ->chart([
+                    $averagePriceValue * 0.8,
+                    $averagePriceValue * 0.9,
+                    $averagePriceValue,
+                    $averagePriceValue * 1.1,
+                    $averagePriceValue * 1.05,
+                    $averagePriceValue * 1.15,
+                    $averagePriceValue,
+                ]),
 
             Stat::make('Most Booked', $mostPopularService?->name ?? 'N/A')
                 ->description(($mostPopularService?->appointments_count ?? 0) . ' bookings this month')
@@ -52,11 +63,11 @@ class ServiceStatsWidget extends StatsOverviewWidget
                 ->color('warning')
                 ->chart([2, 3, 1, 4, 2, 5, ($mostPopularService?->appointments_count ?? 0)]),
 
-            Stat::make('Service Revenue', '$' . number_format($serviceRevenue, 2))
+            Stat::make('Service Revenue', CurrencyHelper::symbol() . number_format($serviceRevenueValue, 2))
                 ->description('This month from services')
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('success')
-                ->chart(array_fill(0, 7, $serviceRevenue / 7)),
+                ->chart(array_fill(0, 7, $serviceRevenueValue / 7)),
         ];
     }
 }

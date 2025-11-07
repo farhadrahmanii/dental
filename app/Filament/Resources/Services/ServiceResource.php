@@ -19,6 +19,27 @@ class ServiceResource extends Resource
     protected static ?string $model = Service::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    
+    protected static ?string $navigationLabel = null;
+    
+    protected static ?string $modelLabel = null;
+    
+    protected static ?string $pluralModelLabel = null;
+    
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.services');
+    }
+    
+    public static function getModelLabel(): string
+    {
+        return __('filament.service');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.services');
+    }
 
     public static function form(Schema $schema): Schema
     {

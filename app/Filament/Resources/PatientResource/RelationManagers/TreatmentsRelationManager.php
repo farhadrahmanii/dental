@@ -11,6 +11,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions;
+use RuelLuna\CanvasPointer\Forms\Components\CanvasPointerField;
 
 class TreatmentsRelationManager extends RelationManager
 {

@@ -18,67 +18,67 @@ class PaymentForm
         return $schema
             ->schema([
                 Select::make('patient_id')
-                    ->label('Patient')
+                    ->label(__('filament.patient'))
                     ->relationship('patient', 'name')
                     ->searchable()
                     ->preload()
                     ->required()
-                    ->placeholder('Select a patient')
+                    ->placeholder(__('filament.select_patient'))
                     ->createOptionForm([
                         TextInput::make('name')
                             ->required()
                             ->maxLength(255)
-                            ->placeholder('Patient full name'),
+                            ->placeholder(__('filament.patient_full_name')),
                         TextInput::make('father_name')
                             ->maxLength(255)
-                            ->placeholder('Father\'s name'),
+                            ->placeholder(__('filament.enter_father_name')),
                         Select::make('sex')
                             ->options([
-                                'male' => 'Male',
-                                'female' => 'Female',
+                                'male' => __('filament.male'),
+                                'female' => __('filament.female'),
                             ])
                             ->required()
-                            ->placeholder('Select gender'),
+                            ->placeholder(__('filament.gender')),
                         TextInput::make('age')
                             ->numeric()
                             ->required()
-                            ->placeholder('Age'),
+                            ->placeholder(__('filament.enter_age')),
                         TextInput::make('diagnosis')
                             ->maxLength(255)
-                            ->placeholder('Medical diagnosis'),
+                            ->placeholder(__('filament.diagnosis')),
                         Textarea::make('comment')
-                            ->placeholder('Additional comments'),
+                            ->placeholder(__('filament.additional_comments')),
                         TextInput::make('treatment')
                             ->maxLength(255)
-                            ->placeholder('Treatment plan'),
+                            ->placeholder(__('filament.treatment_plan')),
                         TextInput::make('doctor_name')
                             ->maxLength(255)
-                            ->placeholder('Doctor\'s name'),
+                            ->placeholder(__('filament.doctor_name')),
                     ]),
 
                 Select::make('invoice_id')
-                    ->label('Invoice (Optional)')
+                    ->label(__('filament.invoice_optional'))
                     ->relationship('invoice', 'invoice_number')
                     ->searchable()
                     ->preload()
                     ->nullable()
-                    ->placeholder('Select invoice (optional)'),
+                    ->placeholder(__('filament.select_invoice_optional')),
 
                 Select::make('type')
-                    ->label('Type')
+                    ->label(__('filament.payment_type'))
                     ->options([
-                        'treatment' => 'Treatment',
-                        'xray' => 'X-ray',
-                        'other' => 'Other',
+                        'treatment' => __('filament.treatment'),
+                        'xray' => __('filament.xray'),
+                        'other' => __('filament.other'),
                     ])
                     ->required()
                     ->default('treatment')
                     ->native(false)
                     ->preload()
-                    ->hint('Select what the payment is for'),
+                    ->hint(__('filament.select_payment_for')),
 
                 TextInput::make('amount')
-                    ->label('Payment Amount')
+                    ->label(__('filament.payment_amount'))
                     ->numeric()
                     ->prefix(CurrencyHelper::prefix())
                     ->required()
@@ -86,33 +86,33 @@ class PaymentForm
                     ->placeholder('0.00'),
 
                 Select::make('payment_method')
-                    ->label('Payment Method')
+                    ->label(__('filament.payment_method'))
                     ->options([
-                        'cash' => 'Cash',
-                        'card' => 'Card',
-                        'bank_transfer' => 'Bank Transfer',
-                        'check' => 'Check',
-                        'other' => 'Other',
+                        'cash' => __('filament.cash'),
+                        'card' => __('filament.card'),
+                        'bank_transfer' => __('filament.bank_transfer'),
+                        'check' => __('filament.check'),
+                        'other' => __('filament.other'),
                     ])
                     ->required()
                     ->default('cash')
-                    ->placeholder('Select payment method'),
+                    ->placeholder(__('filament.select_payment_method')),
 
                 DatePicker::make('payment_date')
-                    ->label('Payment Date')
+                    ->label(__('filament.payment_date'))
                     ->required()
                     ->default(now())
                     ->displayFormat('M d, Y'),
 
                 TextInput::make('reference_number')
-                    ->label('Reference Number')
+                    ->label(__('filament.reference_number'))
                     ->maxLength(255)
-                    ->placeholder('Transaction ID, check number, etc.'),
+                    ->placeholder(__('filament.reference_number_placeholder')),
 
                 Textarea::make('notes')
-                    ->label('Payment Notes')
+                    ->label(__('filament.payment_notes'))
                     ->rows(3)
-                    ->placeholder('Add any additional notes about this payment')
+                    ->placeholder(__('filament.payment_notes_placeholder'))
                     ->columnSpanFull(),
             ]);
     }

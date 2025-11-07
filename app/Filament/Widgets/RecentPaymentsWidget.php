@@ -45,7 +45,7 @@ class RecentPaymentsWidget extends TableWidget
                 
                 Tables\Columns\TextColumn::make('amount')
                     ->label('Amount')
-                    ->money('usd')
+                    ->money('AFN')
                     ->sortable()
                     ->weight('bold')
                     ->color('success'),

@@ -34,7 +34,7 @@ class AppointmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'patient_name' => 'required|string|max:255',
-            'patient_email' => 'required|email|max:255',
+            'patient_email' => 'nullable|email|max:255',
             'patient_phone' => 'required|string|max:20',
             'service_id' => 'nullable|exists:services,id',
             'service_name' => 'required|string|max:255',
@@ -82,14 +82,14 @@ class AppointmentController extends Controller
 
         $appointment = Appointment::create([
             'patient_name' => $request->patient_name,
-            'patient_email' => $request->patient_email,
             'patient_phone' => $request->patient_phone,
             'service_id' => $request->service_id,
             'service_name' => $request->service_name,
             'appointment_date' => $request->appointment_date,
             'appointment_time' => $request->appointment_time,
             'message' => $request->message,
-            'patient_id' => $patientId,
+            'patient_id' => $request->patient_id,
+            'patient_email' => $request->input('patient_email'),
             'created_by' => Auth::id(),
             'status' => 'pending',
         ]);
@@ -120,7 +120,7 @@ class AppointmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'patient_name' => 'required|string|max:255',
-            'patient_email' => 'required|email|max:255',
+            'patient_email' => 'nullable|email|max:255',
             'patient_phone' => 'required|string|max:20',
             'service_id' => 'nullable|exists:services,id',
             'service_name' => 'required|string|max:255',

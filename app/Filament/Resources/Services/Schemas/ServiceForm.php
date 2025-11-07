@@ -16,17 +16,17 @@ class ServiceForm
     {
         return $schema
             ->schema([
-                Section::make('Basic Information')
-                    ->description('Enter the basic service information')
+                Section::make(__('filament.basic_information'))
+                    ->description(__('filament.enter_basic_service_information'))
                     ->schema([
                         TextInput::make('name_en')
-                            ->label('Service Name (English)')
+                            ->label(__('filament.service_name_english'))
                             ->required()
                             ->maxLength(255)
-                            ->placeholder('e.g., Dental Cleaning'),
+                            ->placeholder(__('filament.service_name_english_placeholder')),
 
                         TextInput::make('price')
-                            ->label('Price')
+                            ->label(__('filament.price'))
                             ->numeric()
                             ->prefix(CurrencyHelper::prefix())
                             ->required()
@@ -34,51 +34,51 @@ class ServiceForm
                             ->placeholder('0.00'),
 
                         Textarea::make('description_en')
-                            ->label('Description (English)')
+                            ->label(__('filament.description_english'))
                             ->rows(3)
-                            ->placeholder('Enter a detailed description of the service'),
+                            ->placeholder(__('filament.enter_detailed_description')),
 
                         Select::make('category')
-                            ->label('Category')
+                            ->label(__('filament.category'))
                             ->options([
-                                'preventive' => 'Preventive Care',
-                                'restorative' => 'Restorative',
-                                'cosmetic' => 'Cosmetic',
-                                'surgical' => 'Surgical',
-                                'diagnostic' => 'Diagnostic',
-                                'anesthesia' => 'Anesthesia',
+                                'preventive' => __('filament.preventive_care'),
+                                'restorative' => __('filament.restorative'),
+                                'cosmetic' => __('filament.cosmetic'),
+                                'surgical' => __('filament.surgical'),
+                                'diagnostic' => __('filament.diagnostic'),
+                                'anesthesia' => __('filament.anesthesia'),
                             ])
                             ->required()
                             ->searchable()
-                            ->placeholder('Select a category'),
+                            ->placeholder(__('filament.select_category')),
 
                         Toggle::make('is_active')
-                            ->label('Service Active')
+                            ->label(__('filament.service_active'))
                             ->default(true),
                     ])
                     ->columns(2)
                     ->collapsible(),
 
-                Section::make('Multilingual Support')
-                    ->description('Add translations for Pashto and Dari languages')
+                Section::make(__('filament.multilingual_support'))
+                    ->description(__('filament.add_translations'))
                     ->schema([
                         TextInput::make('name_ps')
-                            ->label('Service Name (Pashto)')
+                            ->label(__('filament.service_name_pashto'))
                             ->maxLength(255)
                             ->placeholder('د غاښونو پاکول'),
 
                         TextInput::make('name_fa')
-                            ->label('Service Name (Dari)')
+                            ->label(__('filament.service_name_dari'))
                             ->maxLength(255)
                             ->placeholder('تمیز کردن دندان'),
 
                         Textarea::make('description_ps')
-                            ->label('Description (Pashto)')
+                            ->label(__('filament.description_pashto'))
                             ->rows(3)
                             ->placeholder('د دغه خدمت تفصیلات ولیکئ'),
 
                         Textarea::make('description_fa')
-                            ->label('Description (Dari)')
+                            ->label(__('filament.description_dari'))
                             ->rows(3)
                             ->placeholder('توضیحات این خدمت را بنویسید'),
                     ])

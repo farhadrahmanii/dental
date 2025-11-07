@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\PatientResource\Pages;
 
 use App\Filament\Resources\PatientResource;
+use App\Helpers\CurrencyHelper;
 use App\Models\Payment;
 use Filament\Actions;
 use Filament\Forms\Components\DatePicker;
@@ -31,7 +32,7 @@ class ViewPatient extends ViewRecord
                     TextInput::make('amount')
                         ->label('Payment Amount')
                         ->numeric()
-                        ->prefix('$')
+                        ->prefix(CurrencyHelper::symbol())
                         ->required()
                         ->minValue(0.01)
                         ->placeholder('0.00')
@@ -79,7 +80,7 @@ class ViewPatient extends ViewRecord
                     Notification::make()
                         ->title('Payment Recorded Successfully')
                         ->success()
-                        ->body('Payment of $' . number_format($data['amount'], 2) . ' has been recorded for ' . $this->record->name)
+                        ->body('Payment of ' . CurrencyHelper::symbol() . number_format($data['amount'], 2) . ' has been recorded for ' . $this->record->name)
                         ->send();
                 })
                 ->modalHeading('Collect Payment from Patient')

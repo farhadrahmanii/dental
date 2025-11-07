@@ -14,6 +14,7 @@ class Treatment extends Model
         'treatment_date',
         'tooth_numbers',
         'tooth_selection_visual',
+        'body_points',
     ];
 
     /**
