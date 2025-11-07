@@ -21,15 +21,15 @@ class PaymentsTable
         return $table
             ->columns([
                 TextColumn::make('patient.name')
-                    ->label('Patient')
+                    ->label(__('filament.patient'))
                     ->searchable()
                     ->sortable()
                     ->weight('bold')
                     ->copyable()
-                    ->tooltip('Click to copy patient name'),
+                    ->tooltip(__('filament.patient')),
 
                 TextColumn::make('type')
-                    ->label('Type')
+                    ->label(__('filament.type'))
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'treatment' => 'success',
@@ -38,15 +38,15 @@ class PaymentsTable
                         default => 'gray',
                     })
                     ->formatStateUsing(fn(string $state): string => match ($state) {
-                        'treatment' => 'Treatment',
-                        'xray' => 'X-ray',
-                        'other' => 'Other',
+                        'treatment' => __('filament.treatment'),
+                        'xray' => __('filament.xray'),
+                        'other' => __('filament.other'),
                         default => ucfirst($state),
                     })
                     ->sortable(),
 
                 TextColumn::make('amount')
-                    ->label('Amount')
+                    ->label(__('filament.amount'))
                     ->formatStateUsing(fn($state) => CurrencyHelper::format($state))
                     ->sortable()
                     ->weight('bold')
@@ -54,7 +54,7 @@ class PaymentsTable
                     ->alignEnd(),
 
                 TextColumn::make('payment_method')
-                    ->label('Method')
+                    ->label(__('filament.method'))
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'cash' => 'success',
@@ -65,30 +65,30 @@ class PaymentsTable
                         default => 'gray',
                     })
                     ->formatStateUsing(fn(string $state): string => match ($state) {
-                        'cash' => 'Cash',
-                        'card' => 'Card',
-                        'bank_transfer' => 'Bank Transfer',
-                        'check' => 'Check',
-                        'other' => 'Other',
+                        'cash' => __('filament.cash'),
+                        'card' => __('filament.card'),
+                        'bank_transfer' => __('filament.bank_transfer'),
+                        'check' => __('filament.check'),
+                        'other' => __('filament.other'),
                         default => ucfirst(str_replace('_', ' ', $state)),
                     })
                     ->sortable(),
 
                 TextColumn::make('payment_date')
-                    ->label('Payment Date')
+                    ->label(__('filament.payment_date'))
                     ->date('M d, Y')
                     ->sortable()
                     ->color('primary'),
 
                 TextColumn::make('reference_number')
-                    ->label('Reference')
+                    ->label(__('filament.reference'))
                     ->searchable()
-                    ->placeholder('No reference')
+                    ->placeholder(__('filament.no_reference'))
                     ->copyable()
-                    ->tooltip('Click to copy reference number'),
+                    ->tooltip(__('filament.reference_number')),
 
                 TextColumn::make('notes')
-                    ->label('Notes')
+                    ->label(__('filament.notes'))
                     ->limit(30)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
@@ -97,47 +97,47 @@ class PaymentsTable
                         }
                         return $state;
                     })
-                    ->placeholder('No notes'),
+                    ->placeholder(__('filament.no_notes')),
 
                 TextColumn::make('createdBy.name')
-                    ->label('Created By')
+                    ->label(__('filament.created_by'))
                     ->searchable()
                     ->sortable()
-                    ->placeholder('System'),
+                    ->placeholder(__('filament.system')),
 
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('filament.created_at'))
                     ->dateTime('M d, Y g:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('payment_method')
-                    ->label('Payment Method')
+                    ->label(__('filament.payment_method'))
                     ->options([
-                        'cash' => 'Cash',
-                        'card' => 'Card',
-                        'bank_transfer' => 'Bank Transfer',
-                        'check' => 'Check',
-                        'other' => 'Other',
+                        'cash' => __('filament.cash'),
+                        'card' => __('filament.card'),
+                        'bank_transfer' => __('filament.bank_transfer'),
+                        'check' => __('filament.check'),
+                        'other' => __('filament.other'),
                     ])
                     ->multiple(),
 
                 SelectFilter::make('type')
-                    ->label('Type')
+                    ->label(__('filament.type'))
                     ->options([
-                        'treatment' => 'Treatment',
-                        'xray' => 'X-ray',
-                        'other' => 'Other',
+                        'treatment' => __('filament.treatment'),
+                        'xray' => __('filament.xray'),
+                        'other' => __('filament.other'),
                     ])
                     ->multiple(),
 
                 Filter::make('payment_date')
                     ->form([
                         DatePicker::make('payment_from')
-                            ->label('From Date'),
+                            ->label(__('filament.from_date')),
                         DatePicker::make('payment_until')
-                            ->label('Until Date'),
+                            ->label(__('filament.until_date')),
                     ])
                     ->query(function ($query, array $data) {
                         return $query
@@ -152,7 +152,7 @@ class PaymentsTable
                     }),
 
                 SelectFilter::make('amount_range')
-                    ->label('Amount Range')
+                    ->label(__('filament.amount_range'))
                     ->options([
                         '0-100' => '؋0 - ؋100',
                         '100-500' => '؋100 - ؋500',
@@ -172,17 +172,17 @@ class PaymentsTable
             ])
             ->recordActions([
                 ViewAction::make()
-                    ->label('View Details'),
+                    ->label(__('filament.view_details')),
                 EditAction::make()
-                    ->label('Edit Payment'),
+                    ->label(__('filament.edit_payment')),
                 DeleteAction::make()
-                    ->label('Delete Payment')
+                    ->label(__('filament.delete_payment'))
                     ->requiresConfirmation(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('filament.delete_selected'))
                         ->requiresConfirmation(),
                 ]),
             ])

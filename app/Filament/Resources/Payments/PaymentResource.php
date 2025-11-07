@@ -20,11 +20,26 @@ class PaymentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-banknotes';
     
-    protected static ?string $navigationLabel = 'Payments';
+    protected static ?string $navigationLabel = null;
     
-    protected static ?string $modelLabel = 'Payment';
+    protected static ?string $modelLabel = null;
     
-    protected static ?string $pluralModelLabel = 'Payments';
+    protected static ?string $pluralModelLabel = null;
+    
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.payments');
+    }
+    
+    public static function getModelLabel(): string
+    {
+        return __('filament.payment');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.payments');
+    }
     
     protected static ?int $navigationSort = 3;
 

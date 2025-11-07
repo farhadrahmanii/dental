@@ -29,7 +29,8 @@ class AppServiceProvider extends ServiceProvider
                     'fa' => 'Farsi',
                     'ps' => 'Pashto',
                 ])
-                ->visible(outsidePanels: true)
+                ->visible(insidePanels: true, outsidePanels: true) // Enable language switch both inside and outside Filament panels
+                ->displayLocale('en') // Display locale for language names
                 ->outsidePanelRoutes([
                     'filament.admin.auth.login',
                     'filament.admin.auth.register',

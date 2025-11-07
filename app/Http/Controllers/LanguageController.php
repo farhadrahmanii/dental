@@ -16,6 +16,7 @@ class LanguageController extends Controller
         if (in_array($locale, $availableLocales)) {
             App::setLocale($locale);
             Session::put('locale', $locale);
+            Session::save(); // Ensure session is saved
         }
         
         return Redirect::back();

@@ -33,7 +33,22 @@ class AppointmentResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-calendar';
 
-    protected static ?string $navigationLabel = 'Appointments';
+    protected static ?string $navigationLabel = null;
+    
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.appointments');
+    }
+    
+    public static function getModelLabel(): string
+    {
+        return __('filament.appointment');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.appointments');
+    }
 
     protected static ?int $navigationSort = 2;
 
@@ -196,7 +211,7 @@ class AppointmentResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('appointment_number')
-                    ->label('Appt #')
+                    ->label(__('filament.appt'))
                     ->searchable()
                     ->sortable()
                     ->copyable()
@@ -204,30 +219,30 @@ class AppointmentResource extends Resource
                     ->color('primary'),
 
                 TextColumn::make('patient_name')
-                    ->label('Patient')
+                    ->label(__('filament.patient'))
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->patient?->register_id ? 'ID: ' . $record->patient->register_id : 'New Patient'),
+                    ->description(fn($record) => $record->patient?->register_id ? __('filament.id') . ': ' . $record->patient->register_id : __('filament.patient')),
 
                 TextColumn::make('patient_phone')
-                    ->label('Phone')
+                    ->label(__('filament.phone'))
                     ->searchable()
                     ->toggleable(),
 
                 TextColumn::make('service_name')
-                    ->label('Service')
+                    ->label(__('filament.service'))
                     ->searchable()
                     ->sortable()
                     ->description(fn($record) => $record->service ? CurrencyHelper::format($record->service->price) : ''),
 
                 TextColumn::make('appointment_date')
-                    ->label('Date')
+                    ->label(__('filament.date'))
                     ->date('M d, Y')
                     ->sortable()
                     ->description(fn($record) => $record->formatted_time),
 
                 BadgeColumn::make('status')
-                    ->label('Status')
+                    ->label(__('filament.status'))
                     ->colors([
                         'warning' => 'pending',
                         'info' => 'confirmed',
@@ -235,27 +250,36 @@ class AppointmentResource extends Resource
                         'danger' => 'cancelled',
                         'gray' => 'no_show',
                     ])
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'pending' => __('filament.pending'),
+                        'confirmed' => __('filament.confirmed'),
+                        'completed' => __('filament.completed'),
+                        'cancelled' => __('filament.cancelled'),
+                        'no_show' => __('filament.no_show'),
+                        default => ucfirst($state),
+                    })
                     ->sortable(),
 
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('filament.created_at'))
                     ->dateTime('M d, Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('status')
+                    ->label(__('filament.status'))
                     ->options([
-                        'pending' => 'Pending',
-                        'confirmed' => 'Confirmed',
-                        'completed' => 'Completed',
-                        'cancelled' => 'Cancelled',
-                        'no_show' => 'No Show',
+                        'pending' => __('filament.pending'),
+                        'confirmed' => __('filament.confirmed'),
+                        'completed' => __('filament.completed'),
+                        'cancelled' => __('filament.cancelled'),
+                        'no_show' => __('filament.no_show'),
                     ])
                     ->multiple(),
 
                 SelectFilter::make('service_id')
-                    ->label('Service')
+                    ->label(__('filament.service'))
                     ->relationship('service', 'name')
                     ->searchable()
                     ->multiple(),

@@ -29,7 +29,26 @@ class ExpenseResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-receipt-percent';
 
-    protected static ?string $navigationLabel = 'Expenses';
+    protected static ?string $navigationLabel = null;
+    
+    protected static ?string $modelLabel = null;
+    
+    protected static ?string $pluralModelLabel = null;
+    
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.expenses');
+    }
+    
+    public static function getModelLabel(): string
+    {
+        return __('filament.expense');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.expenses');
+    }
 
     protected static ?int $navigationSort = 10;
 
@@ -181,7 +200,7 @@ class ExpenseResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('expense_id')
-                    ->label('Expense ID')
+                    ->label(__('filament.expense_id'))
                     ->searchable()
                     ->sortable()
                     ->copyable()
@@ -189,29 +208,36 @@ class ExpenseResource extends Resource
                     ->color('primary'),
 
                 TextColumn::make('expense_type')
-                    ->label('Type')
+                    ->label(__('filament.type'))
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('info'),
 
                 TextColumn::make('description')
-                    ->label('Description')
+                    ->label(__('filament.description'))
                     ->searchable()
                     ->limit(50)
                     ->tooltip(fn($record) => $record->description)
                     ->wrap(),
 
                 TextColumn::make('amount')
-                    ->label('Amount')
+                    ->label(__('filament.amount'))
                     ->money('AFN')
                     ->sortable()
                     ->weight('bold')
                     ->color('danger'),
 
                 TextColumn::make('payment_method')
-                    ->label('Payment Method')
+                    ->label(__('filament.payment_method'))
                     ->badge()
+                    ->formatStateUsing(fn($state) => match($state) {
+                        'Cash' => __('filament.cash'),
+                        'Bank' => __('filament.bank_transfer'),
+                        'Credit' => __('filament.card'),
+                        'Mobile Payment' => __('filament.other'),
+                        default => $state,
+                    })
                     ->color(fn($state) => match($state) {
                         'Cash' => 'success',
                         'Bank' => 'info',
@@ -222,29 +248,29 @@ class ExpenseResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('expense_date')
-                    ->label('Date')
+                    ->label(__('filament.date'))
                     ->date('M d, Y')
                     ->sortable(),
 
                 TextColumn::make('paid_to')
-                    ->label('Paid To')
+                    ->label(__('filament.paid_to'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('recorded_by')
-                    ->label('Recorded By')
+                    ->label(__('filament.recorded_by'))
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('filament.created_at'))
                     ->dateTime('M d, Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('expense_type')
-                    ->label('Expense Type')
+                    ->label(__('filament.expense_type'))
                     ->options([
                         'Utilities' => 'Utilities',
                         'Supplies' => 'Supplies',
@@ -255,26 +281,26 @@ class ExpenseResource extends Resource
                         'Marketing' => 'Marketing',
                         'Insurance' => 'Insurance',
                         'Professional Services' => 'Professional Services',
-                        'Other' => 'Other',
+                        'Other' => __('filament.other'),
                     ])
                     ->multiple(),
 
                 SelectFilter::make('payment_method')
-                    ->label('Payment Method')
+                    ->label(__('filament.payment_method'))
                     ->options([
-                        'Cash' => 'Cash',
-                        'Bank' => 'Bank',
-                        'Credit' => 'Credit',
-                        'Mobile Payment' => 'Mobile Payment',
+                        'Cash' => __('filament.cash'),
+                        'Bank' => __('filament.bank_transfer'),
+                        'Credit' => __('filament.card'),
+                        'Mobile Payment' => __('filament.other'),
                     ])
                     ->multiple(),
 
                 Filter::make('expense_date')
                     ->form([
                         DatePicker::make('from')
-                            ->label('From Date'),
+                            ->label(__('filament.from_date')),
                         DatePicker::make('until')
-                            ->label('Until Date'),
+                            ->label(__('filament.until_date')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query

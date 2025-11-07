@@ -34,11 +34,26 @@ class PatientResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationLabel = 'Patients';
+    protected static ?string $navigationLabel = null;
 
-    protected static ?string $modelLabel = 'Patient';
+    protected static ?string $modelLabel = null;
 
-    protected static ?string $pluralModelLabel = 'Patients';
+    protected static ?string $pluralModelLabel = null;
+    
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.patients');
+    }
+    
+    public static function getModelLabel(): string
+    {
+        return __('filament.patient');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.patients');
+    }
 
     protected static ?int $navigationSort = 1;
 
@@ -46,91 +61,91 @@ class PatientResource extends Resource
     {
         return $schema
             ->schema([
-                Section::make('Patient Information')
-                    ->description('Basic patient information and demographics')
+                Section::make(__('filament.patient_information'))
+                    ->description(__('filament.basic_patient_information'))
                     ->icon('heroicon-o-user')
                     ->columns(3)
                     ->schema([
                         TextInput::make('name')
-                            ->label('Full Name')
+                            ->label(__('filament.full_name'))
                             ->required()
                             ->maxLength(255)
-                            ->placeholder('Enter patient full name')
+                            ->placeholder(__('filament.enter_patient_full_name'))
                             ->prefixIcon('heroicon-o-user'),
                         TextInput::make('father_name')
-                            ->label('Father Name')
+                            ->label(__('filament.father_name'))
                             ->maxLength(255)
-                            ->placeholder('Enter father name')
+                            ->placeholder(__('filament.enter_father_name'))
                             ->prefixIcon('heroicon-o-user-group'),
                         TextInput::make('age')
-                            ->label('Age')
+                            ->label(__('filament.age'))
                             ->numeric()
                             ->minValue(0)
                             ->maxValue(120)
-                            ->placeholder('Enter age')
-                            ->suffix('years')
+                            ->placeholder(__('filament.enter_age'))
+                            ->suffix(__('filament.years'))
                             ->prefixIcon('heroicon-o-calendar'),
                         Select::make('sex')
-                            ->label('Gender')
+                            ->label(__('filament.gender'))
                             ->options([
-                                'male' => 'Male',
-                                'female' => 'Female',
-                                'other' => 'Other',
+                                'male' => __('filament.male'),
+                                'female' => __('filament.female'),
+                                'other' => __('filament.other'),
                             ])
                             ->native(false)
                             ->prefixIcon('heroicon-o-user'),
                         TextInput::make('phone_number')
-                            ->label('Phone Number')
+                            ->label(__('filament.phone_number'))
                             ->tel()
                             ->maxLength(20)
                             ->placeholder('+93 XXX XXX XXX')
                             ->prefixIcon('heroicon-o-phone'),
                         Select::make('marital_status')
-                            ->label('Marital Status')
+                            ->label(__('filament.marital_status'))
                             ->options([
-                                'single' => 'Single',
-                                'married' => 'Married',
-                                'divorced' => 'Divorced',
-                                'widowed' => 'Widowed',
+                                'single' => __('filament.single'),
+                                'married' => __('filament.married'),
+                                'divorced' => __('filament.divorced'),
+                                'widowed' => __('filament.widowed'),
                             ])
                             ->native(false)
                             ->nullable()
                             ->prefixIcon('heroicon-o-heart'),
                         TextInput::make('occupation')
-                            ->label('Occupation')
+                            ->label(__('filament.occupation'))
                             ->maxLength(255)
-                            ->placeholder('Enter occupation or job title')
+                            ->placeholder(__('filament.enter_occupation'))
                             ->prefixIcon('heroicon-o-briefcase')
                             ->columnSpanFull(),
                     ])
                     ->collapsible(),
 
-                Section::make('Address Information')
-                    ->description('Patient residential details')
+                Section::make(__('filament.address_information'))
+                    ->description(__('filament.patient_residential_details'))
                     ->icon('heroicon-o-map-pin')
                     ->columns(2)
                     ->schema([
                         Textarea::make('permanent_address')
-                            ->label('Permanent Address')
+                            ->label(__('filament.permanent_address'))
                             ->rows(3)
                             ->maxLength(500)
-                            ->placeholder('Enter permanent residence address'),
+                            ->placeholder(__('filament.enter_permanent_address')),
                         Textarea::make('current_address')
-                            ->label('Current Address')
+                            ->label(__('filament.current_address'))
                             ->rows(3)
                             ->maxLength(500)
-                            ->placeholder('Enter current residence address'),
+                            ->placeholder(__('filament.enter_current_address')),
                     ])
                     ->collapsible()
                     ->collapsed(),
 
-                Section::make('Medical Details')
-                    ->description('Dental case information and diagnosis')
+                Section::make(__('filament.medical_details'))
+                    ->description(__('filament.dental_case_information'))
                     ->icon('heroicon-o-clipboard-document-list')
                     ->columns(2)
                     ->schema([
                         FileUpload::make('images')
-                            ->label('Patient Images & Documents')
+                            ->label(__('filament.patient_images_documents'))
                             ->disk('public')
                             ->directory('patients')
                             ->multiple()
@@ -141,33 +156,33 @@ class PatientResource extends Resource
                             ->openable()
                             ->maxFiles(10)
                             ->columnSpanFull()
-                            ->helperText('Upload X-rays, photos, or other medical documents'),
+                            ->helperText(__('filament.upload_xrays_photos')),
                     ])
                     ->collapsible(),
 
-                Section::make('Treatments History')
-                    ->description('Record and manage patient treatments')
+                Section::make(__('filament.treatments_history'))
+                    ->description(__('filament.record_manage_treatments'))
                     ->icon('heroicon-o-wrench-screwdriver')
                     ->schema([
                         Repeater::make('treatments')
                             ->relationship('treatments')
                             ->schema([
                                 Select::make('treatment_types')
-                                    ->label('Treatment Types')
+                                    ->label(__('filament.treatment_types'))
                                     ->options(array_combine(DentalTreatment::values(), DentalTreatment::values()))
                                     ->multiple()
                                     ->required(),
                                 Select::make('tooth_numbers')
-                                    ->label('Tooth Numbers')
+                                    ->label(__('filament.tooth_numbers'))
                                     ->options(array_combine(ToothNumber::values(), ToothNumber::values()))
                                     ->multiple()
                                     ->required(),
                                 DatePicker::make('treatment_date')
-                                    ->label('Treatment Date')
+                                    ->label(__('filament.treatment_date'))
                                     ->required()
                                     ->default(now()),
                                 Textarea::make('treatment_description')
-                                    ->label('Treatment Description')
+                                    ->label(__('filament.treatment_description'))
                                     ->rows(2),
                             ])
                             ->columns(2)
@@ -176,46 +191,46 @@ class PatientResource extends Resource
                             ->itemLabel(fn (array $state): ?string =>
                                 isset($state['treatment_types']) && is_array($state['treatment_types'])
                                     ? implode(', ', $state['treatment_types'])
-                                    : 'New Treatment'
+                                    : __('filament.new_treatment')
                             )
-                            ->addActionLabel('Add Treatment')
+                            ->addActionLabel(__('filament.add_treatment'))
                             ->columnSpanFull(),
                     ])
                     ->collapsible()
                     ->collapsed(),
 
-                Section::make('Payment Records')
-                    ->description('Track and manage patient payments')
+                Section::make(__('filament.payment_records'))
+                    ->description(__('filament.track_manage_payments'))
                     ->icon('heroicon-o-currency-dollar')
                     ->schema([
                         Repeater::make('payments')
                             ->relationship('payments')
                             ->schema([
                                 TextInput::make('amount')
-                                    ->label('Amount')
+                                    ->label(__('filament.amount'))
                                     ->numeric()
                                     ->prefix(CurrencyHelper::symbol())
                                     ->required(),
                                 Select::make('payment_method')
-                                    ->label('Payment Method')
+                                    ->label(__('filament.payment_method'))
                                     ->options([
-                                        'cash' => 'Cash',
-                                        'card' => 'Card',
-                                        'bank_transfer' => 'Bank Transfer',
-                                        'check' => 'Check',
-                                        'other' => 'Other',
+                                        'cash' => __('filament.cash'),
+                                        'card' => __('filament.card'),
+                                        'bank_transfer' => __('filament.bank_transfer'),
+                                        'check' => __('filament.check'),
+                                        'other' => __('filament.other'),
                                     ])
                                     ->required()
                                     ->default('cash'),
                                 DatePicker::make('payment_date')
-                                    ->label('Payment Date')
+                                    ->label(__('filament.payment_date'))
                                     ->required()
                                     ->default(now()),
                                 TextInput::make('reference_number')
-                                    ->label('Reference Number')
+                                    ->label(__('filament.reference_number'))
                                     ->maxLength(255),
                                 Textarea::make('notes')
-                                    ->label('Notes')
+                                    ->label(__('filament.notes'))
                                     ->rows(2),
                             ])
                             ->columns(2)
@@ -223,10 +238,10 @@ class PatientResource extends Resource
                             ->collapsed()
                             ->itemLabel(fn (array $state): ?string =>
                                 isset($state['amount'])
-                                    ? CurrencyHelper::symbol() . number_format($state['amount'], 2) . ' - ' . ucfirst($state['payment_method'] ?? 'New Payment')
-                                    : 'New Payment'
+                                    ? CurrencyHelper::symbol() . number_format($state['amount'], 2) . ' - ' . ucfirst($state['payment_method'] ?? __('filament.new_payment'))
+                                    : __('filament.new_payment')
                             )
-                            ->addActionLabel('Add Payment')
+                            ->addActionLabel(__('filament.add_payment'))
                             ->columnSpanFull(),
                     ])
                     ->collapsible()
@@ -239,15 +254,24 @@ class PatientResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('register_id')
-                    ->label('Register ID')
+                    ->label(__('filament.register_id'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('filament.name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('father_name')
+                    ->label(__('filament.father_name'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('sex')
+                    ->label(__('filament.gender'))
                     ->badge()
+                    ->formatStateUsing(fn($state) => match($state) {
+                        'male' => __('filament.male'),
+                        'female' => __('filament.female'),
+                        'other' => __('filament.other'),
+                        default => $state,
+                    })
                     ->color(fn($state) => match ($state) {
                         'male' => 'info',
                         'female' => 'pink',
@@ -255,17 +279,26 @@ class PatientResource extends Resource
                         default => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('age')
+                    ->label(__('filament.age'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('phone_number')
-                    ->label('Phone')
+                    ->label(__('filament.phone'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('occupation')
-                    ->label('Occupation')
+                    ->label(__('filament.occupation'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('marital_status')
+                    ->label(__('filament.marital_status'))
                     ->badge()
+                    ->formatStateUsing(fn($state) => match($state) {
+                        'single' => __('filament.single'),
+                        'married' => __('filament.married'),
+                        'divorced' => __('filament.divorced'),
+                        'widowed' => __('filament.widowed'),
+                        default => $state,
+                    })
                     ->color(fn($state) => match ($state) {
                         'single' => 'info',
                         'married' => 'success',
@@ -275,15 +308,16 @@ class PatientResource extends Resource
                     })
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('total_spent')
-                    ->label('Total Spent')
+                    ->label(__('filament.total_spent'))
                     ->money('AFN')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('outstanding_balance')
-                    ->label('Outstanding Balance')
+                    ->label(__('filament.outstanding_balance'))
                     ->money('AFN')
                     ->color(fn($state) => $state > 0 ? 'danger' : 'success')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('filament.created_at'))
                     ->dateTime()
                     ->since()
                     ->sortable(),
@@ -291,29 +325,29 @@ class PatientResource extends Resource
             ->filters([])
             ->recordActions([
                 Action::make('add_treatment')
-                    ->label('Add Treatment')
+                    ->label(__('filament.add_treatment'))
                     ->icon('heroicon-o-beaker')
                     ->url(fn($record) => '/admin/treatments/create?patient_id=' . $record->register_id),
                 Action::make('add_xray')
-                    ->label('Add X-ray')
+                    ->label(__('filament.add_xray'))
                     ->icon('heroicon-o-photo')
                     ->url(fn($record) => url('/admin/patients/' . $record->register_id . '/xrays/create')),
                 Action::make('add_transcription')
-                    ->label('Add Transcription')
+                    ->label(__('filament.add_transcription'))
                     ->icon('heroicon-o-document-text')
-                    ->modalHeading('Add Transcription')
+                    ->modalHeading(__('filament.add_transcription'))
                     ->form([
                         \Filament\Forms\Components\Textarea::make('transcription_text')
-                            ->label('Transcription Text')
+                            ->label(__('filament.transcription_text'))
                             ->required()
                             ->rows(8)
                             ->columnSpanFull(),
                         \Filament\Forms\Components\TextInput::make('recorded_by')
-                            ->label('Recorded By')
+                            ->label(__('filament.recorded_by'))
                             ->required()
                             ->maxLength(255),
                         \Filament\Forms\Components\DatePicker::make('date')
-                            ->label('Date')
+                            ->label(__('filament.date'))
                             ->default(now()),
                     ])
                     ->action(function ($record, array $data): void {

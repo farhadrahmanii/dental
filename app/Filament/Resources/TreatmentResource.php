@@ -32,11 +32,26 @@ class TreatmentResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-beaker';
 
-    protected static ?string $navigationLabel = 'Treatments';
+    protected static ?string $navigationLabel = null;
 
-    protected static ?string $modelLabel = 'Treatment';
+    protected static ?string $modelLabel = null;
 
-    protected static ?string $pluralModelLabel = 'Treatments';
+    protected static ?string $pluralModelLabel = null;
+    
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.treatments');
+    }
+    
+    public static function getModelLabel(): string
+    {
+        return __('filament.treatment');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.treatments');
+    }
 
     protected static ?int $navigationSort = 2;
 
@@ -115,19 +130,19 @@ class TreatmentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('patient.name')
-                    ->label('Patient')
+                    ->label(__('filament.patient'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('service.name')
-                    ->label('Service')
+                    ->label(__('filament.service'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('treatment_date')
-                    ->label('Treatment Date')
+                    ->label(__('filament.treatment_date'))
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tooth_numbers')
-                    ->label('Tooth Numbers')
+                    ->label(__('filament.tooth_numbers'))
                     ->formatStateUsing(function ($state) {
                         if (is_array($state)) {
                             return implode(', ', $state);
@@ -137,11 +152,11 @@ class TreatmentResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('treatment_description')
-                    ->label('Description')
+                    ->label(__('filament.description'))
                     ->searchable()
                     ->limit(50),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('filament.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
