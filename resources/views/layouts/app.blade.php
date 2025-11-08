@@ -1312,6 +1312,165 @@
     </style>
     
     @laravelPWA
+    
+    <!-- Service Worker Registration for Full Offline Support -->
+    <script>
+        // Register service worker for offline functionality - Works on ALL pages
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                    .then((registration) => {
+                        console.log('✅ Service Worker registered successfully:', registration.scope);
+                        console.log('🌐 Full offline support enabled for all pages');
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New service worker available
+                                    console.log('🔄 New service worker available');
+                                    // Optionally notify user
+                                    if (typeof window.showUpdateNotification === 'function') {
+                                        window.showUpdateNotification();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch((registrationError) => {
+                        console.error('❌ Service Worker registration failed:', registrationError);
+                    });
+            });
+            
+            // Listen for service worker controller changes
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                console.log('🔄 Service Worker controller changed - Page will reload');
+                window.location.reload();
+            });
+            
+            // Show/hide offline indicator
+            function showOfflineIndicator() {
+                let indicator = document.getElementById('offline-indicator');
+                if (!indicator) {
+                    indicator = document.createElement('div');
+                    indicator.id = 'offline-indicator';
+                    indicator.innerHTML = '<div style="position: fixed; top: 0; left: 0; right: 0; background: #ff9500; color: white; padding: 12px; text-align: center; z-index: 10000; box-shadow: 0 2px 4px rgba(0,0,0,0.2); font-size: 14px; font-weight: 500;">📴 You are offline. The app will continue to work with cached data.</div>';
+                    document.body.insertBefore(indicator, document.body.firstChild);
+                    document.body.style.paddingTop = '48px';
+                } else {
+                    indicator.style.display = 'block';
+                }
+            }
+            
+            function hideOfflineIndicator() {
+                const indicator = document.getElementById('offline-indicator');
+                if (indicator) {
+                    indicator.style.display = 'none';
+                    document.body.style.paddingTop = '';
+                }
+            }
+            
+            window.addEventListener('online', () => {
+                console.log('🌐 Back online');
+                hideOfflineIndicator();
+            });
+            
+            window.addEventListener('offline', () => {
+                console.log('📴 Offline - App continues to work with cached data');
+                showOfflineIndicator();
+            });
+            
+            // Initial offline check
+            if (!navigator.onLine) {
+                showOfflineIndicator();
+            }
+            
+            // Load offline storage for data management
+            if (typeof import !== 'undefined') {
+                import('/js/offline-storage.js').then(module => {
+                    window.offlineStorage = module.default;
+                    console.log('✅ Offline storage loaded');
+                }).catch(err => {
+                    console.warn('⚠️ Failed to load offline storage:', err);
+                });
+            }
+            
+            // Load Filament offline support if on admin pages
+            if (window.location.pathname.startsWith('/admin')) {
+                if (typeof import !== 'undefined') {
+                    import('/js/filament-offline.js').then(module => {
+                        console.log('✅ Filament offline support loaded');
+                    }).catch(err => {
+                        console.warn('⚠️ Failed to load Filament offline support:', err);
+                    });
+                }
+            }
+        }
+    </script>
+    
+    <!-- Filament Offline Support Script (inline for immediate execution) -->
+    @if(request()->is('admin*'))
+    <script>
+        // Immediate Filament offline support
+        (function() {
+            // Cache Filament page immediately
+            function cacheCurrentPage() {
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    const html = document.documentElement.outerHTML;
+                    const response = new Response(html, {
+                        headers: { 'Content-Type': 'text/html' }
+                    });
+                    
+                    navigator.serviceWorker.controller.postMessage({
+                        type: 'CACHE_FILAMENT_PAGE',
+                        url: window.location.href
+                    });
+                }
+            }
+            
+            // Cache images
+            function cacheAllImages() {
+                document.querySelectorAll('img[src]').forEach(img => {
+                    if (img.src.startsWith(window.location.origin) && !img.dataset.cached) {
+                        img.dataset.cached = 'true';
+                        fetch(img.src)
+                            .then(r => r.blob())
+                            .then(blob => {
+                                caches.open('images-cache-v3').then(cache => {
+                                    cache.put(img.src, new Response(blob));
+                                });
+                            })
+                            .catch(() => {});
+                    }
+                });
+            }
+            
+            // Run on load
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => {
+                        cacheCurrentPage();
+                        cacheAllImages();
+                    }, 1000);
+                });
+            } else {
+                setTimeout(() => {
+                    cacheCurrentPage();
+                    cacheAllImages();
+                }, 1000);
+            }
+            
+            // Observe for new images
+            if (window.MutationObserver) {
+                const observer = new MutationObserver(() => {
+                    cacheAllImages();
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
+            }
+        })();
+    </script>
+    @endif
 </head>
 
 <body>

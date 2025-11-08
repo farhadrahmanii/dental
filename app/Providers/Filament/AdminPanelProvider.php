@@ -37,6 +37,10 @@ class AdminPanelProvider extends PanelProvider
                 'panels::content.start',
                 fn() => view('filament.partials.overview-charts')
             )
+            ->renderHook(
+                'panels::head.end',
+                fn() => view('filament.layouts.offline-support')
+            )
 
             ->colors([
                 'primary' => Color::Blue,
