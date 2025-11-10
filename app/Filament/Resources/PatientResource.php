@@ -167,10 +167,11 @@ class PatientResource extends Resource
                         Repeater::make('treatments')
                             ->relationship('treatments')
                             ->schema([
-                                Select::make('treatment_types')
-                                    ->label(__('filament.treatment_types'))
-                                    ->options(array_combine(DentalTreatment::values(), DentalTreatment::values()))
-                                    ->multiple()
+                                Select::make('service_id')
+                                    ->label(__('filament.service'))
+                                    ->relationship('service', 'name')
+                                    ->searchable()
+                                    ->preload()
                                     ->required(),
                                 Select::make('tooth_numbers')
                                     ->label(__('filament.tooth_numbers'))
@@ -189,8 +190,8 @@ class PatientResource extends Resource
                             ->collapsible()
                             ->collapsed()
                             ->itemLabel(fn (array $state): ?string =>
-                                isset($state['treatment_types']) && is_array($state['treatment_types'])
-                                    ? implode(', ', $state['treatment_types'])
+                                isset($state['service_id']) && $state['service_id']
+                                    ? \App\Models\Service::find($state['service_id'])?->name ?? __('filament.new_treatment')
                                     : __('filament.new_treatment')
                             )
                             ->addActionLabel(__('filament.add_treatment'))
