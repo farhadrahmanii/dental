@@ -144,6 +144,23 @@ class PatientResource extends Resource
                     ->icon('heroicon-o-clipboard-document-list')
                     ->columns(2)
                     ->schema([
+                        CanvasPointerField::make('diagnosis')
+                            ->label(__('filament.diagnosis'))
+                            ->pointRadius(15)
+                            ->imageUrl('/images/dental-chart.jpg')
+                            ->width(800)
+                            ->height(800)
+                            ->storageDisk('public')
+                            ->storageDirectory('patients/diagnosis')
+                            ->columnSpanFull()
+                            ->dehydrated()
+                            ->helperText(__('filament.click_on_teeth_to_mark_diagnosis')),
+                        Textarea::make('comment')
+                            ->label(__('filament.comment'))
+                            ->rows(3)
+                            ->maxLength(1000)
+                            ->columnSpanFull()
+                            ->placeholder(__('filament.enter_additional_notes')),
                         FileUpload::make('images')
                             ->label(__('filament.patient_images_documents'))
                             ->disk('public')

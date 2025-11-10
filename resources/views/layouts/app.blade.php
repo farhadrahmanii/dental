@@ -560,6 +560,112 @@
         .p-5 { padding: var(--space-xl); }
         .p-6 { padding: var(--space-2xl); }
 
+        /* Mobile Menu Styles */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            padding: var(--space-sm);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background-color: rgba(0, 122, 255, 0.1);
+        }
+
+        .mobile-menu-btn.active {
+            background-color: rgba(0, 122, 255, 0.1);
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-menu-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .mobile-menu-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 320px;
+            height: 100%;
+            background: var(--surface);
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            padding: var(--space-xl);
+        }
+
+        .mobile-menu-drawer.active {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            padding: var(--space-sm);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .mobile-menu-close:hover {
+            background-color: rgba(0, 122, 255, 0.1);
+        }
+
+        .mobile-menu-nav {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .mobile-menu-nav .nav-link-apple {
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            display: block;
+        }
+
+        .mobile-menu-nav .btn-apple,
+        .mobile-menu-nav .btn-apple-outline {
+            margin-top: var(--space-md);
+            width: 100%;
+            justify-content: center;
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .container-apple,
@@ -579,6 +685,19 @@
             
             .hero-apple {
                 padding: var(--space-2xl) 0;
+            }
+
+            /* Mobile Navigation */
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-brand {
+                font-size: 1.25rem;
             }
         }
 
@@ -1484,7 +1603,7 @@
                 </a>
 
                 <!-- Desktop Navigation -->
-                <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                <div class="desktop-nav">
                     <a href="{{ route('home') }}" class="nav-link-apple {{ request()->routeIs('home') ? 'active' : '' }}">
                         {{ __('common.home') }}
                     </a>
@@ -1541,7 +1660,7 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <button class="mobile-menu-btn" style="display: none; background: none; border: none; padding: var(--space-sm); border-radius: var(--radius-md);">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="3" y1="6" x2="21" y2="6"></line>
                         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -1551,6 +1670,77 @@
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Mobile Menu Drawer -->
+    <div class="mobile-menu-drawer" id="mobileMenuDrawer">
+        <div class="mobile-menu-header">
+            <a href="{{ route('home') }}" class="nav-brand">DentalCare Pro</a>
+            <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <nav class="mobile-menu-nav">
+            <a href="{{ route('home') }}" class="nav-link-apple {{ request()->routeIs('home') ? 'active' : '' }}" onclick="closeMobileMenu()">
+                {{ __('common.home') }}
+            </a>
+            <a href="{{ route('about') }}" class="nav-link-apple {{ request()->routeIs('about') ? 'active' : '' }}" onclick="closeMobileMenu()">
+                {{ __('common.about') }}
+            </a>
+            <a href="{{ route('services') }}" class="nav-link-apple {{ request()->routeIs('services') ? 'active' : '' }}" onclick="closeMobileMenu()">
+                {{ __('common.services') }}
+            </a>
+            <a href="{{ route('patients') }}" class="nav-link-apple {{ request()->routeIs('patients') ? 'active' : '' }}" onclick="closeMobileMenu()">
+                {{ __('common.patients') }}
+            </a>
+            <a href="{{ route('contact') }}" class="nav-link-apple {{ request()->routeIs('contact') ? 'active' : '' }}" onclick="closeMobileMenu()">
+                {{ __('common.contact') }}
+            </a>
+            
+            <!-- Language Switcher -->
+            <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border-light);">
+                <div class="dropdown" style="position: relative;">
+                    <button class="btn-apple-outline" style="padding: var(--space-sm) var(--space-md); font-size: 0.875rem; width: 100%; justify-content: center;" onclick="toggleDropdown(this)">
+                        @if(app()->getLocale() == 'en')
+                            🇺🇸 English
+                        @elseif(app()->getLocale() == 'ps')
+                            🇦🇫 پښتو
+                        @elseif(app()->getLocale() == 'fa')
+                            🇦🇫 دری
+                        @endif
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: var(--space-xs);">
+                            <polyline points="6,9 12,15 18,9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 120px; z-index: 1000; display: none; margin-top: var(--space-xs);">
+                        <a href="{{ route('lang.switch', 'en') }}" class="dropdown-item" style="display: block; padding: var(--space-sm) var(--space-md); color: var(--text-primary); text-decoration: none; border-radius: var(--radius-sm);">
+                            🇺🇸 English
+                        </a>
+                        <a href="{{ route('lang.switch', 'ps') }}" class="dropdown-item" style="display: block; padding: var(--space-sm) var(--space-md); color: var(--text-primary); text-decoration: none; border-radius: var(--radius-sm);">
+                            🇦🇫 پښتو
+                        </a>
+                        <a href="{{ route('lang.switch', 'fa') }}" class="dropdown-item" style="display: block; padding: var(--space-sm) var(--space-md); color: var(--text-primary); text-decoration: none; border-radius: var(--radius-sm);">
+                            🇦🇫 دری
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border-light); display: flex; flex-direction: column; gap: var(--space-sm);">
+                <a href="/admin" class="btn-apple" onclick="closeMobileMenu()">
+                    {{ __('common.dashboard') }}
+                </a>
+                <a href="{{ route('financial.dashboard') }}" class="btn-apple-outline" onclick="closeMobileMenu()">
+                    {{ __('common.reports') }}
+                </a>
+            </div>
+        </nav>
+    </div>
 
     <!-- Main Content -->
     <main>
@@ -1787,14 +1977,54 @@
         }
 
         // Enhanced mobile menu
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', function() {
-                this.classList.toggle('active');
-                // Mobile menu implementation would go here
-                console.log('Mobile menu clicked');
-            });
+        function openMobileMenu() {
+            const overlay = document.getElementById('mobileMenuOverlay');
+            const drawer = document.getElementById('mobileMenuDrawer');
+            const btn = document.getElementById('mobileMenuBtn');
+            
+            if (overlay && drawer && btn) {
+                overlay.classList.add('active');
+                drawer.classList.add('active');
+                btn.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
         }
+
+        function closeMobileMenu() {
+            const overlay = document.getElementById('mobileMenuOverlay');
+            const drawer = document.getElementById('mobileMenuDrawer');
+            const btn = document.getElementById('mobileMenuBtn');
+            
+            if (overlay && drawer && btn) {
+                overlay.classList.remove('active');
+                drawer.classList.remove('active');
+                btn.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', openMobileMenu);
+        }
+        
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', closeMobileMenu);
+        }
+        
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        }
+
+        // Close mobile menu on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeMobileMenu();
+            }
+        });
 
         // Enhanced image lazy loading - Fixed version
         const images = document.querySelectorAll('img');

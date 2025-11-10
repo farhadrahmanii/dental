@@ -4,3 +4,36 @@
 @source '../../../../resources/views/filament/**/*';
 @source '../../../../vendor/bezhansalleh/filament-language-switch/resources/views/**/*.blade.php';
 
+/* Limit diagnosis image size in view mode */
+.filament-diagnosis-view {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.filament-diagnosis-view img {
+    max-width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain;
+}
+
+/* Limit CanvasPointerField canvas size in view/readonly mode */
+.fi-fo-field-wrp-label-diagnosis canvas,
+.fi-fo-field-wrp-label-diagnosis img {
+    max-width: 500px !important;
+    max-height: 500px !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* For readonly/view mode - limit any canvas in diagnosis field */
+[data-field-wrapper="diagnosis"] canvas,
+[data-field-wrapper="diagnosis"] img,
+.fi-fo-field-wrp[data-field-wrapper="diagnosis"] canvas,
+.fi-fo-field-wrp[data-field-wrapper="diagnosis"] img {
+    max-width: 500px !important;
+    max-height: 500px !important;
+    width: auto !important;
+    height: auto !important;
+}
+

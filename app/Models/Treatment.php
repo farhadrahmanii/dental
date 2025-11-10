@@ -17,6 +17,23 @@ class Treatment extends Model
         'body_points',
     ];
 
+    protected static function booted(): void
+    {
+        static::creating(function (Treatment $treatment): void {
+            // Ensure service_id is set before creating - this is a last resort check
+            if (empty($treatment->service_id)) {
+                \Log::error('Treatment model creating() - service_id is missing!', [
+                    'treatment_attributes' => $treatment->getAttributes(),
+                    'treatment_raw' => $treatment->getRawOriginal(),
+                    'fillable' => $treatment->getFillable(),
+                ]);
+                
+                // This should never happen if form validation works, but if it does, we'll catch it here
+                // Don't throw here - let the database constraint catch it so we can see the issue
+            }
+        });
+    }
+
     /**
      * Set the treatment_types attribute.
      */

@@ -10,12 +10,60 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ViewField;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Illuminate\Support\Facades\Storage;
 
 class ViewPatient extends ViewRecord
 {
     protected static string $resource = PatientResource::class;
+
+    public function form(Schema $schema): Schema
+    {
+        // Get the base form from PatientResource
+        $baseForm = PatientResource::form($schema);
+        $baseComponents = $baseForm->getSchema();
+        $modifiedComponents = [];
+        
+        // Iterate through components and replace diagnosis field
+        foreach ($baseComponents as $component) {
+            if ($component instanceof Section) {
+                $sectionFields = [];
+                $sectionSchema = $component->getSchema();
+                
+                foreach ($sectionSchema as $field) {
+                    // Check if this is the diagnosis CanvasPointerField
+                    $fieldName = method_exists($field, 'getName') ? $field->getName() : null;
+                    
+                    if ($fieldName === 'diagnosis') {
+                        // Replace with ViewField for smaller image display
+                        $sectionFields[] = ViewField::make('diagnosis')
+                            ->label(__('filament.diagnosis'))
+                            ->view('filament.forms.components.diagnosis-view')
+                            ->columnSpanFull();
+                    } else {
+                        $sectionFields[] = $field;
+                    }
+                }
+                
+                // Rebuild section with modified fields
+                $modifiedComponents[] = Section::make($component->getLabel())
+                    ->description($component->getDescription())
+                    ->icon($component->getIcon())
+                    ->columns($component->getColumns())
+                    ->schema($sectionFields)
+                    ->collapsible($component->isCollapsible())
+                    ->collapsed($component->isCollapsed());
+            } else {
+                $modifiedComponents[] = $component;
+            }
+        }
+        
+        return $schema->schema($modifiedComponents);
+    }
 
     protected function getHeaderActions(): array
     {
