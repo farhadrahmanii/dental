@@ -79,4 +79,29 @@ class Invoice extends Model
         return $query->where('due_date', '<', now())
                     ->where('status', '!=', 'paid');
     }
+
+    /**
+     * Automatically set required fields when creating an invoice.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (Invoice $invoice): void {
+            // Generate a sequential invoice number if not provided
+            if (blank($invoice->invoice_number)) {
+                $last = Invoice::orderByDesc('id')->first();
+                $next = 1;
+                if ($last && preg_match('/INV-(\d+)/', (string) $last->invoice_number, $m)) {
+                    $next = ((int) $m[1]) + 1;
+                } elseif ($last) {
+                    $next = (int) $last->id + 1;
+                }
+                $invoice->invoice_number = 'INV-' . str_pad((string) $next, 5, '0', STR_PAD_LEFT);
+            }
+
+            // Ensure created_by is set to the current user or the first available user
+            if (blank($invoice->created_by)) {
+                $invoice->created_by = auth()->id() ?? \App\Models\User::query()->value('id');
+            }
+        });
+    }
 }
