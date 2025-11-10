@@ -4,6 +4,7 @@ namespace App\Enums;
 
 enum ToothNumber: string
 {
+    case All  = 'All';
     case T1 = '1';
     case T2 = '2';
     case T3 = '3';
