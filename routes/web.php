@@ -8,7 +8,6 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\PwaController;
 
 // Frontend routes for dental practice
 Route::get('/', [DentalController::class, 'home'])->name('home');
@@ -54,8 +53,5 @@ Route::get('/api/patient/search', [AppointmentController::class, 'searchPatient'
 //     Route::resource('appointments', AppointmentController::class);
 //     Route::patch('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
 // });
-
-// PWA Routes
-Route::get('/pwa', [PwaController::class, 'index'])->name('pwa');
 
 
