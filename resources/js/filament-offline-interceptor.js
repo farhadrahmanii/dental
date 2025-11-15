@@ -71,113 +71,280 @@ class FilamentOfflineInterceptor {
 
     // Intercept Livewire form submissions
     interceptLivewireSubmissions() {
-        // Intercept Livewire HTTP requests
+        const self = this;
+
+        // Intercept Livewire v3 commit method
         if (window.Livewire) {
-            // Override Livewire's HTTP methods
-            const originalRequest = window.Livewire.request || window.Livewire.http?.request;
-            
-            if (originalRequest) {
-                const self = this;
-                
-                window.Livewire.request = async function(...args) {
-                    // Check if offline
-                    if (!navigator.onLine) {
-                        const url = args[0] || window.location.href;
-                        const options = args[1] || {};
-                        
-                        // Only intercept if it's a form submission
-                        if (options.method && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(options.method)) {
-                            const modelType = self.getModelTypeFromUrl(url);
-                            
-                            if (modelType) {
-                                // Extract data from options
-                                const formData = options.body || options.data || {};
-                                let data = {};
-                                
-                                if (formData instanceof FormData) {
-                                    for (let [key, value] of formData.entries()) {
-                                        data[key] = value;
-                                    }
-                                } else if (typeof formData === 'string') {
-                                    try {
-                                        data = JSON.parse(formData);
-                                    } catch (e) {
-                                        // Try URL-encoded format
-                                        const params = new URLSearchParams(formData);
-                                        params.forEach((value, key) => {
-                                            data[key] = value;
-                                        });
-                                    }
-                                } else {
-                                    data = formData;
-                                }
-
-                                // Determine operation
-                                let operation = 'create';
-                                if (options.method === 'DELETE') {
-                                    operation = 'delete';
-                                } else if (options.method === 'PUT' || options.method === 'PATCH') {
-                                    operation = 'update';
-                                } else if (url.match(/\/\d+$/)) {
-                                    operation = 'update';
-                                }
-
-                                // Extract ID if updating/deleting
-                                const idMatch = url.match(/\/(\d+)$/);
-                                const serverId = idMatch ? parseInt(idMatch[1]) : null;
-
-                                // Save offline
+            // Wait for Livewire to be fully initialized
+            const initLivewireInterception = () => {
+                // Intercept Livewire's commit method (v3)
+                if (window.Livewire.committer) {
+                    const originalCommit = window.Livewire.committer.commit;
+                    if (originalCommit) {
+                        window.Livewire.committer.commit = async function(...args) {
+                            if (!navigator.onLine) {
                                 try {
-                                    if (operation === 'delete') {
-                                        await window.offlineDB.deleteRecord(modelType, serverId);
-                                    } else if (operation === 'update') {
-                                        await window.offlineDB.updateRecord(modelType, serverId, data);
-                                    } else {
-                                        await window.offlineDB.saveRecord(modelType, data, operation);
+                                    const payload = args[0] || {};
+                                    const component = payload.component || payload;
+                                    
+                                    // Extract form data from Livewire payload
+                                    if (component && component.fingerprint && component.fingerprint.name) {
+                                        const componentName = component.fingerprint.name;
+                                        
+                                        // Check if it's a Filament form component
+                                        if (componentName.includes('Filament') || componentName.includes('EditRecord') || componentName.includes('CreateRecord')) {
+                                            // Extract form data from updates
+                                            const updates = component.updates || {};
+                                            const snapshot = component.snapshot || {};
+                                            
+                                            // Get the current URL to determine model type
+                                            const currentUrl = window.location.href;
+                                            const modelType = self.getModelTypeFromUrl(currentUrl);
+                                            
+                                            if (modelType) {
+                                                // Extract form data from Livewire updates
+                                                const formData = {};
+                                                
+                                                // Merge updates into form data
+                                                Object.keys(updates).forEach(key => {
+                                                    if (!key.startsWith('_') && key !== 'mountedFormComponentActionsData') {
+                                                        formData[key] = updates[key];
+                                                    }
+                                                });
+                                                
+                                                // Also check snapshot data
+                                                if (snapshot.data) {
+                                                    Object.keys(snapshot.data).forEach(key => {
+                                                        if (!key.startsWith('_') && !formData.hasOwnProperty(key)) {
+                                                            formData[key] = snapshot.data[key];
+                                                        }
+                                                    });
+                                                }
+                                                
+                                                // Determine operation from URL
+                                                let operation = 'create';
+                                                const idMatch = currentUrl.match(/\/(\d+)(?:\/|$)/);
+                                                const serverId = idMatch ? parseInt(idMatch[1]) : null;
+                                                
+                                                if (serverId) {
+                                                    operation = 'update';
+                                                }
+                                                
+                                                // Save offline
+                                                if (operation === 'update' && serverId) {
+                                                    await window.offlineDB.updateRecord(modelType, serverId, formData);
+                                                } else {
+                                                    await window.offlineDB.saveRecord(modelType, formData, operation);
+                                                }
+                                                
+                                                // Show notification
+                                                self.showNotification('Offline Mode', 
+                                                    'Your ' + operation + ' operation has been saved and will be synced when you are back online.', 
+                                                    'warning'
+                                                );
+                                                
+                                                // Return mock success response
+                                                return Promise.resolve({
+                                                    effects: {
+                                                        html: document.body.innerHTML,
+                                                        dirty: []
+                                                    }
+                                                });
+                                            }
+                                        }
                                     }
-
-                                    // Show notification
-                                    if (window.Livewire && window.Livewire.dispatch) {
-                                        window.Livewire.dispatch('notify', {
-                                            type: 'warning',
-                                            title: 'Offline Mode',
-                                            body: 'Your ' + operation + ' operation has been saved and will be synced when you are back online.'
-                                        });
-                                    }
-
-                                    // Return a mock success response
-                                    return Promise.resolve({
-                                        ok: true,
-                                        status: 200,
-                                        json: async () => ({ success: true, offline: true })
-                                    });
                                 } catch (error) {
-                                    console.error('Failed to save offline:', error);
-                                    return Promise.reject(error);
+                                    console.error('Failed to intercept Livewire commit:', error);
                                 }
                             }
-                        }
+                            
+                            // Online - proceed with normal commit
+                            return originalCommit.apply(this, args);
+                        };
                     }
-
-                    // Online - proceed with normal request
-                    return originalRequest.apply(this, args);
-                };
+                }
+            };
+            
+            // Try to initialize immediately
+            if (window.Livewire.committer) {
+                initLivewireInterception();
+            } else {
+                // Wait for Livewire to initialize
+                document.addEventListener('livewire:init', () => {
+                    setTimeout(initLivewireInterception, 100);
+                });
             }
         }
 
-        // Intercept fetch requests (Livewire uses fetch)
+        // Intercept fetch requests (Livewire uses fetch for /livewire/update and /livewire/commit)
         const originalFetch = window.fetch;
-        const self = this;
 
         window.fetch = async function(...args) {
             const url = args[0];
             const options = args[1] || {};
 
-            // Check if offline and it's a POST/PUT/DELETE request
-            if (!navigator.onLine && options.method && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(options.method)) {
+            // Check if offline and it's a POST request to Livewire endpoints
+            if (!navigator.onLine && options.method === 'POST') {
                 const urlString = typeof url === 'string' ? url : url.url || '';
                 
-                // Only intercept admin routes
+                // Intercept Livewire update/commit requests
+                if (urlString.includes('/livewire/update') || urlString.includes('/livewire/commit')) {
+                    try {
+                        // Parse the request body
+                        let payload = {};
+                        if (options.body) {
+                            if (options.body instanceof FormData) {
+                                // Convert FormData to object
+                                for (let [key, value] of options.body.entries()) {
+                                    if (key === 'components' || key === 'snapshot') {
+                                        try {
+                                            payload[key] = JSON.parse(value);
+                                        } catch (e) {
+                                            payload[key] = value;
+                                        }
+                                    } else {
+                                        payload[key] = value;
+                                    }
+                                }
+                            } else if (typeof options.body === 'string') {
+                                try {
+                                    payload = JSON.parse(options.body);
+                                } catch (e) {
+                                    // Try URL-encoded format
+                                    const params = new URLSearchParams(options.body);
+                                    params.forEach((value, key) => {
+                                        if (key === 'components' || key === 'snapshot') {
+                                            try {
+                                                payload[key] = JSON.parse(value);
+                                            } catch (e2) {
+                                                payload[key] = value;
+                                            }
+                                        } else {
+                                            payload[key] = value;
+                                        }
+                                    });
+                                }
+                            } else {
+                                payload = options.body;
+                            }
+                        }
+                        
+                        // Extract component data
+                        const components = payload.components || [];
+                        const currentUrl = window.location.href;
+                        const modelType = self.getModelTypeFromUrl(currentUrl);
+                        
+                        if (modelType) {
+                            // Try to extract form data from Livewire payload
+                            let formData = {};
+                            
+                            if (components.length > 0) {
+                                // Get the first component (usually the form component)
+                                const component = components[0];
+                                const updates = component.updates || {};
+                                const snapshot = component.snapshot || {};
+                                
+                                // Merge updates
+                                Object.keys(updates).forEach(key => {
+                                    if (!key.startsWith('_') && 
+                                        key !== 'mountedFormComponentActionsData' &&
+                                        key !== 'mountedFormComponentActions' &&
+                                        !key.includes('$')) {
+                                        formData[key] = updates[key];
+                                    }
+                                });
+                                
+                                // Merge snapshot data (form state)
+                                if (snapshot.data) {
+                                    Object.keys(snapshot.data).forEach(key => {
+                                        if (!key.startsWith('_') && 
+                                            !formData.hasOwnProperty(key) &&
+                                            !key.includes('$')) {
+                                            formData[key] = snapshot.data[key];
+                                        }
+                                    });
+                                }
+                                
+                                // Also check serverMemo for form data
+                                if (snapshot.serverMemo && snapshot.serverMemo.data) {
+                                    Object.keys(snapshot.serverMemo.data).forEach(key => {
+                                        if (!key.startsWith('_') && 
+                                            !formData.hasOwnProperty(key) &&
+                                            !key.includes('$')) {
+                                            formData[key] = snapshot.serverMemo.data[key];
+                                        }
+                                    });
+                                }
+                            }
+                            
+                            // Fallback: Extract from DOM form if payload doesn't have enough data
+                            if (Object.keys(formData).length === 0 || Object.keys(formData).length < 3) {
+                                const form = document.querySelector('form[wire\\:submit], form[wire\\:submit\\.prevent]');
+                                if (form) {
+                                    const formDataObj = new FormData(form);
+                                    for (let [key, value] of formDataObj.entries()) {
+                                        if (!key.startsWith('_') && key !== '_token' && key !== '_method') {
+                                            formData[key] = value;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Only proceed if we have form data
+                            if (Object.keys(formData).length > 0) {
+                                // Determine operation
+                                let operation = 'create';
+                                const idMatch = currentUrl.match(/\/(\d+)(?:\/|$)/);
+                                const serverId = idMatch ? parseInt(idMatch[1]) : null;
+                                
+                                if (serverId) {
+                                    operation = 'update';
+                                }
+                                
+                                // Save offline
+                                if (operation === 'update' && serverId) {
+                                    await window.offlineDB.updateRecord(modelType, serverId, formData);
+                                } else {
+                                    await window.offlineDB.saveRecord(modelType, formData, operation);
+                                }
+                                
+                                // Show notification
+                                self.showNotification('Offline Mode', 
+                                    'Your ' + operation + ' operation has been saved and will be synced when you are back online.', 
+                                    'warning'
+                                );
+                                
+                                // Return mock success response that Livewire expects
+                                // We need to return a response that matches Livewire's expected format
+                                const responseData = {
+                                    effects: {
+                                        html: '',
+                                        dirty: []
+                                    }
+                                };
+                                
+                                // Add component data if available
+                                if (components.length > 0 && components[0].snapshot) {
+                                    responseData.serverMemo = components[0].snapshot.serverMemo || {};
+                                    responseData.fingerprint = components[0].snapshot.fingerprint || {};
+                                }
+                                
+                                return Promise.resolve(new Response(
+                                    JSON.stringify(responseData),
+                                    {
+                                        status: 200,
+                                        statusText: 'OK',
+                                        headers: { 'Content-Type': 'application/json' }
+                                    }
+                                ));
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Failed to intercept Livewire fetch:', error);
+                    }
+                }
+                
+                // Also intercept admin routes (fallback)
                 if (urlString.includes('/admin/')) {
                     const modelType = self.getModelTypeFromUrl(urlString);
                     
@@ -255,7 +422,7 @@ class FilamentOfflineInterceptor {
                 }
             }
 
-            // Online or not admin route - proceed normally
+            // Online or not intercepted route - proceed normally
             return originalFetch.apply(this, args);
         };
     }

@@ -303,6 +303,17 @@
 </script>
 
 {{-- Load offline database and interceptor modules --}}
-@vite(['resources/js/offline-database.js', 'resources/js/filament-offline-interceptor.js'])
+@php
+    $manifestPath = public_path('build/manifest.json');
+    $hotPath = public_path('hot');
+@endphp
+
+@if (file_exists($hotPath))
+    {{-- Development: Use Vite dev server --}}
+    @vite(['resources/js/offline-database.js', 'resources/js/filament-offline-interceptor.js'])
+@elseif (file_exists($manifestPath))
+    {{-- Production: These files are bundled in app.js, which is already loaded --}}
+    {{-- No need to load separately as they're imported in resources/js/app.js --}}
+@endif
 @endif
 
