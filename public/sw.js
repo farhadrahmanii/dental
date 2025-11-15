@@ -1,8 +1,12 @@
 // Service Worker for Dental Practice PWA - Full Offline Support with Filament
-const CACHE_NAME = 'dental-pwa-v3';
-const RUNTIME_CACHE = 'dental-runtime-v3';
-const FILAMENT_CACHE = 'filament-assets-v3';
-const IMAGES_CACHE = 'images-cache-v3';
+const CACHE_NAME = 'dental-pwa-v4';
+const RUNTIME_CACHE = 'dental-runtime-v4';
+const FILAMENT_CACHE = 'filament-assets-v4';
+const FILAMENT_PAGES_CACHE = 'filament-pages-v4'; // Dedicated cache for FilamentPHP pages (30 days)
+const IMAGES_CACHE = 'images-cache-v4';
+
+// Cache expiration: 30 days in milliseconds
+const FILAMENT_CACHE_EXPIRATION = 30 * 24 * 60 * 60 * 1000; // 30 days
 
 // Essential assets to cache on install
 const CACHE_FILES = [
@@ -57,6 +61,7 @@ self.addEventListener('activate', (event) => {
             if (cacheName !== CACHE_NAME && 
                 cacheName !== RUNTIME_CACHE && 
                 cacheName !== FILAMENT_CACHE &&
+                cacheName !== FILAMENT_PAGES_CACHE &&
                 cacheName !== IMAGES_CACHE) {
               console.log('🗑️ Service Worker: Cleaning up old cache:', cacheName);
               return caches.delete(cacheName);
@@ -91,12 +96,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Handle Filament admin routes - Cache all admin pages
+  // Handle Filament admin routes - Cache all admin pages with 30-day expiration
   if (url.pathname.startsWith('/admin')) {
     event.respondWith(
-      networkFirstStrategy(event.request, RUNTIME_CACHE)
+      filamentPageStrategy(event.request)
         .catch(() => {
-          // Try to return cached admin page
+          // Try to return cached admin page (even if expired)
           return caches.match(event.request).then((cached) => {
             if (cached) return cached;
             // Fallback to admin login page
@@ -143,12 +148,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Handle Livewire requests (Filament uses Livewire)
+  // Handle Livewire requests (Filament uses Livewire) - Cache for 30 days
   if (event.request.headers.get('X-Livewire') || 
       url.searchParams.has('livewire') ||
       event.request.url.includes('/livewire/')) {
     event.respondWith(
-      networkFirstStrategy(event.request, RUNTIME_CACHE)
+      filamentPageStrategy(event.request)
         .catch(() => {
           // Return cached response if available
           return caches.match(event.request);
@@ -272,6 +277,71 @@ async function cacheFirstStrategy(request, cacheName) {
   }
 }
 
+// FilamentPHP page strategy - CacheFirst with 30-day expiration
+async function filamentPageStrategy(request) {
+  const cache = await caches.open(FILAMENT_PAGES_CACHE);
+  const cachedResponse = await cache.match(request);
+  
+  // Check if cached response exists and is still valid (within 30 days)
+  if (cachedResponse) {
+    const cachedTimestamp = cachedResponse.headers.get('X-Cache-Date');
+    if (cachedTimestamp) {
+      const cacheAge = Date.now() - parseInt(cachedTimestamp);
+      if (cacheAge < FILAMENT_CACHE_EXPIRATION) {
+        console.log('✅ Service Worker: Serving FilamentPHP page from cache (age: ' + Math.floor(cacheAge / (24 * 60 * 60 * 1000)) + ' days)');
+        return cachedResponse;
+      } else {
+        console.log('⏰ Service Worker: FilamentPHP page cache expired, fetching fresh');
+        // Cache expired, but continue to try network
+      }
+    } else {
+      // No timestamp, treat as valid (backward compatibility)
+      return cachedResponse;
+    }
+  }
+  
+  try {
+    // Fetch fresh content from network (cache expired or not found)
+    const networkResponse = await fetch(request);
+    
+    if (networkResponse && networkResponse.status === 200) {
+      // Clone response and add cache timestamp header
+      const responseToCache = networkResponse.clone();
+      const headers = new Headers(responseToCache.headers);
+      headers.set('X-Cache-Date', Date.now().toString());
+      
+      // Create new response with timestamp header
+      const cachedResponseWithTimestamp = new Response(responseToCache.body, {
+        status: responseToCache.status,
+        statusText: responseToCache.statusText,
+        headers: headers
+      });
+      
+      // Store in cache with timestamp
+      cache.put(request, cachedResponseWithTimestamp).catch(err => {
+        console.warn('Failed to cache FilamentPHP page:', err);
+      });
+      
+      console.log('💾 Service Worker: Cached FilamentPHP page for 30 days');
+      return networkResponse;
+    }
+    
+    // If network response not ok, return cached if available (even if expired)
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    
+    throw new Error('Network response not ok');
+  } catch (error) {
+    // Network failed, return cached response if available (even if expired)
+    if (cachedResponse) {
+      console.log('⚠️ Service Worker: Network failed, serving expired FilamentPHP cache');
+      return cachedResponse;
+    }
+    throw error;
+  }
+}
+
 // Background sync for offline data
 self.addEventListener('sync', (event) => {
   console.log('🔄 Service Worker: Background sync', event.tag);
@@ -382,9 +452,20 @@ self.addEventListener('message', (event) => {
   
   if (event.data && event.data.type === 'CACHE_FILAMENT_PAGE') {
     event.waitUntil(
-      caches.open(RUNTIME_CACHE)
+      caches.open(FILAMENT_PAGES_CACHE)
         .then((cache) => {
-          return cache.put(event.data.url, event.data.response);
+          // Add timestamp to response for expiration tracking
+          const response = event.data.response;
+          const headers = new Headers(response.headers);
+          headers.set('X-Cache-Date', Date.now().toString());
+          
+          const responseWithTimestamp = new Response(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: headers
+          });
+          
+          return cache.put(event.data.url, responseWithTimestamp);
         })
     );
   }

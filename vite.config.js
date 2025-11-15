@@ -68,6 +68,34 @@ export default defineConfig({
                                 statuses: [0, 200]
                             }
                         }
+                    },
+                    {
+                        urlPattern: /^https:\/\/.*\/admin\/.*/i,
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'filament-pages-cache',
+                            cacheableResponse: {
+                                statuses: [0, 200]
+                            },
+                            expiration: {
+                                maxEntries: 100,
+                                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+                            }
+                        }
+                    },
+                    {
+                        urlPattern: /^https:\/\/.*\/livewire\/.*/i,
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'filament-pages-cache',
+                            cacheableResponse: {
+                                statuses: [0, 200]
+                            },
+                            expiration: {
+                                maxEntries: 100,
+                                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+                            }
+                        }
                     }
                 ]
             },

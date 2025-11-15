@@ -4,8 +4,9 @@ import { createPinia } from 'pinia';
 import App from './components/App.vue';
 import { registerSW } from 'virtual:pwa-register';
 
-// Import offline storage for offline data management
-import './offline-storage';
+// Import offline database and interceptor for comprehensive offline support
+import './offline-database';
+import './filament-offline-interceptor';
 
 // Create Vue app
 const app = createApp(App);

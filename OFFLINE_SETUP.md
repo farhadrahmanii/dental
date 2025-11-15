@@ -56,6 +56,8 @@ The entire application now works offline without internet connection. All routes
 - ✅ Patients page (`/patients`)
 - ✅ Patient detail pages (`/patient/{id}`)
 - ✅ Financial dashboard (`/financial/dashboard`)
+- ✅ **FilamentPHP admin pages (`/admin/*`) - Cached for 30 days**
+- ✅ **Livewire requests (FilamentPHP) - Cached for 30 days**
 - ✅ All other routes visited by users
 
 ### Assets Cached
@@ -97,6 +99,36 @@ navigator.serviceWorker.getRegistration().then(reg => {
   console.log('Service Worker:', reg ? 'Active' : 'Not registered');
 });
 ```
+
+## FilamentPHP 30-Day Cache
+
+### Overview
+FilamentPHP admin pages and Livewire requests are cached for **30 days** to improve performance and offline access. This includes:
+
+- All admin panel pages (`/admin/*`)
+- Livewire component requests
+- FilamentPHP resource pages
+- FilamentPHP dashboard
+
+### How It Works
+
+1. **First Visit**: FilamentPHP pages are fetched from the network and cached with a timestamp
+2. **Subsequent Visits**: Pages are served from cache if:
+   - Cache exists AND
+   - Cache age is less than 30 days
+3. **After 30 Days**: Cache is considered expired and fresh content is fetched from the network
+4. **Offline**: Even expired cache is served if network is unavailable
+
+### Cache Expiration
+- Cache expiration is tracked via timestamps stored in response headers
+- Automatic expiration check on every request
+- Fresh content fetched when cache exceeds 30 days
+- Console logs indicate cache status for debugging
+
+### Cache Storage
+- Dedicated cache: `filament-pages-v4`
+- Separate from other page caches for better management
+- Automatic cleanup of expired entries
 
 ## Cache Management
 
@@ -178,9 +210,12 @@ The cache version is stored in `CACHE_NAME` in `public/sw.js`. When you update t
 
 - ✅ Full application works offline
 - ✅ All routes cached dynamically
+- ✅ **FilamentPHP admin pages cached for 30 days**
+- ✅ **Livewire requests (FilamentPHP) cached for 30 days**
 - ✅ Static assets cached
 - ✅ API responses cached
 - ✅ Automatic cache updates
+- ✅ Cache expiration tracking (30 days for FilamentPHP)
 - ✅ Offline indicator
 - ✅ Background sync support
 - ✅ Push notification support

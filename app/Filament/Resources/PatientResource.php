@@ -148,8 +148,8 @@ class PatientResource extends Resource
                             ->label(__('filament.diagnosis'))
                             ->pointRadius(15)
                             ->imageUrl('/images/dental-chart.jpg')
-                            ->width(800)
-                            ->height(800)
+                            ->width(500)
+                            ->height(500)
                             ->storageDisk('public')
                             ->storageDirectory('patients/diagnosis')
                             ->columnSpanFull()
@@ -184,11 +184,32 @@ class PatientResource extends Resource
                         Repeater::make('treatments')
                             ->relationship('treatments')
                             ->schema([
-                                Select::make('treatment_types')
-                                    ->label(__('filament.treatment_types'))
-                                    ->options(array_combine(DentalTreatment::values(), DentalTreatment::values()))
-                                    ->multiple()
-                                    ->required(),
+                                Select::make('service_id')
+                                    ->label(__('filament.service'))
+                                    ->options(function () {
+                                        return \App\Models\Service::where('is_active', true)
+                                            ->orderBy('name_en')
+                                            ->orderBy('name')
+                                            ->get()
+                                            ->mapWithKeys(function ($service) {
+                                                $name = $service->name;
+                                                if (empty($name)) {
+                                                    $locale = app()->getLocale();
+                                                    $fallbackLocale = config('app.fallback_locale', 'en');
+                                                    $name = $service->getRawOriginal("name_{$locale}") 
+                                                        ?: $service->getRawOriginal("name_{$fallbackLocale}")
+                                                        ?: $service->getRawOriginal('name')
+                                                        ?: "Service #{$service->id}";
+                                                }
+                                                return [(int) $service->id => (string) $name];
+                                            })
+                                            ->toArray();
+                                    })
+                                    ->searchable()
+                                    ->required()
+                                    ->native(false)
+                                    ->placeholder(__('filament.select_service'))
+                                    ->helperText(__('filament.select_service_for_treatment')),
                                 Select::make('tooth_numbers')
                                     ->label(__('filament.tooth_numbers'))
                                     ->options(array_combine(ToothNumber::values(), ToothNumber::values()))
@@ -206,8 +227,8 @@ class PatientResource extends Resource
                             ->collapsible()
                             ->collapsed()
                             ->itemLabel(fn (array $state): ?string =>
-                                isset($state['treatment_types']) && is_array($state['treatment_types'])
-                                    ? implode(', ', $state['treatment_types'])
+                                isset($state['service_id'])
+                                    ? \App\Models\Service::find($state['service_id'])?->name ?? __('filament.new_treatment')
                                     : __('filament.new_treatment')
                             )
                             ->addActionLabel(__('filament.add_treatment'))

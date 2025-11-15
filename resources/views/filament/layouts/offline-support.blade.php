@@ -5,25 +5,26 @@
     (function() {
         'use strict';
         
-        // Initialize IndexedDB for offline storage
-        let offlineDB = null;
-        const initDB = () => {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open('dental-offline-db', 1);
-                request.onerror = () => reject(request.error);
-                request.onsuccess = () => {
-                    offlineDB = request.result;
-                    resolve(offlineDB);
-                };
-                request.onupgradeneeded = (e) => {
-                    const db = e.target.result;
-                    if (!db.objectStoreNames.contains('pendingSubmissions')) {
-                        db.createObjectStore('pendingSubmissions', { keyPath: 'id', autoIncrement: true });
+        // Wait for offline database to be initialized
+        const waitForOfflineDB = () => {
+            return new Promise((resolve) => {
+                if (window.offlineDB) {
+                    resolve(window.offlineDB);
+                    return;
+                }
+                
+                const checkInterval = setInterval(() => {
+                    if (window.offlineDB) {
+                        clearInterval(checkInterval);
+                        resolve(window.offlineDB);
                     }
-                    if (!db.objectStoreNames.contains('cachedImages')) {
-                        db.createObjectStore('cachedImages', { keyPath: 'url' });
-                    }
-                };
+                }, 100);
+                
+                // Timeout after 5 seconds
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                    resolve(null);
+                }, 5000);
             });
         };
         
@@ -66,53 +67,70 @@
             });
         };
         
-        // Store pending form submission
+        // Store pending form submission (using new offline database)
         const storePendingSubmission = async (formData) => {
             try {
-                if (!offlineDB) {
-                    await initDB();
+                const db = await waitForOfflineDB();
+                if (!db) {
+                    console.warn('Offline database not available');
+                    return;
                 }
                 
-                return new Promise((resolve, reject) => {
-                    const transaction = offlineDB.transaction(['pendingSubmissions'], 'readwrite');
-                    const store = transaction.objectStore('pendingSubmissions');
+                // Extract model type from URL
+                const url = formData.url || window.location.href;
+                let modelType = null;
+                
+                const urlMap = {
+                    '/admin/patients': 'patients',
+                    '/admin/appointments': 'appointments',
+                    '/admin/payments': 'payments',
+                    '/admin/services': 'services',
+                    '/admin/expenses': 'expenses',
+                    '/admin/invoices': 'invoices'
+                };
+                
+                for (const [path, model] of Object.entries(urlMap)) {
+                    if (url.includes(path)) {
+                        modelType = model;
+                        break;
+                    }
+                }
+                
+                if (!modelType) {
+                    const match = url.match(/\/admin\/(\w+)/);
+                    if (match) {
+                        modelType = match[1].replace(/s$/, '');
+                    }
+                }
+                
+                if (modelType) {
+                    // Determine operation
+                    let operation = 'create';
+                    if (formData.method === 'DELETE' || formData.data._method === 'DELETE') {
+                        operation = 'delete';
+                    } else if (formData.method === 'PUT' || formData.method === 'PATCH' || formData.data._method) {
+                        operation = 'update';
+                    } else if (url.match(/\/\d+$/)) {
+                        operation = 'update';
+                    }
                     
-                    const submission = {
-                        url: formData.url,
-                        method: formData.method,
-                        data: formData.data,
-                        csrfToken: formData.csrfToken,
-                        headers: formData.headers,
-                        timestamp: Date.now(),
-                        synced: false
-                    };
+                    // Extract ID if updating/deleting
+                    const idMatch = url.match(/\/(\d+)$/);
+                    const serverId = idMatch ? parseInt(idMatch[1]) : null;
                     
-                    const request = store.add(submission);
-                    request.onsuccess = () => {
-                        console.log('✅ Form submission stored for offline sync:', request.result);
-                        resolve(request.result);
-                    };
-                    request.onerror = () => {
-                        console.error('❌ Failed to store submission:', request.error);
-                        reject(request.error);
-                    };
-                });
+                    // Save using offline database
+                    if (operation === 'delete' && serverId) {
+                        await db.deleteRecord(modelType, serverId);
+                    } else if (operation === 'update' && serverId) {
+                        await db.updateRecord(modelType, serverId, formData.data);
+                    } else {
+                        await db.saveRecord(modelType, formData.data, operation);
+                    }
+                    
+                    console.log('✅ Form submission stored offline:', modelType, operation);
+                }
             } catch (err) {
                 console.error('Failed to store submission:', err);
-                // Fallback to localStorage if IndexedDB fails
-                try {
-                    const submissions = JSON.parse(localStorage.getItem('pendingSubmissions') || '[]');
-                    submissions.push({
-                        ...formData,
-                        id: Date.now(),
-                        timestamp: Date.now(),
-                        synced: false
-                    });
-                    localStorage.setItem('pendingSubmissions', JSON.stringify(submissions));
-                    console.log('✅ Form submission stored in localStorage');
-                } catch (e) {
-                    console.error('Failed to store in localStorage:', e);
-                }
             }
         };
         
@@ -228,68 +246,28 @@
             });
         }
         
-        // Sync pending data when back online
+        // Sync pending data when back online (using new offline database)
         const syncPendingData = async () => {
-            if (!offlineDB) {
-                await initDB();
+            const db = await waitForOfflineDB();
+            if (!db) {
+                console.warn('Offline database not available for sync');
+                return;
             }
             
             try {
-                const transaction = offlineDB.transaction(['pendingSubmissions'], 'readonly');
-                const store = transaction.objectStore('pendingSubmissions');
-                const index = store.index('synced');
-                const request = index.getAll(false); // Get unsynced submissions
-                
-                request.onsuccess = async () => {
-                    const submissions = request.result || [];
-                    console.log(`🔄 Found ${submissions.length} pending submissions to sync`);
+                const result = await db.syncPendingData();
+                if (result.success && result.synced > 0) {
+                    localStorage.setItem('last_sync', new Date().toISOString());
                     
-                    for (const submission of submissions) {
-                        try {
-                            const response = await fetch(submission.url, {
-                                method: submission.method || 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': submission.csrfToken,
-                                    'X-Requested-With': 'XMLHttpRequest',
-                                    'Accept': 'application/json',
-                                    ...submission.headers
-                                },
-                                body: JSON.stringify(submission.data)
-                            });
-                            
-                            if (response.ok) {
-                                // Mark as synced
-                                const updateTransaction = offlineDB.transaction(['pendingSubmissions'], 'readwrite');
-                                const updateStore = updateTransaction.objectStore('pendingSubmissions');
-                                submission.synced = true;
-                                submission.syncedAt = Date.now();
-                                await new Promise((resolve, reject) => {
-                                    const updateRequest = updateStore.put(submission);
-                                    updateRequest.onsuccess = () => resolve();
-                                    updateRequest.onerror = () => reject(updateRequest.error);
-                                });
-                                
-                                console.log('✅ Synced submission:', submission.id);
-                            } else {
-                                console.warn('⚠️ Failed to sync submission:', submission.id, response.status);
-                            }
-                        } catch (error) {
-                            console.error('❌ Error syncing submission:', submission.id, error);
-                        }
+                    // Show notification
+                    if (window.Livewire && window.Livewire.dispatch) {
+                        window.Livewire.dispatch('notify', {
+                            type: 'success',
+                            title: 'Sync Complete',
+                            body: `Synced ${result.synced} pending item(s) successfully.`
+                        });
                     }
-                    
-                    if (submissions.length > 0) {
-                        // Show notification
-                        if (window.Livewire && window.Livewire.dispatch) {
-                            window.Livewire.dispatch('notify', {
-                                type: 'success',
-                                title: 'Sync Complete',
-                                body: `Synced ${submissions.length} pending submission(s).`
-                            });
-                        }
-                    }
-                };
+                }
             } catch (error) {
                 console.error('❌ Error syncing pending data:', error);
             }
@@ -304,7 +282,27 @@
         if (navigator.onLine) {
             setTimeout(syncPendingData, 2000);
         }
+        
+        // Wait for offline database to be available
+        if (!window.offlineDB) {
+            let attempts = 0;
+            const maxAttempts = 50; // 5 seconds max
+            
+            const checkOfflineDB = setInterval(() => {
+                attempts++;
+                if (window.offlineDB) {
+                    clearInterval(checkOfflineDB);
+                    console.log('✅ Offline database is now available');
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(checkOfflineDB);
+                    console.warn('⚠️ Offline database module not loaded after 5 seconds. Offline features may not work.');
+                }
+            }, 100);
+        }
     })();
 </script>
+
+{{-- Load offline database and interceptor modules --}}
+@vite(['resources/js/offline-database.js', 'resources/js/filament-offline-interceptor.js'])
 @endif
 

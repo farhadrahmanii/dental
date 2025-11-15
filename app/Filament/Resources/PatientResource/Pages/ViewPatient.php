@@ -5,12 +5,14 @@ namespace App\Filament\Resources\PatientResource\Pages;
 use App\Filament\Resources\PatientResource;
 use App\Helpers\CurrencyHelper;
 use App\Models\Payment;
+use App\Enums\ToothNumber;
 use Filament\Actions;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ViewField;
+use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Schema;
@@ -23,46 +25,168 @@ class ViewPatient extends ViewRecord
 
     public function form(Schema $schema): Schema
     {
-        // Get the base form from PatientResource
-        $baseForm = PatientResource::form($schema);
-        $baseComponents = $baseForm->getSchema();
-        $modifiedComponents = [];
-        
-        // Iterate through components and replace diagnosis field
-        foreach ($baseComponents as $component) {
-            if ($component instanceof Section) {
-                $sectionFields = [];
-                $sectionSchema = $component->getSchema();
-                
-                foreach ($sectionSchema as $field) {
-                    // Check if this is the diagnosis CanvasPointerField
-                    $fieldName = method_exists($field, 'getName') ? $field->getName() : null;
-                    
-                    if ($fieldName === 'diagnosis') {
-                        // Replace with ViewField for smaller image display
-                        $sectionFields[] = ViewField::make('diagnosis')
+        // Define the form directly, same as PatientResource but with ViewField for diagnosis
+        return $schema
+            ->schema([
+                Section::make(__('filament.patient_information'))
+                    ->description(__('filament.basic_patient_information'))
+                    ->icon('heroicon-o-user')
+                    ->columns(3)
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('filament.full_name'))
+                            ->disabled(),
+                        TextInput::make('father_name')
+                            ->label(__('filament.father_name'))
+                            ->disabled(),
+                        TextInput::make('age')
+                            ->label(__('filament.age'))
+                            ->disabled(),
+                        Select::make('sex')
+                            ->label(__('filament.gender'))
+                            ->options([
+                                'male' => __('filament.male'),
+                                'female' => __('filament.female'),
+                                'other' => __('filament.other'),
+                            ])
+                            ->disabled(),
+                        TextInput::make('phone_number')
+                            ->label(__('filament.phone_number'))
+                            ->disabled(),
+                        Select::make('marital_status')
+                            ->label(__('filament.marital_status'))
+                            ->options([
+                                'single' => __('filament.single'),
+                                'married' => __('filament.married'),
+                                'divorced' => __('filament.divorced'),
+                                'widowed' => __('filament.widowed'),
+                            ])
+                            ->disabled(),
+                        TextInput::make('occupation')
+                            ->label(__('filament.occupation'))
+                            ->disabled()
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible(),
+
+                Section::make(__('filament.address_information'))
+                    ->description(__('filament.patient_residential_details'))
+                    ->icon('heroicon-o-map-pin')
+                    ->columns(2)
+                    ->schema([
+                        Textarea::make('permanent_address')
+                            ->label(__('filament.permanent_address'))
+                            ->disabled(),
+                        Textarea::make('current_address')
+                            ->label(__('filament.current_address'))
+                            ->disabled(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+
+                Section::make(__('filament.medical_details'))
+                    ->description(__('filament.dental_case_information'))
+                    ->icon('heroicon-o-clipboard-document-list')
+                    ->columns(2)
+                    ->schema([
+                        // Replace CanvasPointerField with ViewField for read-only display
+                        ViewField::make('diagnosis')
                             ->label(__('filament.diagnosis'))
                             ->view('filament.forms.components.diagnosis-view')
-                            ->columnSpanFull();
-                    } else {
-                        $sectionFields[] = $field;
-                    }
-                }
-                
-                // Rebuild section with modified fields
-                $modifiedComponents[] = Section::make($component->getLabel())
-                    ->description($component->getDescription())
-                    ->icon($component->getIcon())
-                    ->columns($component->getColumns())
-                    ->schema($sectionFields)
-                    ->collapsible($component->isCollapsible())
-                    ->collapsed($component->isCollapsed());
-            } else {
-                $modifiedComponents[] = $component;
-            }
-        }
-        
-        return $schema->schema($modifiedComponents);
+                            ->columnSpanFull(),
+                        Textarea::make('comment')
+                            ->label(__('filament.comment'))
+                            ->disabled()
+                            ->columnSpanFull(),
+                        FileUpload::make('images')
+                            ->label(__('filament.patient_images_documents'))
+                            ->disabled()
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible(),
+
+                Section::make(__('filament.treatments_history'))
+                    ->description(__('filament.record_manage_treatments'))
+                    ->icon('heroicon-o-wrench-screwdriver')
+                    ->schema([
+                        \Filament\Forms\Components\Repeater::make('treatments')
+                            ->relationship('treatments')
+                            ->schema([
+                                ViewField::make('service')
+                                    ->label(__('filament.service'))
+                                    ->view('filament.forms.components.view-service'),
+                                ViewField::make('tooth_numbers')
+                                    ->label(__('filament.tooth_numbers'))
+                                    ->view('filament.forms.components.view-tooth-numbers')
+                                    ->columnSpanFull(),
+                                DatePicker::make('treatment_date')
+                                    ->label(__('filament.treatment_date'))
+                                    ->disabled()
+                                    ->dehydrated(false),
+                                Textarea::make('treatment_description')
+                                    ->label(__('filament.treatment_description'))
+                                    ->disabled()
+                                    ->dehydrated(false),
+                            ])
+                            ->columns(2)
+                            ->collapsible()
+                            ->collapsed()
+                            ->itemLabel(fn (array $state): ?string =>
+                                isset($state['service_id'])
+                                    ? \App\Models\Service::find($state['service_id'])?->name ?? __('filament.new_treatment')
+                                    : __('filament.new_treatment')
+                            )
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+
+                Section::make(__('filament.payment_records'))
+                    ->description(__('filament.track_manage_payments'))
+                    ->icon('heroicon-o-currency-dollar')
+                    ->schema([
+                        \Filament\Forms\Components\Repeater::make('payments')
+                            ->relationship('payments')
+                            ->schema([
+                                TextInput::make('amount')
+                                    ->label(__('filament.amount'))
+                                    ->disabled(),
+                                Select::make('payment_method')
+                                    ->label(__('filament.payment_method'))
+                                    ->options([
+                                        'cash' => __('filament.cash'),
+                                        'card' => __('filament.card'),
+                                        'bank_transfer' => __('filament.bank_transfer'),
+                                        'check' => __('filament.check'),
+                                        'other' => __('filament.other'),
+                                    ])
+                                    ->disabled(),
+                                DatePicker::make('payment_date')
+                                    ->label(__('filament.payment_date'))
+                                    ->disabled(),
+                                TextInput::make('reference_number')
+                                    ->label(__('filament.reference_number'))
+                                    ->disabled(),
+                                Textarea::make('notes')
+                                    ->label(__('filament.notes'))
+                                    ->disabled(),
+                            ])
+                            ->columns(2)
+                            ->collapsible()
+                            ->collapsed()
+                            ->itemLabel(fn (array $state): ?string =>
+                                isset($state['amount'])
+                                    ? CurrencyHelper::symbol() . number_format($state['amount'], 2) . ' - ' . ucfirst($state['payment_method'] ?? __('filament.new_payment'))
+                                    : __('filament.new_payment')
+                            )
+                            ->disabled()
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+            ]);
     }
 
     protected function getHeaderActions(): array
