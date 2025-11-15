@@ -16,16 +16,27 @@ class FilamentOfflineInterceptor {
     async init() {
         if (this.initialized) return;
         
-        // Wait for offline database to be ready
-        if (window.offlineDB) {
-            this.setupInterceptors();
-        } else {
-            // Wait a bit for offline database to initialize
-            setTimeout(() => {
-                if (window.offlineDB) {
+        // Setup interceptors immediately - they will check for offlineDB when needed
+        this.setupInterceptors();
+        
+        // Also wait for offline database to be ready and re-setup if needed
+        const checkOfflineDB = () => {
+            if (window.offlineDB) {
+                console.log('✅ Offline database available');
+                if (!this.initialized) {
                     this.setupInterceptors();
                 }
-            }, 1000);
+            } else {
+                // Keep checking
+                setTimeout(checkOfflineDB, 500);
+            }
+        };
+        
+        if (window.offlineDB) {
+            console.log('✅ Offline database already available');
+        } else {
+            console.log('⏳ Waiting for offline database...');
+            checkOfflineDB();
         }
     }
 
@@ -183,19 +194,30 @@ class FilamentOfflineInterceptor {
             const url = args[0];
             const options = args[1] || {};
 
-            // Check if offline and it's a POST request to Livewire endpoints
+            // Check if offline and it's a POST request
             if (!navigator.onLine && options.method === 'POST') {
                 const urlString = typeof url === 'string' ? url : url.url || '';
                 
+                console.log('🔍 Intercepting fetch request:', urlString, 'Offline:', !navigator.onLine);
+                
                 // Intercept Livewire update/commit requests
                 if (urlString.includes('/livewire/update') || urlString.includes('/livewire/commit')) {
+                    console.log('📦 Intercepting Livewire request');
                     try {
-                        // Parse the request body
+                        // Parse the request body - FormData can only be read once, so we need to clone it
                         let payload = {};
+                        let bodyClone = null;
+                        
                         if (options.body) {
                             if (options.body instanceof FormData) {
-                                // Convert FormData to object
+                                // Clone FormData by creating a new one
+                                bodyClone = new FormData();
                                 for (let [key, value] of options.body.entries()) {
+                                    bodyClone.append(key, value);
+                                }
+                                
+                                // Now parse the cloned FormData
+                                for (let [key, value] of bodyClone.entries()) {
                                     if (key === 'components' || key === 'snapshot') {
                                         try {
                                             payload[key] = JSON.parse(value);
@@ -206,6 +228,9 @@ class FilamentOfflineInterceptor {
                                         payload[key] = value;
                                     }
                                 }
+                                
+                                // Replace the original body with the clone for potential retry
+                                options.body = bodyClone;
                             } else if (typeof options.body === 'string') {
                                 try {
                                     payload = JSON.parse(options.body);
@@ -229,12 +254,16 @@ class FilamentOfflineInterceptor {
                             }
                         }
                         
+                        console.log('📋 Parsed payload:', payload);
+                        
                         // Extract component data
                         const components = payload.components || [];
                         const currentUrl = window.location.href;
                         const modelType = self.getModelTypeFromUrl(currentUrl);
                         
-                        if (modelType) {
+                        console.log('🔍 Model type:', modelType, 'Components:', components.length);
+                        
+                        if (modelType && window.offlineDB) {
                             // Try to extract form data from Livewire payload
                             let formData = {};
                             
@@ -243,6 +272,9 @@ class FilamentOfflineInterceptor {
                                 const component = components[0];
                                 const updates = component.updates || {};
                                 const snapshot = component.snapshot || {};
+                                
+                                console.log('📝 Component updates:', Object.keys(updates));
+                                console.log('📸 Snapshot data:', snapshot.data ? Object.keys(snapshot.data) : 'none');
                                 
                                 // Merge updates
                                 Object.keys(updates).forEach(key => {
@@ -279,7 +311,8 @@ class FilamentOfflineInterceptor {
                             
                             // Fallback: Extract from DOM form if payload doesn't have enough data
                             if (Object.keys(formData).length === 0 || Object.keys(formData).length < 3) {
-                                const form = document.querySelector('form[wire\\:submit], form[wire\\:submit\\.prevent]');
+                                console.log('⚠️ Form data from payload insufficient, trying DOM form');
+                                const form = document.querySelector('form[wire\\:submit], form[wire\\:submit\\.prevent], form');
                                 if (form) {
                                     const formDataObj = new FormData(form);
                                     for (let [key, value] of formDataObj.entries()) {
@@ -287,6 +320,7 @@ class FilamentOfflineInterceptor {
                                             formData[key] = value;
                                         }
                                     }
+                                    console.log('📋 Form data from DOM:', Object.keys(formData));
                                 }
                             }
                             
@@ -301,43 +335,61 @@ class FilamentOfflineInterceptor {
                                     operation = 'update';
                                 }
                                 
+                                console.log('💾 Saving offline:', modelType, operation, serverId);
+                                
                                 // Save offline
-                                if (operation === 'update' && serverId) {
-                                    await window.offlineDB.updateRecord(modelType, serverId, formData);
-                                } else {
-                                    await window.offlineDB.saveRecord(modelType, formData, operation);
-                                }
-                                
-                                // Show notification
-                                self.showNotification('Offline Mode', 
-                                    'Your ' + operation + ' operation has been saved and will be synced when you are back online.', 
-                                    'warning'
-                                );
-                                
-                                // Return mock success response that Livewire expects
-                                // We need to return a response that matches Livewire's expected format
-                                const responseData = {
-                                    effects: {
-                                        html: '',
-                                        dirty: []
+                                try {
+                                    if (operation === 'update' && serverId) {
+                                        await window.offlineDB.updateRecord(modelType, serverId, formData);
+                                    } else {
+                                        await window.offlineDB.saveRecord(modelType, formData, operation);
                                     }
-                                };
-                                
-                                // Add component data if available
-                                if (components.length > 0 && components[0].snapshot) {
-                                    responseData.serverMemo = components[0].snapshot.serverMemo || {};
-                                    responseData.fingerprint = components[0].snapshot.fingerprint || {};
-                                }
-                                
-                                return Promise.resolve(new Response(
-                                    JSON.stringify(responseData),
-                                    {
-                                        status: 200,
-                                        statusText: 'OK',
-                                        headers: { 'Content-Type': 'application/json' }
+                                    
+                                    console.log('✅ Saved offline successfully');
+                                    
+                                    // Show notification
+                                    self.showNotification('Offline Mode', 
+                                        'Your ' + operation + ' operation has been saved and will be synced when you are back online.', 
+                                        'warning'
+                                    );
+                                    
+                                    // Return mock success response that Livewire expects
+                                    // Livewire v3 expects a specific response format
+                                    const responseData = {
+                                        effects: {
+                                            html: '',
+                                            dirty: []
+                                        }
+                                    };
+                                    
+                                    // Add component data if available to maintain state
+                                    if (components.length > 0 && components[0].snapshot) {
+                                        responseData.serverMemo = components[0].snapshot.serverMemo || {};
+                                        responseData.fingerprint = components[0].snapshot.fingerprint || {};
                                     }
-                                ));
+                                    
+                                    console.log('📤 Returning mock response');
+                                    return Promise.resolve(new Response(
+                                        JSON.stringify(responseData),
+                                        {
+                                            status: 200,
+                                            statusText: 'OK',
+                                            headers: { 'Content-Type': 'application/json' }
+                                        }
+                                    ));
+                                } catch (error) {
+                                    console.error('❌ Failed to save offline:', error);
+                                    self.showNotification('Error', 
+                                        'Failed to save offline: ' + error.message, 
+                                        'error'
+                                    );
+                                    // Don't return here, let it fall through to original fetch
+                                }
+                            } else {
+                                console.warn('⚠️ No form data extracted, cannot save offline');
                             }
+                        } else {
+                            console.warn('⚠️ Model type not found or offlineDB not available:', modelType, !!window.offlineDB);
                         }
                     } catch (error) {
                         console.error('Failed to intercept Livewire fetch:', error);
@@ -584,12 +636,24 @@ class FilamentOfflineInterceptor {
 }
 
 // Initialize interceptor when DOM is ready
+const initInterceptor = () => {
+    console.log('🚀 Initializing Filament offline interceptor...');
+    const interceptor = new FilamentOfflineInterceptor();
+    
+    // Verify it's working
+    setTimeout(() => {
+        if (interceptor.initialized) {
+            console.log('✅ Filament offline interceptor is ready');
+        } else {
+            console.warn('⚠️ Filament offline interceptor not initialized yet');
+        }
+    }, 2000);
+};
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        new FilamentOfflineInterceptor();
-    });
+    document.addEventListener('DOMContentLoaded', initInterceptor);
 } else {
-    new FilamentOfflineInterceptor();
+    initInterceptor();
 }
 
 export default FilamentOfflineInterceptor;
