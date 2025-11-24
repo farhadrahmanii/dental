@@ -16,6 +16,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -64,77 +65,119 @@ class PatientResource extends Resource
                 Section::make(__('filament.patient_information'))
                     ->description(__('filament.basic_patient_information'))
                     ->icon('heroicon-o-user')
-                    ->columns(3)
                     ->schema([
-                        TextInput::make('name')
-                            ->label(__('filament.full_name'))
-                            ->required()
-                            ->maxLength(255)
-                            ->placeholder(__('filament.enter_patient_full_name'))
-                            ->prefixIcon('heroicon-o-user'),
-                        TextInput::make('father_name')
-                            ->label(__('filament.father_name'))
-                            ->maxLength(255)
-                            ->placeholder(__('filament.enter_father_name'))
-                            ->prefixIcon('heroicon-o-user-group'),
-                        TextInput::make('age')
-                            ->label(__('filament.age'))
-                            ->numeric()
-                            ->minValue(0)
-                            ->maxValue(120)
-                            ->placeholder(__('filament.enter_age'))
-                            ->suffix(__('filament.years'))
-                            ->prefixIcon('heroicon-o-calendar'),
-                        Select::make('sex')
-                            ->label(__('filament.gender'))
-                            ->options([
-                                'male' => __('filament.male'),
-                                'female' => __('filament.female'),
-                                'other' => __('filament.other'),
-                            ])
-                            ->native(false)
-                            ->prefixIcon('heroicon-o-user'),
-                        TextInput::make('phone_number')
-                            ->label(__('filament.phone_number'))
-                            ->tel()
-                            ->maxLength(20)
-                            ->placeholder('+93 XXX XXX XXX')
-                            ->prefixIcon('heroicon-o-phone'),
-                        Select::make('marital_status')
-                            ->label(__('filament.marital_status'))
-                            ->options([
-                                'single' => __('filament.single'),
-                                'married' => __('filament.married'),
-                                'divorced' => __('filament.divorced'),
-                                'widowed' => __('filament.widowed'),
-                            ])
-                            ->native(false)
-                            ->nullable()
-                            ->prefixIcon('heroicon-o-heart'),
-                        TextInput::make('occupation')
-                            ->label(__('filament.occupation'))
-                            ->maxLength(255)
-                            ->placeholder(__('filament.enter_occupation'))
-                            ->prefixIcon('heroicon-o-briefcase')
-                            ->columnSpanFull(),
+                        Grid::make(12)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label(__('filament.full_name'))
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->placeholder(__('filament.enter_patient_full_name'))
+                                    ->prefixIcon('heroicon-o-user')
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 6,
+                                        'xl' => 4,
+                                    ]),
+                                TextInput::make('father_name')
+                                    ->label(__('filament.father_name'))
+                                    ->maxLength(255)
+                                    ->placeholder(__('filament.enter_father_name'))
+                                    ->prefixIcon('heroicon-o-user-group')
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 6,
+                                        'xl' => 4,
+                                    ]),
+                                TextInput::make('age')
+                                    ->label(__('filament.age'))
+                                    ->numeric()
+                                    ->minValue(0)
+                                    ->maxValue(120)
+                                    ->placeholder(__('filament.enter_age'))
+                                    ->suffix(__('filament.years'))
+                                    ->prefixIcon('heroicon-o-calendar')
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 6,
+                                        'xl' => 4,
+                                    ]),
+                                Select::make('sex')
+                                    ->label(__('filament.gender'))
+                                    ->options([
+                                        'male' => __('filament.male'),
+                                        'female' => __('filament.female'),
+                                        'other' => __('filament.other'),
+                                    ])
+                                    ->native(false)
+                                    ->prefixIcon('heroicon-o-user')
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 6,
+                                        'xl' => 4,
+                                    ]),
+                                TextInput::make('phone_number')
+                                    ->label(__('filament.phone_number'))
+                                    ->tel()
+                                    ->maxLength(20)
+                                    ->placeholder('+93 XXX XXX XXX')
+                                    ->prefixIcon('heroicon-o-phone')
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 6,
+                                        'xl' => 4,
+                                    ]),
+                                Select::make('marital_status')
+                                    ->label(__('filament.marital_status'))
+                                    ->options([
+                                        'single' => __('filament.single'),
+                                        'married' => __('filament.married'),
+                                        'divorced' => __('filament.divorced'),
+                                        'widowed' => __('filament.widowed'),
+                                    ])
+                                    ->native(false)
+                                    ->nullable()
+                                    ->prefixIcon('heroicon-o-heart')
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 6,
+                                        'xl' => 4,
+                                    ]),
+                                TextInput::make('occupation')
+                                    ->label(__('filament.occupation'))
+                                    ->maxLength(255)
+                                    ->placeholder(__('filament.enter_occupation'))
+                                    ->prefixIcon('heroicon-o-briefcase')
+                                    ->columnSpan(12),
+                            ]),
                     ])
                     ->collapsible(),
 
                 Section::make(__('filament.address_information'))
                     ->description(__('filament.patient_residential_details'))
                     ->icon('heroicon-o-map-pin')
-                    ->columns(2)
                     ->schema([
-                        Textarea::make('permanent_address')
-                            ->label(__('filament.permanent_address'))
-                            ->rows(3)
-                            ->maxLength(500)
-                            ->placeholder(__('filament.enter_permanent_address')),
-                        Textarea::make('current_address')
-                            ->label(__('filament.current_address'))
-                            ->rows(3)
-                            ->maxLength(500)
-                            ->placeholder(__('filament.enter_current_address')),
+                        Grid::make(12)
+                            ->schema([
+                                Textarea::make('permanent_address')
+                                    ->label(__('filament.permanent_address'))
+                                    ->rows(3)
+                                    ->maxLength(500)
+                                    ->placeholder(__('filament.enter_permanent_address'))
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 6,
+                                    ]),
+                                Textarea::make('current_address')
+                                    ->label(__('filament.current_address'))
+                                    ->rows(3)
+                                    ->maxLength(500)
+                                    ->placeholder(__('filament.enter_current_address'))
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 6,
+                                    ]),
+                            ]),
                     ])
                     ->collapsible()
                     ->collapsed(),
