@@ -77,7 +77,7 @@ class PatientResource extends Resource
                                     ->columnSpan([
                                         'default' => 12,
                                         'md' => 6,
-                                        'xl' => 4,
+                                        'xl' => 6,
                                     ]),
                                 TextInput::make('father_name')
                                     ->label(__('filament.father_name'))
@@ -87,7 +87,7 @@ class PatientResource extends Resource
                                     ->columnSpan([
                                         'default' => 12,
                                         'md' => 6,
-                                        'xl' => 4,
+                                        'xl' => 6,
                                     ]),
                                 TextInput::make('age')
                                     ->label(__('filament.age'))
@@ -100,7 +100,7 @@ class PatientResource extends Resource
                                     ->columnSpan([
                                         'default' => 12,
                                         'md' => 6,
-                                        'xl' => 4,
+                                        'xl' => 6,
                                     ]),
                                 Select::make('sex')
                                     ->label(__('filament.gender'))
@@ -114,7 +114,7 @@ class PatientResource extends Resource
                                     ->columnSpan([
                                         'default' => 12,
                                         'md' => 6,
-                                        'xl' => 4,
+                                        'xl' => 6,
                                     ]),
                                 TextInput::make('phone_number')
                                     ->label(__('filament.phone_number'))
@@ -125,7 +125,7 @@ class PatientResource extends Resource
                                     ->columnSpan([
                                         'default' => 12,
                                         'md' => 6,
-                                        'xl' => 4,
+                                        'xl' => 6,
                                     ]),
                                 Select::make('marital_status')
                                     ->label(__('filament.marital_status'))
@@ -141,7 +141,7 @@ class PatientResource extends Resource
                                     ->columnSpan([
                                         'default' => 12,
                                         'md' => 6,
-                                        'xl' => 4,
+                                        'xl' => 6,
                                     ]),
                                 TextInput::make('occupation')
                                     ->label(__('filament.occupation'))
